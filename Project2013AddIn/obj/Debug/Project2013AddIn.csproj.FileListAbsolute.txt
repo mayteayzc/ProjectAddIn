@@ -1,0 +1,13 @@
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Project2013AddIn.dll
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Project2013AddIn.pdb
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Project2013AddIn.dll.manifest
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Project2013AddIn.vsto
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.csprojResolveAssemblyReference.cache
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.Properties.Resources.resources
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.newPDM.resources
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.csproj.GenerateResource.Cache
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.dll
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.pdb
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.AddNewRelation.resources
