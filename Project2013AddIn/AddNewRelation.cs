@@ -40,6 +40,9 @@ namespace Project2013AddIn
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if(this.ComboBoxAct1.SelectedIndex == this.ComboBoxAct2.SelectedIndex) {
+                MessageBox.Show("Please re-enter");
+            }
             this.Hide();
         }
 
