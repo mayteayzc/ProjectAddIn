@@ -55,6 +55,9 @@ namespace Project2013AddIn
 
             else
             {
+                string act1 = this.ComboBoxAct1.SelectedItem.ToString();
+                string act2 = this.ComboBoxAct2.SelectedItem.ToString();
+                string rela = this.ComboBoxRela.SelectedItem.ToString();
                 this.Hide();
                 unsafe
                 {
@@ -62,23 +65,26 @@ namespace Project2013AddIn
                     int* DurationAct1=&duration, DurationAct2=&duration;
                     DateTime Start=new DateTime(2015,01,01), Finish=new DateTime(2015,01,01);
                     DateTime* StartAct1=&Start, FinishAct1=&Finish, StartAct2=&Start, FinishAct2=&Finish;
+                    int id1 = 0, id2 = 0;
                     bool found1 = false, found2 = false;
 
                     foreach (MSProject.Task task in project.Tasks)
                     {
-                        if (task.Name == this.ComboBoxAct1.SelectedItem.ToString())
+                        if (task.Name.Equals(act1))
                         {
-                            *StartAct1 = task.ScheduledStart;
-                            *FinishAct1 = task.ScheduledFinish;
-                            *DurationAct1 = task.ScheduledDuration;
+                            *StartAct1 = task.Start;
+                            *FinishAct1 = task.Finish;
+                            *DurationAct1 = task.Duration;
+                            id1 = task.UniqueID;
                             found1 = true;
                         }
 
-                        if (task.Name == this.ComboBoxAct2.SelectedItem.ToString())
+                        if (task.Name.Equals(act2))
                         {
-                            *StartAct2 = task.ScheduledStart;
-                            *FinishAct2 = task.ScheduledFinish;
-                            *DurationAct2 = task.ScheduledDuration;
+                            *StartAct2 = task.Start;
+                            *FinishAct2 = task.Finish;
+                            *DurationAct2 = task.Duration;
+                            id2 = task.UniqueID;
                             found2 = true;
                         }
                     }
@@ -86,14 +92,23 @@ namespace Project2013AddIn
                     if (found1 == false || found2 == false)
                     MessageBox.Show("Error: Task can not be found.");
                     
-                    string relation = this.ComboBoxRela.SelectedItem.ToString();
+                    string relation =rela;
                     switch(relation)
                     {
                         case "Concurrent":
-                            *StartAct2 = *StartAct1;
-                            *DurationAct2 = *DurationAct1;
+                            project.Tasks.UniqueID[id2].Duration = *DurationAct1;
+                            project.Tasks.UniqueID[id2].Start = *StartAct1;
                             break;
                         case "Contain":
+                            if (project.Tasks.UniqueID[id2].Duration > project.Tasks.UniqueID[id1].Duration)
+                                MessageBox.Show("Error: Please make sure duration of activity 1 is longer than activity 2 in a Contain relationship.");
+                            else //still got problem, not working.
+                            {
+                                project.Tasks.UniqueID[id2].ConstraintType = Microsoft.Office.Interop.MSProject.PjConstraint.pjSNET;
+                                project.Tasks.UniqueID[id2].ConstraintDate= project.Tasks.UniqueID[id1].Start;
+                                project.Tasks.UniqueID[id2].ConstraintType = Microsoft.Office.Interop.MSProject.PjConstraint.pjFNLT;
+                                project.Tasks.UniqueID[id2].ConstraintDate = project.Tasks.UniqueID[id1].Finish;
+                            }
                             break;
                         case "Meet":
                             break;
