@@ -59,12 +59,8 @@ namespace Project2013AddIn
                 string act2 = this.ComboBoxAct2.SelectedItem.ToString();
                 string rela = this.ComboBoxRela.SelectedItem.ToString();
                 this.Hide();
-                unsafe
                 {
-                    int duration=0;
-                    int* DurationAct1=&duration, DurationAct2=&duration;
                     DateTime Start=new DateTime(2015,01,01), Finish=new DateTime(2015,01,01);
-                    DateTime* StartAct1=&Start, FinishAct1=&Finish, StartAct2=&Start, FinishAct2=&Finish;
                     int id1 = 0, id2 = 0;
                     bool found1 = false, found2 = false;
 
@@ -72,18 +68,12 @@ namespace Project2013AddIn
                     {
                         if (task.Name.Equals(act1))
                         {
-                            *StartAct1 = task.Start;
-                            *FinishAct1 = task.Finish;
-                            *DurationAct1 = task.Duration;
                             id1 = task.UniqueID;
                             found1 = true;
                         }
 
                         if (task.Name.Equals(act2))
                         {
-                            *StartAct2 = task.Start;
-                            *FinishAct2 = task.Finish;
-                            *DurationAct2 = task.Duration;
                             id2 = task.UniqueID;
                             found2 = true;
                         }
@@ -96,20 +86,20 @@ namespace Project2013AddIn
                     switch(relation)
                     {
                         case "Concurrent":
-                            project.Tasks.UniqueID[id2].Duration = *DurationAct1;
-                            project.Tasks.UniqueID[id2].Start = *StartAct1;
+                            project.Tasks.UniqueID[id2].Duration = project.Tasks.UniqueID[id1].Duration;
+                            project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
                             break;
                         case "Contain":
                             if (project.Tasks.UniqueID[id2].Duration > project.Tasks.UniqueID[id1].Duration)
                                 MessageBox.Show("Error: Please make sure duration of activity 1 is longer than activity 2 in a Contain relationship.");
-                            else //still got problem, not working.
-                            {
-                                project.Tasks.UniqueID[id2].ConstraintType = Microsoft.Office.Interop.MSProject.PjConstraint.pjSNET;
-                                project.Tasks.UniqueID[id2].ConstraintDate= project.Tasks.UniqueID[id1].Start;
-                                project.Tasks.UniqueID[id2].ConstraintType = Microsoft.Office.Interop.MSProject.PjConstraint.pjFNLT;
-                                project.Tasks.UniqueID[id2].ConstraintDate = project.Tasks.UniqueID[id1].Finish;
-                            }
-                            break;
+                            else if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) > 0)
+                                project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
+                            else if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Finish) < 0)
+                                {
+                                    while (project.Tasks.UniqueID[id1].Finish != project.Tasks.UniqueID[id2].Finish)
+                                        project.Tasks.UniqueID[id1].Start=project.Tasks.UniqueID[id1].Start.AddDays(1);
+                                }
+                                break;
                         case "Meet":
                             break;
                         case "Disjoint":
@@ -125,6 +115,12 @@ namespace Project2013AddIn
         private void AddNewRelation_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Help helptext=new Help();
+            helptext.Show();
         }
 }
 }
