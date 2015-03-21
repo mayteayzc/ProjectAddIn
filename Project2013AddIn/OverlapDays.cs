@@ -19,13 +19,14 @@ namespace Project2013AddIn
             InitializeComponent();
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        public void btnOK_Click(object sender, EventArgs e)
         {
             if (this.overlap.Value < 0 || this.overlap.Value == 0)
                 MessageBox.Show("Please choose a positive integer.");
             else
             {
-                this.Hide();
+               AddNewRelation.D = (int) this.overlap.Value;
+               this.Hide();
             }        
         }
 

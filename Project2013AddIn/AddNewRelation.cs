@@ -16,7 +16,7 @@ namespace Project2013AddIn
     public partial class AddNewRelation : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-       
+
         public AddNewRelation()
         {
             InitializeComponent();
@@ -97,31 +97,27 @@ namespace Project2013AddIn
                                 project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
                             else if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Finish) < 0)
                                 {
-                                    while (project.Tasks.UniqueID[id1].Finish != project.Tasks.UniqueID[id2].Finish)
+                                    while (project.Tasks.UniqueID[id1].Finish < project.Tasks.UniqueID[id2].Finish)
                                         project.Tasks.UniqueID[id1].Start=project.Tasks.UniqueID[id1].Start.AddDays(1);
+                                    project.Tasks.UniqueID[id1].Start=project.Tasks.UniqueID[id1].Start.SubtractDays(1);
                                 }
                                 break;
                        
                         case "Disjoint":
                             //check empty field in start, finish, duration first.
                             //only amend when overlap.
-                                if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Start) > 0
-                                    || DateTime.Compare(project.Tasks.UniqueID[id2].Finish, project.Tasks.UniqueID[id1].Start) > 0)
-                                {
-                                    if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
-                                        project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
-                                    else if (DateTime.Equals(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start))
-                                    {
-                                        if (project.Tasks.UniqueID[id1].Duration < project.Tasks.UniqueID[id2].Duration)
-                                            project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
-                                        if (project.Tasks.UniqueID[id1].Duration = project.Tasks.UniqueID[id2].Duration)
-                                            project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
-                                        else
-                                            project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish;
-                                    }
-                                    else
-                                        project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish;
-                                }
+                            if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Start) < 0
+                                    || DateTime.Compare(project.Tasks.UniqueID[id2].Finish, project.Tasks.UniqueID[id1].Start) < 0)
+                                  break;
+                            else
+                            {
+                                if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
+                                else if (DateTime.Equals(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start))
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
+                                else
+                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish.AddDays(1);
+                             }
                             break;
                         
                         case "Meet":
@@ -129,34 +125,38 @@ namespace Project2013AddIn
                             if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
                             {
                                 if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Start) < 0)
-                                    while (project.Tasks.UniqueID[id1].Finish != project.Tasks.UniqueID[id2].Start)
+                                {
+                                    while (project.Tasks.UniqueID[id1].Finish < project.Tasks.UniqueID[id2].Start)
                                         project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id1].Start.AddDays(1);
+                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id1].Start.SubtractDays(1);
+                                }
                                 else
-                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
                             }
 
                             else if (DateTime.Equals(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start))
-                                project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
+                                project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
                             else
                             {
                                 if (DateTime.Compare(project.Tasks.UniqueID[id2].Finish, project.Tasks.UniqueID[id1].Start) < 0)
-                                    while (project.Tasks.UniqueID[id2].Finish != project.Tasks.UniqueID[id1].Start)
+                                {
+                                    while (project.Tasks.UniqueID[id2].Finish < project.Tasks.UniqueID[id1].Start)
                                         project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id2].Start.AddDays(1);
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start.SubtractDays(1);
+                                }
                                 else
-                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish;
+                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish.AddDays(1);
                             }                              
                             break;
                        
                         case "Overlap":
+                            
                             OverlapDays OL = new OverlapDays();
                             OL.Show();
-                            if (OL.overlap.Value == 0)
-                                break;
-                            else
-                            {
-                                int D = (int) OL.overlap.Value;
-                                if(DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
-                                    (project.Tasks.UniqueID[id1].Finish-project.Tasks.UniqueID[id2].Start)//CONVERT TO DAYS
+                            
+                            if(DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
+                            {  
+                                if((project.Tasks.UniqueID[id1].Finish-project.Tasks.UniqueID[id2].Start).TotalDays<D)
 
                             }
                             
@@ -167,7 +167,12 @@ namespace Project2013AddIn
             }
         }
         }
-
+         public static int D
+        {
+            get { return D; }
+            set { D = value; }
+        }
+      
         private void AddNewRelation_Load(object sender, EventArgs e)
         {
 
