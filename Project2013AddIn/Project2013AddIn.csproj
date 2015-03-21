@@ -163,6 +163,12 @@
     <Compile Include="AddNewRelation.Designer.cs">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="OverlapDays.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OverlapDays.Designer.cs">
+      <DependentUpon>OverlapDays.cs</DependentUpon>
+    </Compile>
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,9 @@
     </Compile>
     <EmbeddedResource Include="AddNewRelation.resx">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OverlapDays.resx">
+      <DependentUpon>OverlapDays.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
