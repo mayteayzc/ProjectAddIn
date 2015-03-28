@@ -25,15 +25,15 @@ namespace Project2013AddIn
                 MessageBox.Show("Please choose a positive integer.");
             else
             {
-               AddNewRelation.D = (int) this.overlap.Value;
-               this.Hide();
+               // AddNewRelation.GetOverLap(this.overlap.Value);
+                this.Close();
             }        
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.overlap.Value = 0;
-            this.Hide();
+            this.Close();
         }
 
         

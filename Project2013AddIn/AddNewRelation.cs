@@ -16,6 +16,7 @@ namespace Project2013AddIn
     public partial class AddNewRelation : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+        public static int D;
 
         public AddNewRelation()
         {
@@ -153,25 +154,48 @@ namespace Project2013AddIn
                             
                             OverlapDays OL = new OverlapDays();
                             OL.Show();
-                            
-                            if(DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
-                            {  
-                                if((project.Tasks.UniqueID[id1].Finish-project.Tasks.UniqueID[id2].Start).TotalDays<D)
+                           
 
+                            if (D==0)
+                                MessageBox.Show("lololololo");
+                            
+                            if (D > project.Tasks.UniqueID[id1].Duration || D > project.Tasks.UniqueID[id2].Duration)
+                                MessageBox.Show("Overlap days cannot be longer than the duration of tasks.");
+                            
+                            MSProject.Task first;
+                            MSProject.Task second;
+
+                            if(DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
+                            {
+                                first = project.Tasks.UniqueID[id1];
+                                second = project.Tasks.UniqueID[id2];
                             }
                             
+                            else 
+                            {
+                                first = project.Tasks.UniqueID[id2];
+                                second = project.Tasks.UniqueID[id1];
+                            }
+                               
+                            int difference = first.Duration - D;
+                            DateTime reference = first.Start.AddDays(difference);
 
+                            while (DateTime.Compare(reference, second.Start) < 0)
+                            {
+                                    first.Start = first.Start.AddDays(1);
+                                    reference = reference.AddDays(1);
+                            }
                             break;
                     }
                              
             }
         }
         }
-         public static int D
-        {
-            get { return D; }
-            set { D = value; }
-        }
+
+       // public static void GetOverLap (decimal Number)
+        //{
+           // D = (int)Number;
+       // }
       
         private void AddNewRelation_Load(object sender, EventArgs e)
         {
