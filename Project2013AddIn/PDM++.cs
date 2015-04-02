@@ -16,6 +16,7 @@ namespace Project2013AddIn
         {
             AddNewRelation Relation = new AddNewRelation();
             Relation.ComboBoxRela.SelectedItem = "Concurrent";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
          }
 
@@ -23,6 +24,7 @@ namespace Project2013AddIn
         {
             AddNewRelation Relation = new AddNewRelation();
             Relation.ComboBoxRela.SelectedItem = "Contain";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
         }
 
@@ -30,6 +32,7 @@ namespace Project2013AddIn
         {
             AddNewRelation Relation = new AddNewRelation();
             Relation.ComboBoxRela.SelectedItem = "Disjoint";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
         }
 
@@ -37,6 +40,7 @@ namespace Project2013AddIn
         {
             AddNewRelation Relation = new AddNewRelation();
             Relation.ComboBoxRela.SelectedItem = "Meet";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
         }
 

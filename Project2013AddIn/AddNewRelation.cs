@@ -59,9 +59,9 @@ namespace Project2013AddIn
                 string act1 = this.ComboBoxAct1.SelectedItem.ToString();
                 string act2 = this.ComboBoxAct2.SelectedItem.ToString();
                 string rela = this.ComboBoxRela.SelectedItem.ToString();
-                this.Hide();
+                
                 {
-                    DateTime Start=new DateTime(2015,01,01), Finish=new DateTime(2015,01,01);
+                    
                     int id1 = 0, id2 = 0;
                     bool found1 = false, found2 = false;
 
@@ -82,108 +82,148 @@ namespace Project2013AddIn
 
                     if (found1 == false || found2 == false)
                     MessageBox.Show("Error: Task can not be found.");
+
+                    //check empty fileds.
+                    if (project.Tasks.UniqueID[id1].Duration == null)
+                        project.Tasks.UniqueID[id1].Duration7 = 1;
+
+                    if (project.Tasks.UniqueID[id2].Duration == null)
+                        project.Tasks.UniqueID[id2].Duration7 = 1;
+
+                    if (project.Tasks.UniqueID[id1].Start == null)
+                        project.Tasks.UniqueID[id1].Start = DateTime.Today;
+
+                    if (project.Tasks.UniqueID[id2].Start == null)
+                        project.Tasks.UniqueID[id2].Start = DateTime.Today;
+                   
+                    MSProject.Task first;
+                    MSProject.Task second;
                     
                     string relation =rela;
                     switch(relation)
                     {
                         case "Concurrent":
-                            project.Tasks.UniqueID[id2].Duration = project.Tasks.UniqueID[id1].Duration;
-                            project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
+                            //activity 1 is the reference.
+                            if (project.Tasks.UniqueID[id1].Duration != project.Tasks.UniqueID[id2].Duration)
+                                MessageBox.Show("Please make sure activity 1 and activity 2 have equal duration in a Concurrent relationship.");
+                            else
+                            {
+                                 project.Tasks.UniqueID[id2].Duration = project.Tasks.UniqueID[id1].Duration;
+                                 project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
+                                 this.Hide(); 
+                            }
                             break;
                        
                         case "Contain":
                             if (project.Tasks.UniqueID[id2].Duration > project.Tasks.UniqueID[id1].Duration)
-                                MessageBox.Show("Error: Please make sure duration of activity 1 is longer than activity 2 in a Contain relationship.");
-                            else if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) > 0)
-                                project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
-                            else if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Finish) < 0)
+                            {
+                                first = project.Tasks.UniqueID[id2];
+                                second = project.Tasks.UniqueID[id1];
+                            }
+                            else
+                            {
+                                first= project.Tasks.UniqueID[id1];
+                                second= project.Tasks.UniqueID[id2];
+                            }
+
+                            if (DateTime.Compare(first.Start, second.Start) > 0)
+                                first.Start = second.Start;
+                            if (DateTime.Compare(first.Finish, second.Finish) < 0)
                                 {
-                                    while (project.Tasks.UniqueID[id1].Finish < project.Tasks.UniqueID[id2].Finish)
-                                        project.Tasks.UniqueID[id1].Start=project.Tasks.UniqueID[id1].Start.AddDays(1);
-                                    project.Tasks.UniqueID[id1].Start=project.Tasks.UniqueID[id1].Start.SubtractDays(1);
+                                    while (first.Finish != second.Finish)
+                                        first.Start=first.Start.AddDays(1);
                                 }
-                                break;
+                            this.Hide();
+                            break;
                        
                         case "Disjoint":
-                            //check empty field in start, finish, duration first.
-                            //only amend when overlap.
+                            //only change when overlap.
+                            //check if there is 3rd task in disjoint.Need to store sassigned relationships first.
                             if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Start) < 0
                                     || DateTime.Compare(project.Tasks.UniqueID[id2].Finish, project.Tasks.UniqueID[id1].Start) < 0)
                                   break;
                             else
                             {
                                 if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
-                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
                                 else if (DateTime.Equals(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start))
-                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
+                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish;
                                 else
-                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish.AddDays(1);
+                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish;
                              }
+                            this.Hide();
                             break;
                         
                         case "Meet":
-                            //check empty field in start, finish, duration first. 
+                            //need to modefy, easier way, since the methods are the same.
+                            
+
                             if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
-                            {
-                                if (DateTime.Compare(project.Tasks.UniqueID[id1].Finish, project.Tasks.UniqueID[id2].Start) < 0)
-                                {
-                                    while (project.Tasks.UniqueID[id1].Finish < project.Tasks.UniqueID[id2].Start)
-                                        project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id1].Start.AddDays(1);
-                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id1].Start.SubtractDays(1);
-                                }
-                                else
-                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
-                            }
-
-                            else if (DateTime.Equals(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start))
-                                project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Finish.AddDays(1);
-                            else
-                            {
-                                if (DateTime.Compare(project.Tasks.UniqueID[id2].Finish, project.Tasks.UniqueID[id1].Start) < 0)
-                                {
-                                    while (project.Tasks.UniqueID[id2].Finish < project.Tasks.UniqueID[id1].Start)
-                                        project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id2].Start.AddDays(1);
-                                    project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start.SubtractDays(1);
-                                }
-                                else
-                                    project.Tasks.UniqueID[id1].Start = project.Tasks.UniqueID[id2].Finish.AddDays(1);
-                            }                              
-                            break;
-                       
-                        case "Overlap":
-                            
-                            OverlapDays OL = new OverlapDays();
-                            OL.Show();
-                           
-
-                            if (D==0)
-                                MessageBox.Show("lololololo");
-                            
-                            if (D > project.Tasks.UniqueID[id1].Duration || D > project.Tasks.UniqueID[id2].Duration)
-                                MessageBox.Show("Overlap days cannot be longer than the duration of tasks.");
-                            
-                            MSProject.Task first;
-                            MSProject.Task second;
-
-                            if(DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
                             {
                                 first = project.Tasks.UniqueID[id1];
                                 second = project.Tasks.UniqueID[id2];
                             }
-                            
-                            else 
+                            else
                             {
-                                first = project.Tasks.UniqueID[id2];
-                                second = project.Tasks.UniqueID[id1];
+                                first=project.Tasks.UniqueID[id2];
+                                second=project.Tasks.UniqueID[id1];
                             }
-                               
-                            int difference = first.Duration - D;
-                            DateTime reference = first.Start.AddDays(difference);
+                            
+                            if (DateTime.Compare(first.Finish, second.Start) < 0)
+                                {
+                                    while (first.Finish != second.Start)
+                                        first.Start = first.Start.AddDays(1);
+                                }
+                            else
+                                    second.Start = first.Finish;
+                            this.Hide();
+                            break;
+                       
+                        case "Overlap":
+                            //overlap exact how many days or overlap at least how many days?
+                            //here is at least, for overlap more than specified days, no change is made.
+                            //by default everyday includes 8 working hrs, 480 mins.
+                            if (NumericDays.Value<0  || NumericDays.Value==0)
+                                MessageBox.Show("please select a positive number for overlap days.");
 
-                            while (DateTime.Compare(reference, second.Start) < 0)
+                            else if (NumericDays.Value > project.Tasks.UniqueID[id1].Duration/480 || NumericDays.Value > project.Tasks.UniqueID[id2].Duration/480)
+                                MessageBox.Show("Overlap days cannot be longer than the duration of tasks.");
+                            
+                            else
                             {
+                                
+                                if (DateTime.Compare(project.Tasks.UniqueID[id1].Start, project.Tasks.UniqueID[id2].Start) < 0)
+                                {
+                                    first = project.Tasks.UniqueID[id1];
+                                    second = project.Tasks.UniqueID[id2];
+                                }
+
+                                else
+                                {
+                                    first = project.Tasks.UniqueID[id2];
+                                    second = project.Tasks.UniqueID[id1];
+                                }
+
+                                if (DateTime.Compare(first.Finish, second.Start) < 0)
+                                {
+                                    while (first.Finish != second.Start)
+                                        first.Start = first.Start.AddDays(1);
+                                }
+
+                                int D = 0;
+                                DateTime reference=second.Start;
+                                while(D!=(int)NumericDays.Value)
+                                {
                                     first.Start = first.Start.AddDays(1);
-                                    reference = reference.AddDays(1);
+                                    while(DateTime.Compare(reference,first.Finish)<0)
+                                    {
+                                    if(reference.DayOfWeek==DayOfWeek.Monday||reference.DayOfWeek==DayOfWeek.Tuesday||reference.DayOfWeek==DayOfWeek.Wednesday
+                                        ||reference.DayOfWeek==DayOfWeek.Thursday||reference.DayOfWeek==DayOfWeek.Friday)
+                                        D=D+1;
+                                    reference=reference.AddDays(1);
+                                    }
+                                }
+                                this.Hide();
                             }
                             break;
                     }
@@ -192,10 +232,7 @@ namespace Project2013AddIn
         }
         }
 
-       // public static void GetOverLap (decimal Number)
-        //{
-           // D = (int)Number;
-       // }
+      
       
         private void AddNewRelation_Load(object sender, EventArgs e)
         {
@@ -207,5 +244,14 @@ namespace Project2013AddIn
             Help helptext=new Help();
             helptext.Show();
         }
+
+        private void ComboBoxRela_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboBoxRela.SelectedItem.ToString() =="Overlap")
+                NumericDays.Enabled = true;
+            else
+                NumericDays.Enabled=false;
+        }
+
 }
-}
+} 
