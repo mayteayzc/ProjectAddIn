@@ -95,7 +95,11 @@ namespace Project2013AddIn
 
                     if (project.Tasks.UniqueID[id2].Start == null)
                         project.Tasks.UniqueID[id2].Start = DateTime.Today;
-                   
+
+                    //DataTable table = new DataTable();
+                    //DataTableReader reader = new DataTableReader(DataSet1.DataTableRelationDataTable());
+                   // table = DataSet1.DataTableRelationDataTable;
+                    
                     MSProject.Task first;
                     MSProject.Task second;
                     
@@ -112,6 +116,7 @@ namespace Project2013AddIn
                                  project.Tasks.UniqueID[id2].Start = project.Tasks.UniqueID[id1].Start;
                                  this.Hide(); 
                             }
+                            DataSet1.DataTableRelation.Row.Add
                             break;
                        
                         case "Contain":

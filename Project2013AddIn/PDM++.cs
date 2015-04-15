@@ -50,5 +50,11 @@ namespace Project2013AddIn
             Relation.ComboBoxRela.SelectedItem = "Overlap";
             Relation.Show();
         }
+
+        private void btnViewRelation_Click(object sender, RibbonControlEventArgs e)
+        {
+            ViewRelation View = new ViewRelation();
+            View.Show();
+        }
     }
 }

@@ -163,6 +163,20 @@
     <Compile Include="AddNewRelation.Designer.cs">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSetRelation.cs">
+      <DependentUpon>DataSetRelation.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSetRelation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRelation.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ViewRelation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRelation.Designer.cs">
+      <DependentUpon>ViewRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +188,9 @@
     </Compile>
     <EmbeddedResource Include="AddNewRelation.resx">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRelation.resx">
+      <DependentUpon>ViewRelation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
@@ -190,6 +207,17 @@
     <EmbeddedResource Include="PDM++.resx">
       <DependentUpon>PDM++.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="DataSetRelation.xsc">
+      <DependentUpon>DataSetRelation.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetRelation.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRelation.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSetRelation.xss">
+      <DependentUpon>DataSetRelation.xsd</DependentUpon>
+    </None>
     <None Include="Project2013AddIn_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -37,31 +37,37 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(newPDM));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.group4 = this.Factory.CreateRibbonGroup();
+            this.Control = this.Factory.CreateRibbonGroup();
             this.btnconcurrent = this.Factory.CreateRibbonButton();
             this.btnContain = this.Factory.CreateRibbonButton();
             this.btnDisjoint = this.Factory.CreateRibbonButton();
             this.btnMeet = this.Factory.CreateRibbonButton();
             this.btnOverlap = this.Factory.CreateRibbonButton();
-            this.group2 = this.Factory.CreateRibbonGroup();
             this.btnCannot = this.Factory.CreateRibbonButton();
             this.btnDueaft = this.Factory.CreateRibbonButton();
             this.btnDuebf = this.Factory.CreateRibbonButton();
             this.btnStartaft = this.Factory.CreateRibbonButton();
             this.btnStartbf = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
+            this.btnViewRelation = this.Factory.CreateRibbonButton();
             this.btnMetaint = this.Factory.CreateRibbonButton();
             this.btnAltSch = this.Factory.CreateRibbonButton();
-            this.group4 = this.Factory.CreateRibbonGroup();
+            this.btnAutoSchedule = this.Factory.CreateRibbonButton();
+            this.btnManualSchedule = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
+            this.Control.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.group2);
+            this.tab1.Groups.Add(this.Control);
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "PDM++";
@@ -76,6 +82,36 @@
             this.group1.Items.Add(this.btnOverlap);
             this.group1.Label = "Binary Relationship";
             this.group1.Name = "group1";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.btnCannot);
+            this.group2.Items.Add(this.btnDueaft);
+            this.group2.Items.Add(this.btnDuebf);
+            this.group2.Items.Add(this.btnStartaft);
+            this.group2.Items.Add(this.btnStartbf);
+            this.group2.Label = "Unary Relationship";
+            this.group2.Name = "group2";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.btnMetaint);
+            this.group3.Items.Add(this.btnAltSch);
+            this.group3.Label = "Alternative Schedule";
+            this.group3.Name = "group3";
+            // 
+            // group4
+            // 
+            this.group4.Label = "Dynamic Requirement";
+            this.group4.Name = "group4";
+            // 
+            // Control
+            // 
+            this.Control.Items.Add(this.btnViewRelation);
+            this.Control.Items.Add(this.btnManualSchedule);
+            this.Control.Items.Add(this.btnAutoSchedule);
+            this.Control.Label = "Control";
+            this.Control.Name = "Control";
             // 
             // btnconcurrent
             // 
@@ -127,16 +163,6 @@
             this.btnOverlap.ShowImage = true;
             this.btnOverlap.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnOverlap_Click);
             // 
-            // group2
-            // 
-            this.group2.Items.Add(this.btnCannot);
-            this.group2.Items.Add(this.btnDueaft);
-            this.group2.Items.Add(this.btnDuebf);
-            this.group2.Items.Add(this.btnStartaft);
-            this.group2.Items.Add(this.btnStartbf);
-            this.group2.Label = "Unary Relationship";
-            this.group2.Name = "group2";
-            // 
             // btnCannot
             // 
             this.btnCannot.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -177,12 +203,14 @@
             this.btnStartbf.Name = "btnStartbf";
             this.btnStartbf.ShowImage = true;
             // 
-            // group3
+            // btnViewRelation
             // 
-            this.group3.Items.Add(this.btnMetaint);
-            this.group3.Items.Add(this.btnAltSch);
-            this.group3.Label = "Alternative Schedule";
-            this.group3.Name = "group3";
+            this.btnViewRelation.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnViewRelation.Image = ((System.Drawing.Image)(resources.GetObject("btnViewRelation.Image")));
+            this.btnViewRelation.Label = "View Relationships";
+            this.btnViewRelation.Name = "btnViewRelation";
+            this.btnViewRelation.ShowImage = true;
+            this.btnViewRelation.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnViewRelation_Click);
             // 
             // btnMetaint
             // 
@@ -194,10 +222,19 @@
             this.btnAltSch.Label = "Alternative Schedule";
             this.btnAltSch.Name = "btnAltSch";
             // 
-            // group4
+            // btnAutoSchedule
             // 
-            this.group4.Label = "Dynamic Requirement";
-            this.group4.Name = "group4";
+            this.btnAutoSchedule.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoSchedule.Image")));
+            this.btnAutoSchedule.Label = "Auto Schedule";
+            this.btnAutoSchedule.Name = "btnAutoSchedule";
+            this.btnAutoSchedule.ShowImage = true;
+            // 
+            // btnManualSchedule
+            // 
+            this.btnManualSchedule.Image = ((System.Drawing.Image)(resources.GetObject("btnManualSchedule.Image")));
+            this.btnManualSchedule.Label = "Manual Schedule";
+            this.btnManualSchedule.Name = "btnManualSchedule";
+            this.btnManualSchedule.ShowImage = true;
             // 
             // newPDM
             // 
@@ -213,6 +250,8 @@
             this.group2.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
+            this.Control.ResumeLayout(false);
+            this.Control.PerformLayout();
 
         }
 
@@ -235,6 +274,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMetaint;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAltSch;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup Control;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnViewRelation;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnManualSchedule;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAutoSchedule;
     }
 
     partial class ThisRibbonCollection
