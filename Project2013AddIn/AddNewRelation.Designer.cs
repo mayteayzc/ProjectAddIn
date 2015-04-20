@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.ComboBoxAct1 = new System.Windows.Forms.ComboBox();
             this.ComboBoxAct2 = new System.Windows.Forms.ComboBox();
             this.ComboBoxRela = new System.Windows.Forms.ComboBox();
@@ -39,7 +40,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.NumericDays = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.NumericDays)).BeginInit();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.SuspendLayout();
             // 
             // ComboBoxAct1
@@ -195,5 +196,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown NumericDays;
+        private System.Windows.Forms.BindingSource bindingSource1;
+
     }
 }

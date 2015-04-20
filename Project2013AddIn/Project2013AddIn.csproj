@@ -27,17 +27,40 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>Project2013AddIn</RootNamespace>
     <AssemblyName>Project2013AddIn</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>Project2013AddIn</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>Project2013AddIn</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
       <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
@@ -163,13 +186,10 @@
     <Compile Include="AddNewRelation.Designer.cs">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataSetRelation.cs">
-      <DependentUpon>DataSetRelation.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DataSetRelation.Designer.cs">
+    <Compile Include="ProjectAddinDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSetRelation.xsd</DependentUpon>
+      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="ViewRelation.cs">
       <SubType>Form</SubType>
@@ -207,18 +227,19 @@
     <EmbeddedResource Include="PDM++.resx">
       <DependentUpon>PDM++.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DataSetRelation.xsc">
-      <DependentUpon>DataSetRelation.xsd</DependentUpon>
-    </None>
-    <None Include="DataSetRelation.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetRelation.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="DataSetRelation.xss">
-      <DependentUpon>DataSetRelation.xsd</DependentUpon>
-    </None>
+    <None Include="app.config" />
     <None Include="Project2013AddIn_TemporaryKey.pfx" />
+    <None Include="ProjectAddinDBDataSet.xsc">
+      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectAddinDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectAddinDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectAddinDBDataSet.xss">
+      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -226,6 +247,7 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="PDM++.cs">
       <SubType>Component</SubType>
@@ -246,6 +268,15 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProjectAddinDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ProjectAddinDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>ProjectAddinDB.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

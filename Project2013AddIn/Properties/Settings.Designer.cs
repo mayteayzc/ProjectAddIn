@@ -22,5 +22,16 @@ namespace Project2013AddIn.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\ProjectAddinDB.mdf;I" +
+            "ntegrated Security=True")]
+        public string ProjectAddinDBConnectionString {
+            get {
+                return ((string)(this["ProjectAddinDBConnectionString"]));
+            }
+        }
     }
 }
