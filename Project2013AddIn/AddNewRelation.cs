@@ -17,8 +17,8 @@ namespace Project2013AddIn
     public partial class AddNewRelation : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-        SqlConnection cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;
-             AttachDbFilename=E:\MS\FYP\Project2013AddIn\Project2013AddIn\ProjectAddinDB.mdf;Integrated Security=True");
+        SqlConnection cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=
+           E:\MS\FYP\Project2013AddIn\Project2013AddIn\ProjectAddinDB.mdf;Integrated Security=True");
         SqlCommand cmd = new SqlCommand();
         SqlDataAdapter adp = new SqlDataAdapter();
 
@@ -226,7 +226,6 @@ namespace Project2013AddIn
                                     reference = second.Start;
                                     D=0;
                                 }
-                                //this.projectAddinDBDataSet.Table.Rows.Add(project.Tasks.UniqueID[id1].Name, project.Tasks.UniqueID[id2].Name, "Overlap", D);
                                 this.Hide();
                             }
                             break;
@@ -242,14 +241,17 @@ namespace Project2013AddIn
                         cmd.Parameters.AddWithValue("@D", 0);
                     cmd.ExecuteNonQuery();
                     cn.Close();
+
+                    //DataRow row = projectAddinDBDataSet.RelationTable.NewRow();
+                    //row[1]=first.Name;
+                    //row[2]=second.Name;
+                    //row[3]=relation;
+                    //row[4]=0;
+                    //projectAddinDBDataSet.RelationTable.Rows.Add(row);
                              
             }
         }
         }
-
-      
-      
-       
 
         private void button1_Click(object sender, EventArgs e)
         {

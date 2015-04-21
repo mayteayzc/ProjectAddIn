@@ -24,45 +24,40 @@ namespace Project2013AddIn
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
         private void ViewRelation_Load(object sender, EventArgs e)
         {
             cn.Open();
-            cmd.Connection=cn;
+            cmd.Connection = cn;
             cmd.CommandText = "Select * from RelationTable";
-
-            DataTable tb = new DataTable();
+            DataTable dt = new DataTable();
             SqlDataAdapter adp = new SqlDataAdapter(cmd);
-            adp.Fill(tb);
 
-            dataGridView1.DataSource = tb;
-
+            adp.Fill(dt);
+            dataGridView1.DataSource = dt;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            cmd.Connection = cn;
             
-            if(dataGridView1.SelectedRows.Count>0)
-            {
-            int selectedindex = dataGridView1.SelectedRows[0].Index;
-            int record=int.Parse(dataGridView1[0,selectedindex].Value.ToString());
-            
-            cmd.CommandText = "Delete from RelationTable where Record=@record";
-            //SqlParameter RowParameter=new SqlParameter();
-            //RowParameter.ParameterName="@record";
-            //RowParameter.Value = record;
 
-            cmd.Parameters.AddWithValue("@record", record);
-            cmd.ExecuteNonQuery();
-            dataGridView1.Update();
 
-            } 
+
+            //if (MessageBox.Show("Delete selected relationships?", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes) 
+            //{
+                //foreach (DataGridViewRow row in dataGridView1.Rows)
+                //{
+                    //object cell = row.Cells["Delete"].Value;
+                    //if ((string)cell== "yes")
+                    //{
+                        //projectAddinDBDataSet.RelationTable.Rows[row.Index].Delete();
+                       // relationTableTableAdapter.Update(projectAddinDBDataSet.RelationTable);
+                   // }
+                //}
         }
-
-     
-
-    }
+    } 
 }
+
+
