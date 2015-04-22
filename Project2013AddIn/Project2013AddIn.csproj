@@ -186,10 +186,11 @@
     <Compile Include="AddNewRelation.Designer.cs">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <Compile Include="AddConstraint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddConstraint.Designer.cs">
+      <DependentUpon>AddConstraint.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectAddinDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -214,6 +215,9 @@
     <EmbeddedResource Include="AddNewRelation.resx">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddConstraint.resx">
+      <DependentUpon>AddConstraint.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewRelation.resx">
       <DependentUpon>ViewRelation.cs</DependentUpon>
     </EmbeddedResource>
@@ -233,17 +237,6 @@
       <DependentUpon>PDM++.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="DataSet1.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </None>
     <None Include="Project2013AddIn_TemporaryKey.pfx" />
     <None Include="ProjectAddinDBDataSet.xsc">
       <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>

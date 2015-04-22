@@ -51,10 +51,63 @@ namespace Project2013AddIn
             Relation.Show();
         }
 
-        private void btnViewRelation_Click(object sender, RibbonControlEventArgs e)
+        private void btnViewDetail_Click(object sender, RibbonControlEventArgs e)
         {
             ViewRelation View = new ViewRelation();
             View.Show();
         }
+
+        private void btnCannot_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddConstraint constraint = new AddConstraint();
+            constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
+            constraint.labelDate1.Text = "Start Date";
+            constraint.labelDate2.Text = "End Date";
+            constraint.Show();
+        }
+
+        private void btnDueaft_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddConstraint constraint = new AddConstraint();
+            constraint.comboBoxConstraint.SelectedItem = "Due After";
+            constraint.labelDate1.Text = "Date";
+            constraint.labelDate2.Text = "";
+            constraint.dateTimePicker2.Enabled = false;
+            constraint.Show();
+        }
+
+        private void btnDuebf_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddConstraint constraint = new AddConstraint();
+            constraint.comboBoxConstraint.SelectedItem = "Due Before";
+            constraint.labelDate1.Text = "Date";
+            constraint.labelDate2.Text = "";
+            constraint.dateTimePicker2.Enabled = false;
+            constraint.Show();
+        }
+
+        private void btnStartaft_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddConstraint constraint = new AddConstraint();
+            constraint.comboBoxConstraint.SelectedItem = "Start After";
+            constraint.labelDate1.Text = "Date";
+            constraint.labelDate2.Text = "";
+            constraint.dateTimePicker2.Enabled = false;
+            constraint.Show();
+        }
+
+        private void btnStartbf_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddConstraint constraint = new AddConstraint();
+            constraint.comboBoxConstraint.SelectedItem = "Start Before";
+            constraint.labelDate1.Text = "Date";
+            constraint.labelDate2.Text = "";
+            constraint.dateTimePicker2.Enabled = false;
+            constraint.Show();
+        }
+
+
+
+
     }
 }

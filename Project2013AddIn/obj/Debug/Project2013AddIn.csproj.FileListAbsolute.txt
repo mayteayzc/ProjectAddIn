@@ -16,3 +16,4 @@ E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\ProjectAddinDB.mdf
 E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\ProjectAddinDB_log.ldf
 E:\MS\FYP\Project2013AddIn\Project2013AddIn\bin\Debug\Project2013AddIn.dll.config
 E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.ViewRelation.resources
+E:\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.AddConstraint.resources

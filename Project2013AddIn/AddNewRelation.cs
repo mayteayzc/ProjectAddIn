@@ -230,6 +230,9 @@ namespace Project2013AddIn
                             }
                             break;
                     }
+                    //before add relationship must check if there are exisitng pdm++ relationship which is contradicting the new relation.
+                    //also need to check MS project relationsips. How??
+                    //for disjoint and meet, there could be more than 2 tasks involved, must check they are all disjoint/meet.
 
                     cmd.CommandText = "insert into RelationTable (Task1,Task2,Relationship,OverlapDays) Values (@first,@second,@relation,@D)";
                     cmd.Parameters.AddWithValue("@first", first.Name);
@@ -241,14 +244,6 @@ namespace Project2013AddIn
                         cmd.Parameters.AddWithValue("@D", "0");
                     cmd.ExecuteNonQuery();
                     cn.Close();
-
-                    //DataRow row = projectAddinDBDataSet.RelationTable.NewRow();
-                    //row[1]=first.Name;
-                    //row[2]=second.Name;
-                    //row[3]=relation;
-                    //row[4]=0;
-                    //projectAddinDBDataSet.RelationTable.Rows.Add(row);
-                             
             }
         }
         }
