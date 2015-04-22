@@ -236,9 +236,9 @@ namespace Project2013AddIn
                     cmd.Parameters.AddWithValue("@second", second.Name);
                     cmd.Parameters.AddWithValue("@relation", relation);
                     if (relation == "Overlap")
-                        cmd.Parameters.AddWithValue("@D", NumericDays.Value);
+                        cmd.Parameters.AddWithValue("@D", NumericDays.Value.ToString());
                     else
-                        cmd.Parameters.AddWithValue("@D", 0);
+                        cmd.Parameters.AddWithValue("@D", "0");
                     cmd.ExecuteNonQuery();
                     cn.Close();
 
