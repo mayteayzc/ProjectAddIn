@@ -90,7 +90,10 @@ namespace Project2013AddIn
                     }
 
                     if (found1 == false || found2 == false)
-                    MessageBox.Show("Error: Task can not be found.");
+                    {
+                        MessageBox.Show("Error: Task can not be found.");
+                        this.Hide();
+                    }
 
                     //check empty fileds.
                     if (project.Tasks.UniqueID[id1].Duration == null)
@@ -234,7 +237,7 @@ namespace Project2013AddIn
                     //also need to check MS project relationsips. How??
                     //for disjoint and meet, there could be more than 2 tasks involved, must check they are all disjoint/meet.
 
-                    cmd.CommandText = "insert into RelationTable (Task1,Task2,Relationship,OverlapDays) Values (@first,@second,@relation,@D)";
+                    cmd.CommandText = "insert into RelationTable (Task1,Task2,Relationships,OverlapDays) Values (@first,@second,@relation,@D)";
                     cmd.Parameters.AddWithValue("@first", first.Name);
                     cmd.Parameters.AddWithValue("@second", second.Name);
                     cmd.Parameters.AddWithValue("@relation", relation);

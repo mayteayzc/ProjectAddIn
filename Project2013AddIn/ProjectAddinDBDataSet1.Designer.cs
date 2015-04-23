@@ -20,17 +20,17 @@ namespace Project2013AddIn {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("ProjectAddinDBDataSet")]
+    [global::System.Xml.Serialization.XmlRootAttribute("ProjectAddinDBDataSet1")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class ProjectAddinDBDataSet : global::System.Data.DataSet {
+    public partial class ProjectAddinDBDataSet1 : global::System.Data.DataSet {
         
-        private RelationTableDataTable tableRelationTable;
+        private ConstraintTableDataTable tableConstraintTable;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public ProjectAddinDBDataSet() {
+        public ProjectAddinDBDataSet1() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace Project2013AddIn {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected ProjectAddinDBDataSet(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected ProjectAddinDBDataSet1(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace Project2013AddIn {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["RelationTable"] != null)) {
-                    base.Tables.Add(new RelationTableDataTable(ds.Tables["RelationTable"]));
+                if ((ds.Tables["ConstraintTable"] != null)) {
+                    base.Tables.Add(new ConstraintTableDataTable(ds.Tables["ConstraintTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace Project2013AddIn {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public RelationTableDataTable RelationTable {
+        public ConstraintTableDataTable ConstraintTable {
             get {
-                return this.tableRelationTable;
+                return this.tableConstraintTable;
             }
         }
         
@@ -127,7 +127,7 @@ namespace Project2013AddIn {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            ProjectAddinDBDataSet cln = ((ProjectAddinDBDataSet)(base.Clone()));
+            ProjectAddinDBDataSet1 cln = ((ProjectAddinDBDataSet1)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace Project2013AddIn {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["RelationTable"] != null)) {
-                    base.Tables.Add(new RelationTableDataTable(ds.Tables["RelationTable"]));
+                if ((ds.Tables["ConstraintTable"] != null)) {
+                    base.Tables.Add(new ConstraintTableDataTable(ds.Tables["ConstraintTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace Project2013AddIn {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableRelationTable = ((RelationTableDataTable)(base.Tables["RelationTable"]));
+            this.tableConstraintTable = ((ConstraintTableDataTable)(base.Tables["ConstraintTable"]));
             if ((initTable == true)) {
-                if ((this.tableRelationTable != null)) {
-                    this.tableRelationTable.InitVars();
+                if ((this.tableConstraintTable != null)) {
+                    this.tableConstraintTable.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace Project2013AddIn {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "ProjectAddinDBDataSet";
+            this.DataSetName = "ProjectAddinDBDataSet1";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/ProjectAddinDBDataSet.xsd";
+            this.Namespace = "http://tempuri.org/ProjectAddinDBDataSet1.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableRelationTable = new RelationTableDataTable();
-            base.Tables.Add(this.tableRelationTable);
+            this.tableConstraintTable = new ConstraintTableDataTable();
+            base.Tables.Add(this.tableConstraintTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeRelationTable() {
+        private bool ShouldSerializeConstraintTable() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace Project2013AddIn {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            ProjectAddinDBDataSet ds = new ProjectAddinDBDataSet();
+            ProjectAddinDBDataSet1 ds = new ProjectAddinDBDataSet1();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,29 +270,31 @@ namespace Project2013AddIn {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void RelationTableRowChangeEventHandler(object sender, RelationTableRowChangeEvent e);
+        public delegate void ConstraintTableRowChangeEventHandler(object sender, ConstraintTableRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RelationTableDataTable : global::System.Data.TypedTableBase<RelationTableRow> {
+        public partial class ConstraintTableDataTable : global::System.Data.TypedTableBase<ConstraintTableRow> {
             
             private global::System.Data.DataColumn columnRecord;
             
-            private global::System.Data.DataColumn columnTask1;
+            private global::System.Data.DataColumn columnTask;
             
-            private global::System.Data.DataColumn columnTask2;
+            private global::System.Data.DataColumn columnDuration;
             
-            private global::System.Data.DataColumn columnRelationships;
+            private global::System.Data.DataColumn columnConstraints;
             
-            private global::System.Data.DataColumn columnOverlapDays;
+            private global::System.Data.DataColumn columnDate1;
+            
+            private global::System.Data.DataColumn columnDate2;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableDataTable() {
-                this.TableName = "RelationTable";
+            public ConstraintTableDataTable() {
+                this.TableName = "ConstraintTable";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -300,7 +302,7 @@ namespace Project2013AddIn {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal RelationTableDataTable(global::System.Data.DataTable table) {
+            internal ConstraintTableDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -317,7 +319,7 @@ namespace Project2013AddIn {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected RelationTableDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected ConstraintTableDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -332,33 +334,41 @@ namespace Project2013AddIn {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn Task1Column {
+            public global::System.Data.DataColumn TaskColumn {
                 get {
-                    return this.columnTask1;
+                    return this.columnTask;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn Task2Column {
+            public global::System.Data.DataColumn DurationColumn {
                 get {
-                    return this.columnTask2;
+                    return this.columnDuration;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn RelationshipsColumn {
+            public global::System.Data.DataColumn ConstraintsColumn {
                 get {
-                    return this.columnRelationships;
+                    return this.columnConstraints;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn OverlapDaysColumn {
+            public global::System.Data.DataColumn Date1Column {
                 get {
-                    return this.columnOverlapDays;
+                    return this.columnDate1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Date2Column {
+                get {
+                    return this.columnDate2;
                 }
             }
             
@@ -373,56 +383,57 @@ namespace Project2013AddIn {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRow this[int index] {
+            public ConstraintTableRow this[int index] {
                 get {
-                    return ((RelationTableRow)(this.Rows[index]));
+                    return ((ConstraintTableRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event RelationTableRowChangeEventHandler RelationTableRowChanging;
+            public event ConstraintTableRowChangeEventHandler ConstraintTableRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event RelationTableRowChangeEventHandler RelationTableRowChanged;
+            public event ConstraintTableRowChangeEventHandler ConstraintTableRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event RelationTableRowChangeEventHandler RelationTableRowDeleting;
+            public event ConstraintTableRowChangeEventHandler ConstraintTableRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event RelationTableRowChangeEventHandler RelationTableRowDeleted;
+            public event ConstraintTableRowChangeEventHandler ConstraintTableRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddRelationTableRow(RelationTableRow row) {
+            public void AddConstraintTableRow(ConstraintTableRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRow AddRelationTableRow(string Task1, string Task2, string Relationships, string OverlapDays) {
-                RelationTableRow rowRelationTableRow = ((RelationTableRow)(this.NewRow()));
+            public ConstraintTableRow AddConstraintTableRow(string Task, int Duration, string Constraints, System.DateTime Date1, System.DateTime Date2) {
+                ConstraintTableRow rowConstraintTableRow = ((ConstraintTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
-                        Task1,
-                        Task2,
-                        Relationships,
-                        OverlapDays};
-                rowRelationTableRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowRelationTableRow);
-                return rowRelationTableRow;
+                        Task,
+                        Duration,
+                        Constraints,
+                        Date1,
+                        Date2};
+                rowConstraintTableRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowConstraintTableRow);
+                return rowConstraintTableRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRow FindByRecord(int Record) {
-                return ((RelationTableRow)(this.Rows.Find(new object[] {
+            public ConstraintTableRow FindByRecord(int Record) {
+                return ((ConstraintTableRow)(this.Rows.Find(new object[] {
                             Record})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                RelationTableDataTable cln = ((RelationTableDataTable)(base.Clone()));
+                ConstraintTableDataTable cln = ((ConstraintTableDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -430,17 +441,18 @@ namespace Project2013AddIn {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new RelationTableDataTable();
+                return new ConstraintTableDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
                 this.columnRecord = base.Columns["Record"];
-                this.columnTask1 = base.Columns["Task1"];
-                this.columnTask2 = base.Columns["Task2"];
-                this.columnRelationships = base.Columns["Relationships"];
-                this.columnOverlapDays = base.Columns["OverlapDays"];
+                this.columnTask = base.Columns["Task"];
+                this.columnDuration = base.Columns["Duration"];
+                this.columnConstraints = base.Columns["Constraints"];
+                this.columnDate1 = base.Columns["Date1"];
+                this.columnDate2 = base.Columns["Date2"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -448,14 +460,16 @@ namespace Project2013AddIn {
             private void InitClass() {
                 this.columnRecord = new global::System.Data.DataColumn("Record", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRecord);
-                this.columnTask1 = new global::System.Data.DataColumn("Task1", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTask1);
-                this.columnTask2 = new global::System.Data.DataColumn("Task2", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTask2);
-                this.columnRelationships = new global::System.Data.DataColumn("Relationships", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRelationships);
-                this.columnOverlapDays = new global::System.Data.DataColumn("OverlapDays", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOverlapDays);
+                this.columnTask = new global::System.Data.DataColumn("Task", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTask);
+                this.columnDuration = new global::System.Data.DataColumn("Duration", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDuration);
+                this.columnConstraints = new global::System.Data.DataColumn("Constraints", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConstraints);
+                this.columnDate1 = new global::System.Data.DataColumn("Date1", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDate1);
+                this.columnDate2 = new global::System.Data.DataColumn("Date2", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDate2);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnRecord}, true));
                 this.columnRecord.AutoIncrement = true;
@@ -464,39 +478,37 @@ namespace Project2013AddIn {
                 this.columnRecord.AllowDBNull = false;
                 this.columnRecord.ReadOnly = true;
                 this.columnRecord.Unique = true;
-                this.columnTask1.AllowDBNull = false;
-                this.columnTask1.MaxLength = 50;
-                this.columnTask2.AllowDBNull = false;
-                this.columnTask2.MaxLength = 50;
-                this.columnRelationships.AllowDBNull = false;
-                this.columnRelationships.MaxLength = 10;
-                this.columnOverlapDays.MaxLength = 10;
+                this.columnTask.AllowDBNull = false;
+                this.columnTask.MaxLength = 50;
+                this.columnConstraints.AllowDBNull = false;
+                this.columnConstraints.MaxLength = 50;
+                this.columnDate1.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRow NewRelationTableRow() {
-                return ((RelationTableRow)(this.NewRow()));
+            public ConstraintTableRow NewConstraintTableRow() {
+                return ((ConstraintTableRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new RelationTableRow(builder);
+                return new ConstraintTableRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(RelationTableRow);
+                return typeof(ConstraintTableRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.RelationTableRowChanged != null)) {
-                    this.RelationTableRowChanged(this, new RelationTableRowChangeEvent(((RelationTableRow)(e.Row)), e.Action));
+                if ((this.ConstraintTableRowChanged != null)) {
+                    this.ConstraintTableRowChanged(this, new ConstraintTableRowChangeEvent(((ConstraintTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -504,8 +516,8 @@ namespace Project2013AddIn {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.RelationTableRowChanging != null)) {
-                    this.RelationTableRowChanging(this, new RelationTableRowChangeEvent(((RelationTableRow)(e.Row)), e.Action));
+                if ((this.ConstraintTableRowChanging != null)) {
+                    this.ConstraintTableRowChanging(this, new ConstraintTableRowChangeEvent(((ConstraintTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -513,8 +525,8 @@ namespace Project2013AddIn {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.RelationTableRowDeleted != null)) {
-                    this.RelationTableRowDeleted(this, new RelationTableRowChangeEvent(((RelationTableRow)(e.Row)), e.Action));
+                if ((this.ConstraintTableRowDeleted != null)) {
+                    this.ConstraintTableRowDeleted(this, new ConstraintTableRowChangeEvent(((ConstraintTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -522,14 +534,14 @@ namespace Project2013AddIn {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.RelationTableRowDeleting != null)) {
-                    this.RelationTableRowDeleting(this, new RelationTableRowChangeEvent(((RelationTableRow)(e.Row)), e.Action));
+                if ((this.ConstraintTableRowDeleting != null)) {
+                    this.ConstraintTableRowDeleting(this, new ConstraintTableRowChangeEvent(((ConstraintTableRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveRelationTableRow(RelationTableRow row) {
+            public void RemoveConstraintTableRow(ConstraintTableRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -538,7 +550,7 @@ namespace Project2013AddIn {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                ProjectAddinDBDataSet ds = new ProjectAddinDBDataSet();
+                ProjectAddinDBDataSet1 ds = new ProjectAddinDBDataSet1();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -556,7 +568,7 @@ namespace Project2013AddIn {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "RelationTableDataTable";
+                attribute2.FixedValue = "ConstraintTableDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -600,87 +612,115 @@ namespace Project2013AddIn {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class RelationTableRow : global::System.Data.DataRow {
+        public partial class ConstraintTableRow : global::System.Data.DataRow {
             
-            private RelationTableDataTable tableRelationTable;
+            private ConstraintTableDataTable tableConstraintTable;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal RelationTableRow(global::System.Data.DataRowBuilder rb) : 
+            internal ConstraintTableRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableRelationTable = ((RelationTableDataTable)(this.Table));
+                this.tableConstraintTable = ((ConstraintTableDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int Record {
                 get {
-                    return ((int)(this[this.tableRelationTable.RecordColumn]));
+                    return ((int)(this[this.tableConstraintTable.RecordColumn]));
                 }
                 set {
-                    this[this.tableRelationTable.RecordColumn] = value;
+                    this[this.tableConstraintTable.RecordColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Task1 {
+            public string Task {
                 get {
-                    return ((string)(this[this.tableRelationTable.Task1Column]));
+                    return ((string)(this[this.tableConstraintTable.TaskColumn]));
                 }
                 set {
-                    this[this.tableRelationTable.Task1Column] = value;
+                    this[this.tableConstraintTable.TaskColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Task2 {
-                get {
-                    return ((string)(this[this.tableRelationTable.Task2Column]));
-                }
-                set {
-                    this[this.tableRelationTable.Task2Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Relationships {
-                get {
-                    return ((string)(this[this.tableRelationTable.RelationshipsColumn]));
-                }
-                set {
-                    this[this.tableRelationTable.RelationshipsColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string OverlapDays {
+            public int Duration {
                 get {
                     try {
-                        return ((string)(this[this.tableRelationTable.OverlapDaysColumn]));
+                        return ((int)(this[this.tableConstraintTable.DurationColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'OverlapDays\' in table \'RelationTable\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Duration\' in table \'ConstraintTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableRelationTable.OverlapDaysColumn] = value;
+                    this[this.tableConstraintTable.DurationColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsOverlapDaysNull() {
-                return this.IsNull(this.tableRelationTable.OverlapDaysColumn);
+            public string Constraints {
+                get {
+                    return ((string)(this[this.tableConstraintTable.ConstraintsColumn]));
+                }
+                set {
+                    this[this.tableConstraintTable.ConstraintsColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetOverlapDaysNull() {
-                this[this.tableRelationTable.OverlapDaysColumn] = global::System.Convert.DBNull;
+            public System.DateTime Date1 {
+                get {
+                    return ((global::System.DateTime)(this[this.tableConstraintTable.Date1Column]));
+                }
+                set {
+                    this[this.tableConstraintTable.Date1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime Date2 {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableConstraintTable.Date2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Date2\' in table \'ConstraintTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableConstraintTable.Date2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDurationNull() {
+                return this.IsNull(this.tableConstraintTable.DurationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDurationNull() {
+                this[this.tableConstraintTable.DurationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDate2Null() {
+                return this.IsNull(this.tableConstraintTable.Date2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDate2Null() {
+                this[this.tableConstraintTable.Date2Column] = global::System.Convert.DBNull;
             }
         }
         
@@ -688,22 +728,22 @@ namespace Project2013AddIn {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class RelationTableRowChangeEvent : global::System.EventArgs {
+        public class ConstraintTableRowChangeEvent : global::System.EventArgs {
             
-            private RelationTableRow eventRow;
+            private ConstraintTableRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRowChangeEvent(RelationTableRow row, global::System.Data.DataRowAction action) {
+            public ConstraintTableRowChangeEvent(ConstraintTableRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RelationTableRow Row {
+            public ConstraintTableRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -719,7 +759,7 @@ namespace Project2013AddIn {
         }
     }
 }
-namespace Project2013AddIn.ProjectAddinDBDataSetTableAdapters {
+namespace Project2013AddIn.ProjectAddinDBDataSet1TableAdapters {
     
     
     /// <summary>
@@ -731,7 +771,7 @@ namespace Project2013AddIn.ProjectAddinDBDataSetTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class RelationTableTableAdapter : global::System.ComponentModel.Component {
+    public partial class ConstraintTableTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -745,7 +785,7 @@ namespace Project2013AddIn.ProjectAddinDBDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public RelationTableTableAdapter() {
+        public ConstraintTableTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -842,49 +882,54 @@ namespace Project2013AddIn.ProjectAddinDBDataSetTableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "RelationTable";
+            tableMapping.DataSetTable = "ConstraintTable";
             tableMapping.ColumnMappings.Add("Record", "Record");
-            tableMapping.ColumnMappings.Add("Task1", "Task1");
-            tableMapping.ColumnMappings.Add("Task2", "Task2");
-            tableMapping.ColumnMappings.Add("Relationships", "Relationships");
-            tableMapping.ColumnMappings.Add("OverlapDays", "OverlapDays");
+            tableMapping.ColumnMappings.Add("Task", "Task");
+            tableMapping.ColumnMappings.Add("Duration", "Duration");
+            tableMapping.ColumnMappings.Add("Constraints", "Constraints");
+            tableMapping.ColumnMappings.Add("Date1", "Date1");
+            tableMapping.ColumnMappings.Add("Date2", "Date2");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RelationTable] WHERE (([Record] = @Original_Record) AND ([Task1] = @Original_Task1) AND ([Task2] = @Original_Task2) AND ([Relationships] = @Original_Relationships) AND ((@IsNull_OverlapDays = 1 AND [OverlapDays] IS NULL) OR ([OverlapDays] = @Original_OverlapDays)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[ConstraintTable] WHERE (([Record] = @Original_Record) AND ([Task] = @Original_Task) AND ((@IsNull_Duration = 1 AND [Duration] IS NULL) OR ([Duration] = @Original_Duration)) AND ([Constraints] = @Original_Constraints) AND ([Date1] = @Original_Date1) AND ((@IsNull_Date2 = 1 AND [Date2] IS NULL) OR ([Date2] = @Original_Date2)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Record", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Record", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task1", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task1", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task2", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task2", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Relationships", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Relationships", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_OverlapDays", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OverlapDays", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Constraints", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Constraints", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date1", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date1", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Date2", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date2", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[RelationTable] ([Task1], [Task2], [Relationships], [OverlapDay" +
-                "s]) VALUES (@Task1, @Task2, @Relationships, @OverlapDays);\r\nSELECT Record, Task1" +
-                ", Task2, Relationships, OverlapDays FROM RelationTable WHERE (Record = SCOPE_IDE" +
-                "NTITY())";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[ConstraintTable] ([Task], [Duration], [Constraints], [Date1], [Date2]) VALUES (@Task, @Duration, @Constraints, @Date1, @Date2);
+SELECT Record, Task, Duration, Constraints, Date1, Date2 FROM ConstraintTable WHERE (Record = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task1", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task2", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Relationships", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Relationships", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OverlapDays", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Constraints", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Constraints", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date1", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date2", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RelationTable] SET [Task1] = @Task1, [Task2] = @Task2, [Relationships] = @Relationships, [OverlapDays] = @OverlapDays WHERE (([Record] = @Original_Record) AND ([Task1] = @Original_Task1) AND ([Task2] = @Original_Task2) AND ([Relationships] = @Original_Relationships) AND ((@IsNull_OverlapDays = 1 AND [OverlapDays] IS NULL) OR ([OverlapDays] = @Original_OverlapDays)));
-SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE (Record = @Record)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[ConstraintTable] SET [Task] = @Task, [Duration] = @Duration, [Constraints] = @Constraints, [Date1] = @Date1, [Date2] = @Date2 WHERE (([Record] = @Original_Record) AND ([Task] = @Original_Task) AND ((@IsNull_Duration = 1 AND [Duration] IS NULL) OR ([Duration] = @Original_Duration)) AND ([Constraints] = @Original_Constraints) AND ([Date1] = @Original_Date1) AND ((@IsNull_Date2 = 1 AND [Date2] IS NULL) OR ([Date2] = @Original_Date2)));
+SELECT Record, Task, Duration, Constraints, Date1, Date2 FROM ConstraintTable WHERE (Record = @Record)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task1", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task2", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Relationships", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Relationships", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OverlapDays", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Task", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Constraints", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Constraints", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date1", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date2", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Record", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Record", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task1", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task1", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task2", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task2", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Relationships", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Relationships", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_OverlapDays", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OverlapDays", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OverlapDays", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Task", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Task", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Duration", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Constraints", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Constraints", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date1", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date1", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Date2", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date2", global::System.Data.SqlDbType.Date, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date2", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Record", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Record", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -901,7 +946,8 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Record, Task1, Task2, Relationships, OverlapDays FROM dbo.RelationTable";
+            this._commandCollection[0].CommandText = "SELECT Record, Task, Duration, Constraints, Date1, Date2 FROM dbo.ConstraintTable" +
+                "";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -909,7 +955,7 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(ProjectAddinDBDataSet.RelationTableDataTable dataTable) {
+        public virtual int Fill(ProjectAddinDBDataSet1.ConstraintTableDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -922,9 +968,9 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual ProjectAddinDBDataSet.RelationTableDataTable GetData() {
+        public virtual ProjectAddinDBDataSet1.ConstraintTableDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            ProjectAddinDBDataSet.RelationTableDataTable dataTable = new ProjectAddinDBDataSet.RelationTableDataTable();
+            ProjectAddinDBDataSet1.ConstraintTableDataTable dataTable = new ProjectAddinDBDataSet1.ConstraintTableDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -932,15 +978,15 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(ProjectAddinDBDataSet.RelationTableDataTable dataTable) {
+        public virtual int Update(ProjectAddinDBDataSet1.ConstraintTableDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(ProjectAddinDBDataSet dataSet) {
-            return this.Adapter.Update(dataSet, "RelationTable");
+        public virtual int Update(ProjectAddinDBDataSet1 dataSet) {
+            return this.Adapter.Update(dataSet, "ConstraintTable");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -962,33 +1008,36 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Record, string Original_Task1, string Original_Task2, string Original_Relationships, string Original_OverlapDays) {
+        public virtual int Delete(int Original_Record, string Original_Task, global::System.Nullable<int> Original_Duration, string Original_Constraints, System.DateTime Original_Date1, global::System.Nullable<global::System.DateTime> Original_Date2) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Record));
-            if ((Original_Task1 == null)) {
-                throw new global::System.ArgumentNullException("Original_Task1");
+            if ((Original_Task == null)) {
+                throw new global::System.ArgumentNullException("Original_Task");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_Task1));
+                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_Task));
             }
-            if ((Original_Task2 == null)) {
-                throw new global::System.ArgumentNullException("Original_Task2");
-            }
-            else {
-                this.Adapter.DeleteCommand.Parameters[2].Value = ((string)(Original_Task2));
-            }
-            if ((Original_Relationships == null)) {
-                throw new global::System.ArgumentNullException("Original_Relationships");
+            if ((Original_Duration.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[2].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_Duration.Value));
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[3].Value = ((string)(Original_Relationships));
+                this.Adapter.DeleteCommand.Parameters[2].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((Original_OverlapDays == null)) {
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[5].Value = global::System.DBNull.Value;
+            if ((Original_Constraints == null)) {
+                throw new global::System.ArgumentNullException("Original_Constraints");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[5].Value = ((string)(Original_OverlapDays));
+                this.Adapter.DeleteCommand.Parameters[4].Value = ((string)(Original_Constraints));
+            }
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((System.DateTime)(Original_Date1));
+            if ((Original_Date2.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[6].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[7].Value = ((System.DateTime)(Original_Date2.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[6].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1010,30 +1059,31 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string Task1, string Task2, string Relationships, string OverlapDays) {
-            if ((Task1 == null)) {
-                throw new global::System.ArgumentNullException("Task1");
+        public virtual int Insert(string Task, global::System.Nullable<int> Duration, string Constraints, System.DateTime Date1, global::System.Nullable<global::System.DateTime> Date2) {
+            if ((Task == null)) {
+                throw new global::System.ArgumentNullException("Task");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(Task1));
+                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(Task));
             }
-            if ((Task2 == null)) {
-                throw new global::System.ArgumentNullException("Task2");
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(Task2));
-            }
-            if ((Relationships == null)) {
-                throw new global::System.ArgumentNullException("Relationships");
+            if ((Duration.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(Duration.Value));
             }
             else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Relationships));
+                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((OverlapDays == null)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
+            if ((Constraints == null)) {
+                throw new global::System.ArgumentNullException("Constraints");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(OverlapDays));
+                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Constraints));
+            }
+            this.Adapter.InsertCommand.Parameters[3].Value = ((System.DateTime)(Date1));
+            if ((Date2.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(Date2.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1055,59 +1105,63 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Task1, string Task2, string Relationships, string OverlapDays, int Original_Record, string Original_Task1, string Original_Task2, string Original_Relationships, string Original_OverlapDays, int Record) {
-            if ((Task1 == null)) {
-                throw new global::System.ArgumentNullException("Task1");
+        public virtual int Update(string Task, global::System.Nullable<int> Duration, string Constraints, System.DateTime Date1, global::System.Nullable<global::System.DateTime> Date2, int Original_Record, string Original_Task, global::System.Nullable<int> Original_Duration, string Original_Constraints, System.DateTime Original_Date1, global::System.Nullable<global::System.DateTime> Original_Date2, int Record) {
+            if ((Task == null)) {
+                throw new global::System.ArgumentNullException("Task");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(Task1));
+                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(Task));
             }
-            if ((Task2 == null)) {
-                throw new global::System.ArgumentNullException("Task2");
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(Task2));
-            }
-            if ((Relationships == null)) {
-                throw new global::System.ArgumentNullException("Relationships");
+            if ((Duration.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(Duration.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Relationships));
+                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((OverlapDays == null)) {
-                this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(OverlapDays));
-            }
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_Record));
-            if ((Original_Task1 == null)) {
-                throw new global::System.ArgumentNullException("Original_Task1");
+            if ((Constraints == null)) {
+                throw new global::System.ArgumentNullException("Constraints");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((string)(Original_Task1));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Constraints));
             }
-            if ((Original_Task2 == null)) {
-                throw new global::System.ArgumentNullException("Original_Task2");
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((string)(Original_Task2));
-            }
-            if ((Original_Relationships == null)) {
-                throw new global::System.ArgumentNullException("Original_Relationships");
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((System.DateTime)(Date1));
+            if ((Date2.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(Date2.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(Original_Relationships));
+                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((Original_OverlapDays == null)) {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_Record));
+            if ((Original_Task == null)) {
+                throw new global::System.ArgumentNullException("Original_Task");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((string)(Original_OverlapDays));
+                this.Adapter.UpdateCommand.Parameters[6].Value = ((string)(Original_Task));
             }
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(Record));
+            if ((Original_Duration.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_Duration.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((Original_Constraints == null)) {
+                throw new global::System.ArgumentNullException("Original_Constraints");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((string)(Original_Constraints));
+            }
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((System.DateTime)(Original_Date1));
+            if ((Original_Date2.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((System.DateTime)(Original_Date2.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Record));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1128,8 +1182,8 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Task1, string Task2, string Relationships, string OverlapDays, int Original_Record, string Original_Task1, string Original_Task2, string Original_Relationships, string Original_OverlapDays) {
-            return this.Update(Task1, Task2, Relationships, OverlapDays, Original_Record, Original_Task1, Original_Task2, Original_Relationships, Original_OverlapDays, Original_Record);
+        public virtual int Update(string Task, global::System.Nullable<int> Duration, string Constraints, System.DateTime Date1, global::System.Nullable<global::System.DateTime> Date2, int Original_Record, string Original_Task, global::System.Nullable<int> Original_Duration, string Original_Constraints, System.DateTime Original_Date1, global::System.Nullable<global::System.DateTime> Original_Date2) {
+            return this.Update(Task, Duration, Constraints, Date1, Date2, Original_Record, Original_Task, Original_Duration, Original_Constraints, Original_Date1, Original_Date2, Original_Record);
         }
     }
     
@@ -1145,7 +1199,7 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         
         private UpdateOrderOption _updateOrder;
         
-        private RelationTableTableAdapter _relationTableTableAdapter;
+        private ConstraintTableTableAdapter _constraintTableTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1167,12 +1221,12 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public RelationTableTableAdapter RelationTableTableAdapter {
+        public ConstraintTableTableAdapter ConstraintTableTableAdapter {
             get {
-                return this._relationTableTableAdapter;
+                return this._constraintTableTableAdapter;
             }
             set {
-                this._relationTableTableAdapter = value;
+                this._constraintTableTableAdapter = value;
             }
         }
         
@@ -1195,9 +1249,9 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._relationTableTableAdapter != null) 
-                            && (this._relationTableTableAdapter.Connection != null))) {
-                    return this._relationTableTableAdapter.Connection;
+                if (((this._constraintTableTableAdapter != null) 
+                            && (this._constraintTableTableAdapter.Connection != null))) {
+                    return this._constraintTableTableAdapter.Connection;
                 }
                 return null;
             }
@@ -1212,7 +1266,7 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._relationTableTableAdapter != null)) {
+                if ((this._constraintTableTableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -1224,14 +1278,14 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(ProjectAddinDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(ProjectAddinDBDataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._relationTableTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.RelationTable.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+            if ((this._constraintTableTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.ConstraintTable.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._relationTableTableAdapter.Update(updatedRows));
+                    result = (result + this._constraintTableTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -1243,13 +1297,13 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(ProjectAddinDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(ProjectAddinDBDataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._relationTableTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.RelationTable.Select(null, null, global::System.Data.DataViewRowState.Added);
+            if ((this._constraintTableTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.ConstraintTable.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._relationTableTableAdapter.Update(addedRows));
+                    result = (result + this._constraintTableTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -1261,13 +1315,13 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(ProjectAddinDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(ProjectAddinDBDataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._relationTableTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.RelationTable.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+            if ((this._constraintTableTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.ConstraintTable.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._relationTableTableAdapter.Update(deletedRows));
+                    result = (result + this._constraintTableTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -1303,15 +1357,15 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(ProjectAddinDBDataSet dataSet) {
+        public virtual int UpdateAll(ProjectAddinDBDataSet1 dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._relationTableTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._relationTableTableAdapter.Connection) == false))) {
+            if (((this._constraintTableTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._constraintTableTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -1347,13 +1401,13 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._relationTableTableAdapter != null)) {
-                    revertConnections.Add(this._relationTableTableAdapter, this._relationTableTableAdapter.Connection);
-                    this._relationTableTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._relationTableTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._relationTableTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._relationTableTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._relationTableTableAdapter.Adapter);
+                if ((this._constraintTableTableAdapter != null)) {
+                    revertConnections.Add(this._constraintTableTableAdapter, this._constraintTableTableAdapter.Connection);
+                    this._constraintTableTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
+                    this._constraintTableTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    if (this._constraintTableTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._constraintTableTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._constraintTableTableAdapter.Adapter);
                     }
                 }
                 // 
@@ -1414,9 +1468,9 @@ SELECT Record, Task1, Task2, Relationships, OverlapDays FROM RelationTable WHERE
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._relationTableTableAdapter != null)) {
-                    this._relationTableTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._relationTableTableAdapter]));
-                    this._relationTableTableAdapter.Transaction = null;
+                if ((this._constraintTableTableAdapter != null)) {
+                    this._constraintTableTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._constraintTableTableAdapter]));
+                    this._constraintTableTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

@@ -97,6 +97,7 @@
             this.btnOK.TabIndex = 6;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
@@ -114,7 +115,7 @@
             "Can Not Occur",
             "Due After",
             "Due Before",
-            "Start After ",
+            "Start After",
             "Start Before"});
             this.comboBoxConstraint.Location = new System.Drawing.Point(153, 71);
             this.comboBoxConstraint.Name = "comboBoxConstraint";
@@ -155,7 +156,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBoxTaskName;
         private System.Windows.Forms.Label LabelTaskName;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btnOK;
@@ -165,5 +165,6 @@
         public System.Windows.Forms.Label labelDate1;
         public System.Windows.Forms.Label labelDate2;
         public System.Windows.Forms.DateTimePicker dateTimePicker2;
+        public System.Windows.Forms.ComboBox comboBoxTaskName;
     }
 }

@@ -197,6 +197,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ProjectAddinDBDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ViewRelation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +253,17 @@
     </None>
     <None Include="ProjectAddinDBDataSet.xss">
       <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectAddinDBDataSet1.xsc">
+      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectAddinDBDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectAddinDBDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectAddinDBDataSet1.xss">
+      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

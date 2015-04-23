@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
+using MSProject = Microsoft.Office.Interop.MSProject;
+using HostApplication = Microsoft.Office.Interop.MSProject.Application;
+
 
 namespace Project2013AddIn
 {
@@ -61,6 +64,7 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Start Date";
             constraint.labelDate2.Text = "End Date";
             constraint.Show();
@@ -70,6 +74,7 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Due After";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -80,6 +85,7 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Due Before";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -90,6 +96,7 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Start After";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -100,10 +107,17 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Start Before";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
             constraint.Show();
+        }
+
+        private void btnUpdate_Click(object sender, RibbonControlEventArgs e)
+        {
+            //read from table and update according to the datatable.
+            //for constraint CANNOTOCCUR, check if the duration in datatable the same as in task info, if not, may need to shorten the duration, if constraint removed.
         }
 
 
