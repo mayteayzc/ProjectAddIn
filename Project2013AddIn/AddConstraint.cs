@@ -62,134 +62,45 @@ namespace Project2013AddIn
                 MessageBox.Show("Please fill in all fields");
             else
             {
-                string taskname = comboBoxTaskName.SelectedItem.ToString();
+                string tkname = comboBoxTaskName.SelectedItem.ToString();
                 string constraint = comboBoxConstraint.SelectedItem.ToString();
-                DateTime date1 = dateTimePicker1.Value;
-                DateTime date2 = dateTimePicker2.Value;
-                DateTime date3 = date1;
+                DateTime d1 = dateTimePicker1.Value;
+                DateTime d2 = dateTimePicker2.Value;
+                DateTime d3 = d1;
 
             //check if there are existing constraints that contradicting the new constraint.
             //Microsoft.Office.Interop.MSProject.Dependencies.
 
-               if(taskname=="Can Not Occur")
+               if (constraint == "Can Not Occur")
                {
-                   if(DateTime.Compare(date1,date2)>0)
+                   if (dateTimePicker1.Value.CompareTo(dateTimePicker2.Value) > 0)
                    {
-                         if(MessageBox.Show("Start Date is later than End Date. Do you want to switch them?","Comfirm",MessageBoxButtons.YesNo)==DialogResult.Yes)
-                         {
-                             date1=date2;
-                             date2=date3;
-                         }
-                         else
-                             MessageBox.Show("Please select valid date before continue");
-                   }
-               }
-
-               else
-               {
-                   int id = 0;
-                   bool found1 = false;
-
-                   foreach (MSProject.Task task in project.Tasks)
-                   {
-                       if (task.Name.Equals(taskname))
+                       if (MessageBox.Show("Start Date is later than End Date. Do you want to switch them?", "Comfirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                        {
-                           id = task.UniqueID;
-                           found1 = true;
+                           d1 = d2;
+                           d2 = d3;
+                           this.Hide();
                        }
-                   }
-
-                   if (found1 == false)
-                   {
-                       MessageBox.Show("Error: Task can not be found.");
-                       this.Close();
+                       else
+                           MessageBox.Show("Please select valid date before continue");
                    }
                    else
-                   {
-                       MSProject.Task thistask = project.Tasks.UniqueID[id];
-                   
-                       if(thistask.Duration==null)
-                          thistask.Duration7=1;
-                       if(thistask.Start==null)
-                          thistask.Start=DateTime.Today.Date;
+                       this.Hide();
+               }
+               else
+               this.Hide();
 
-                       cn.Open();
-                       cmd.Connection = cn;
-                       if (constraint == "Can Not Occur")
-                           cmd.CommandText = "INSERT INTO ConstraintTable (Task,Duration,Constraints,Date1,Date2) Values ('"+taskname+"','"+thistask.Duration/480+"','"+constraint+"','"+date1+"','"+date2+"')";
-
-                       else
-                           cmd.CommandText = "INSERT INTO ConstraintTable (Task,Constraints,Date1) Values ('" + taskname + "','" + constraint + "','" + date1 + "')";
-                       cmd.ExecuteNonQuery();
-                       cn.Close();
-
-                      
-                      switch (constraint)
-                      {
-                          case "Can Not Occur":
-                              if((DateTime.Compare(date1,thistask.Start)<0||DateTime.Compare(date1,thistask.Start)==0) & DateTime.Compare(thistask.Start,date2)<0)
-                                  thistask.Start = date2;
-
-                              else if(DateTime.Compare(date1,thistask.Finish)<0 & DateTime.Compare(date2,thistask.Finish)<0)
-                              {
-                                  //get banned days
-                                  int BannedDays =0;
-                                  while(DateTime.Compare(date1,date2)<0)
-                                  {
-                                      BannedDays+=1;
-                                      date1=date1.AddDays(1);
-                                  }
-                                  
-                                  //then increase the duration by the overlapped days
-                                  thistask.Duration += BannedDays*480;
-                              }
-                              else if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Finish) > 0)
-                              {
-                                  int BannedDays = 0;
-                                  while (DateTime.Compare(thistask.Finish, date2) < 0)
-                                  {
-                                      BannedDays += 1;
-                                      thistask.Duration += 480;
-                                  }
-                              }
-                              this.Hide();
-                              break;
-
-                          case "Due After"://what does due after means exactly?? if due after 30/4, then finish 30/04 can? or must be 01/05??
-                              thistask.Manual = false;
-                              thistask.ConstraintType = MSProject.PjConstraint.pjFNET; //FinishNoEarlierThan	Value=6. Finish no earlier than (FNET).
-                              thistask.ConstraintDate = date1;
-                              thistask.Manual = true;//???should we do so?
-                              this.Hide();
-                              break;
-   
-                          case "Due Before":
-                              thistask.Manual = false;
-                              thistask.ConstraintType = MSProject.PjConstraint.pjFNLT;//FinishNoLaterThan	Value=7. Finish no later than (FNLT).
-                              thistask.ConstraintDate = date1;
-                              thistask.Manual = true;
-                              this.Hide();
-                              break;
-
-                          case "Start After"://similar question as due after.
-                              thistask.Manual = false;
-                              thistask.ConstraintType = MSProject.PjConstraint.pjSNET;//StartNoEarlierThan	Value=4. Start no earlier than (SNET).
-                              thistask.ConstraintDate = date1;
-                              thistask.Manual = true;
-                              this.Hide();
-                              break;
-
-                          case "Start Before":
-                              thistask.Manual = false;
-                              thistask.ConstraintType = MSProject.PjConstraint.pjSNLT;////StartNoLaterThan	Value=5. Start no later than (SNLT).
-                              thistask.ConstraintDate = date1;
-                              thistask.Manual = true;
-                              this.Hide();
-                              break;
-
-                       }
-                   }
-               }       
+               if(ThisAddIn.UnaryRelation(tkname,constraint,d1,d2))
+               {
+                   cn.Open();
+                   cmd.Connection = cn;
+                   if (constraint == "Can Not Occur")
+                      cmd.CommandText = "INSERT INTO ConstraintTable (Task,Constraints,Date1,Date2) Values ('"+tkname+"','"+constraint+"','"+d1+"','"+d2+"')";
+                   else
+                      cmd.CommandText = "INSERT INTO ConstraintTable (Task,Constraints,Date1) Values ('" + tkname + "','" + constraint + "','" + d1 + "')";
+                      cmd.ExecuteNonQuery();
+                      cn.Close();
+               }
             }
         }
     }

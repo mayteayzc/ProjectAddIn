@@ -36,7 +36,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.NumericDays = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.NumericDays)).BeginInit();
@@ -84,18 +84,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(68, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Activity 1";
+            this.label1.Text = "Task1";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(258, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Activity 2";
+            this.label2.Text = "Task 2";
             // 
             // label3
             // 
@@ -126,15 +126,15 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // button1
+            // btnHelp
             // 
-            this.button1.Location = new System.Drawing.Point(468, 108);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Help";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnHelp.Location = new System.Drawing.Point(468, 108);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(90, 23);
+            this.btnHelp.TabIndex = 8;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // label4
             // 
@@ -161,7 +161,7 @@
             this.ClientSize = new System.Drawing.Size(697, 166);
             this.Controls.Add(this.NumericDays);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label3);
@@ -192,7 +192,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown NumericDays;
 

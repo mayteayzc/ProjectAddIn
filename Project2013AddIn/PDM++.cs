@@ -64,7 +64,6 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Start Date";
             constraint.labelDate2.Text = "End Date";
             constraint.Show();
@@ -117,7 +116,8 @@ namespace Project2013AddIn
         private void btnUpdate_Click(object sender, RibbonControlEventArgs e)
         {
             //read from table and update according to the datatable.
-            //for constraint CANNOTOCCUR, check if the duration in datatable the same as in task info, if not, may need to shorten the duration, if constraint removed.
+            
+            
         }
 
 
