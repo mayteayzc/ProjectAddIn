@@ -17,9 +17,6 @@ namespace Project2013AddIn
     public partial class AddNewRelation : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-        SqlConnection cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=
-           E:\MS\FYP\Project2013AddIn\Project2013AddIn\ProjectAddinDB.mdf;Integrated Security=True");
-        SqlCommand cmd = new SqlCommand();
 
         public AddNewRelation()
         {
@@ -72,19 +69,8 @@ namespace Project2013AddIn
                 int days = (int) this.NumericDays.Value;
                 bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days);
 
-                if (success == true)
-                {
-                    this.Hide();
-                    cmd.Connection = cn;
-                    cn.Open();
-                    cmd.CommandText = "insert into RelationTable (Task1,Task2,Relationships,OverlapDays) Values (@first,@second,@relation,@days)";
-                    cmd.Parameters.AddWithValue("@first", tk1);
-                    cmd.Parameters.AddWithValue("@second", tk2);
-                    cmd.Parameters.AddWithValue("@relation", relation);
-                    cmd.Parameters.AddWithValue("@days", NumericDays.Value.ToString());
-                    cmd.ExecuteNonQuery();
-                    cn.Close();
-                }
+                if (success)
+                   this.Hide();
 
              }
         }

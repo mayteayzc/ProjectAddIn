@@ -17,11 +17,6 @@ namespace Project2013AddIn
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-        SqlConnection cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=
-           E:\MS\FYP\Project2013AddIn\Project2013AddIn\ProjectAddinDB.mdf;Integrated Security=True");
-        SqlCommand cmd = new SqlCommand();
-        SqlDataAdapter adp = new SqlDataAdapter();
-
         public AddConstraint()
         {
             InitializeComponent();
@@ -79,28 +74,15 @@ namespace Project2013AddIn
                        {
                            d1 = d2;
                            d2 = d3;
-                           this.Hide();
                        }
                        else
                            MessageBox.Show("Please select valid date before continue");
                    }
-                   else
-                       this.Hide();
                }
-               else
-               this.Hide();
 
-               if(ThisAddIn.UnaryRelation(tkname,constraint,d1,d2))
-               {
-                   cn.Open();
-                   cmd.Connection = cn;
-                   if (constraint == "Can Not Occur")
-                      cmd.CommandText = "INSERT INTO ConstraintTable (Task,Constraints,Date1,Date2) Values ('"+tkname+"','"+constraint+"','"+d1+"','"+d2+"')";
-                   else
-                      cmd.CommandText = "INSERT INTO ConstraintTable (Task,Constraints,Date1) Values ('" + tkname + "','" + constraint + "','" + d1 + "')";
-                      cmd.ExecuteNonQuery();
-                      cn.Close();
-               }
+               bool success=ThisAddIn.UnaryRelation(tkname, constraint, d1, d2);
+               if (success)
+                   this.Hide();
             }
         }
     }

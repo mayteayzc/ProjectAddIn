@@ -14,7 +14,7 @@ namespace Project2013AddIn
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-
+              
         }
 
         static public bool BinaryRelation(string task1, string task2, string relationship, int days)
@@ -175,6 +175,141 @@ namespace Project2013AddIn
                     }
                     break;
             }
+            //do we need to leave some space for the user and starting using the custom field from 11 onwards?
+            
+            //check first task
+            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText11) == "PDM++ Relationship(1)")
+            {
+                //5 relationships per task allowed, is it enough??
+                //check if the custom field is filled with value.
+                if (first.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)")) == "")
+                    first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)"), relationship + "(" + second.Name + ","+days.ToString()+")");
+                else
+                {
+                    if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText12) == "PDM++ Relationship(2)")
+                    {
+                        if (first.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)")) == "")
+                            first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                        else
+                        {
+                            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText13) == "PDM++ Relationship(3)")
+                            {
+                                if (first.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)")) == "")
+                                    first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                                else
+                                {
+                                    if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText14) == "PDM++ Relationship(4)")
+                                    {
+                                        if (first.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)")) == "")
+                                            first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                                        else
+                                        {
+                                            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText15) == "PDM++ Relationship(5)")
+                                            {
+                                                if (first.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)")) == "")
+                                                    first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                                                else
+                                                    MessageBox.Show("Insufficient space to store assgined PDM++ relationship");
+                                            }
+                                            else
+                                            {
+                                                project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText15, "PDM++ Relationship(5)", Type.Missing);
+                                                first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText14, "PDM++ Relationship(4)", Type.Missing);
+                                        first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText13, "PDM++ Relationship(3)", Type.Missing);
+                                first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText12, "PDM++ Relationship(2)", Type.Missing);
+                        first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+                    }                    
+                }
+            }
+            else
+            {
+                    project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText11, "PDM++ Relationship(1)", Type.Missing);
+                    first.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)"), relationship + "(" + second.Name + "," + days.ToString() + ")");
+            }
+
+            //chek second task
+            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText11) == "PDM++ Relationship(1)")
+            {
+                if (second.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)")) == "")
+                    second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                else
+                {
+                    if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText12) == "PDM++ Relationship(2)")
+                    {
+                        if (second.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)")) == "")
+                            second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                        else
+                        {
+                            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText13) == "PDM++ Relationship(3)")
+                            {
+                                if (second.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)")) == "")
+                                    second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                                else
+                                {
+                                    if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText14) == "PDM++ Relationship(4)")
+                                    {
+                                        if (second.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)")) == "")
+                                            second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                                        else
+                                        {
+                                            if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText15) == "PDM++ Relationship(5)")
+                                            {
+                                                if (second.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)")) == "")
+                                                    second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                                                else
+                                                    MessageBox.Show("Insufficient space to store assgined PDM++ relationship");
+                                            }
+                                            else
+                                            {
+                                                project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText15, "PDM++ Relationship(5)", Type.Missing);
+                                                second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(5)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText14, "PDM++ Relationship(4)", Type.Missing);
+                                        second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(4)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText13, "PDM++ Relationship(3)", Type.Missing);
+                                second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(3)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText12, "PDM++ Relationship(2)", Type.Missing);
+                        second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(2)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+                    }
+                }
+            }
+            else
+            {
+                project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText11, "PDM++ Relationship(1)", Type.Missing);
+                second.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Relationship(1)"), relationship + "(" + first.Name + "," + days.ToString() + ")");
+            }
             return true;
         }
 
@@ -205,8 +340,11 @@ namespace Project2013AddIn
 
                 if (thistask.Duration == null)
                     thistask.Duration = 480;
-                if (thistask.Start == null)
-                    thistask.Start = DateTime.Today.Date;
+                if (thistask.Start == null) 
+                {
+                    thistask.StartText = DateTime.Today.ToString("dd/MM/yy");
+                    project.Application.GanttBarFormat(thistask.ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
+                }
 
                 switch (constraintype)
                 {
@@ -249,6 +387,112 @@ namespace Project2013AddIn
                         thistask.Manual = true;
                         break;
 
+                }
+                //store constraint of this task in custom field, similar as binary relationnship
+                if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText16) == "PDM++ Restraint(1)")
+                {
+                    if (thistask.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(1)")) == "")
+                    {
+                        if(constraintype=="Can Not Occur")
+                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(1)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                        else
+                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(1)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                    }
+                        
+                    else
+                    {
+                        if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText17) == "PDM++ Restraint(2)")
+                        {
+                            if (thistask.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(2)")) == "")
+                            {
+                                if (constraintype == "Can Not Occur")
+                                    thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(2)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                else
+                                    thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(2)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                            }
+                            else
+                            {
+                                if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText18) == "PDM++ Restraint(3)")
+                                {
+                                    if (thistask.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(3)")) == "")
+                                    {
+                                        if (constraintype == "Can Not Occur")
+                                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(3)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                        else
+                                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(3)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                                    }
+                                    else
+                                    {
+                                        if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText19) == "PDM++ Restraint(4)")
+                                        {
+                                            if (thistask.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(4)")) == "")
+                                            {
+                                                if (constraintype == "Can Not Occur")
+                                                    thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(4)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                                else
+                                                    thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(4)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                                            }
+                                            else
+                                            {
+                                                if (project.Application.CustomFieldGetName(MSProject.PjCustomField.pjCustomTaskText20) == "PDM++ Restraint(5)")
+                                                {
+                                                    if (thistask.GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(5)")) == "")
+                                                    {
+                                                        if (constraintype == "Can Not Occur")
+                                                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(5)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                                        else
+                                                            thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(5)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                                                    }
+                                                    else
+                                                        MessageBox.Show("Insufficient space to store assgined PDM++ constraint");
+                                                }
+                                                else
+                                                {
+                                                    project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText20, "PDM++ Restraint(5)", Type.Missing);
+                                                    if (constraintype == "Can Not Occur")
+                                                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(5)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                                    else
+                                                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(5)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");             
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText19, "PDM++ Restraint(4)", Type.Missing);
+                                            if (constraintype == "Can Not Occur")
+                                                thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(4)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                            else
+                                                thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(4)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText18, "PDM++ Restraint(3)", Type.Missing);
+                                    if (constraintype == "Can Not Occur")
+                                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(3)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                                    else
+                                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(3)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText17, "PDM++ Restraint(2)", Type.Missing);
+                            if (constraintype == "Can Not Occur")
+                                thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(2)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                            else
+                                thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(2)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
+                        }
+                    }
+                }
+                else
+                {
+                    project.Application.CustomFieldRename(MSProject.PjCustomField.pjCustomTaskText16, "PDM++ Restraint(1)", Type.Missing);
+                    if (constraintype == "Can Not Occur")
+                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(1)"), constraintype + "(" + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ")");
+                    else
+                        thistask.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("PDM++ Restraint(1)"), constraintype + "(" + date1.ToString("dd/MM/yy") + ")");
                 }
             return true;
             }
