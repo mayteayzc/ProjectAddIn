@@ -56,7 +56,7 @@ namespace Project2013AddIn
 
         private void btnViewDetail_Click(object sender, RibbonControlEventArgs e)
         {
-            ViewRelation View = new ViewRelation();
+            ViewRelationship View = new ViewRelationship();
             View.Show();
         }
 
@@ -64,6 +64,10 @@ namespace Project2013AddIn
         {
             AddConstraint constraint = new AddConstraint();
             constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
+            if (Globals.ThisAddIn.Application.ActiveSelection != null)
+                constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
+            else
+                constraint.comboBoxTaskName.SelectedIndex = 1;
             constraint.labelDate1.Text = "Start Date";
             constraint.labelDate2.Text = "End Date";
             constraint.Show();

@@ -50,11 +50,11 @@
             this.btnStartbf = this.Factory.CreateRibbonButton();
             this.Control = this.Factory.CreateRibbonGroup();
             this.btnView = this.Factory.CreateRibbonButton();
+            this.btnUpdate = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.btnMetaint = this.Factory.CreateRibbonButton();
             this.btnAltSch = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
-            this.btnUpdate = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -79,7 +79,7 @@
             this.group1.Items.Add(this.btnDisjoint);
             this.group1.Items.Add(this.btnMeet);
             this.group1.Items.Add(this.btnOverlap);
-            this.group1.Label = "Relationship";
+            this.group1.Label = "Binary Relationship";
             this.group1.Name = "group1";
             // 
             // btnconcurrent
@@ -139,7 +139,7 @@
             this.group2.Items.Add(this.btnDuebf);
             this.group2.Items.Add(this.btnStartaft);
             this.group2.Items.Add(this.btnStartbf);
-            this.group2.Label = "Constraint";
+            this.group2.Label = "Unary Relationship";
             this.group2.Name = "group2";
             // 
             // btnCannot
@@ -198,10 +198,19 @@
             // 
             this.btnView.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnView.Image = ((System.Drawing.Image)(resources.GetObject("btnView.Image")));
-            this.btnView.Label = "View Detail";
+            this.btnView.Label = "View Relationship";
             this.btnView.Name = "btnView";
             this.btnView.ShowImage = true;
             this.btnView.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnViewDetail_Click);
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
+            this.btnUpdate.Label = "Update Schedule";
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.ShowImage = true;
+            this.btnUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdate_Click);
             // 
             // group3
             // 
@@ -224,15 +233,6 @@
             // 
             this.group4.Label = "Dynamic Requirement";
             this.group4.Name = "group4";
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
-            this.btnUpdate.Label = "Update Schedule";
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.ShowImage = true;
-            this.btnUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdate_Click);
             // 
             // newPDM
             // 

@@ -192,22 +192,6 @@
     <Compile Include="AddConstraint.Designer.cs">
       <DependentUpon>AddConstraint.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectAddinDBDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectAddinDBDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ViewRelation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewRelation.Designer.cs">
-      <DependentUpon>ViewRelation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,14 +201,17 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewRelationship.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRelationship.Designer.cs">
+      <DependentUpon>ViewRelationship.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddNewRelation.resx">
       <DependentUpon>AddNewRelation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddConstraint.resx">
       <DependentUpon>AddConstraint.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ViewRelation.resx">
-      <DependentUpon>ViewRelation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
@@ -241,30 +228,11 @@
     <EmbeddedResource Include="PDM++.resx">
       <DependentUpon>PDM++.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewRelationship.resx">
+      <DependentUpon>ViewRelationship.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Project2013AddIn_TemporaryKey.pfx" />
-    <None Include="ProjectAddinDBDataSet.xsc">
-      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="ProjectAddinDBDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ProjectAddinDBDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ProjectAddinDBDataSet.xss">
-      <DependentUpon>ProjectAddinDBDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="ProjectAddinDBDataSet1.xsc">
-      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="ProjectAddinDBDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ProjectAddinDBDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ProjectAddinDBDataSet1.xss">
-      <DependentUpon>ProjectAddinDBDataSet1.xsd</DependentUpon>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -293,15 +261,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ProjectAddinDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ProjectAddinDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>ProjectAddinDB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
