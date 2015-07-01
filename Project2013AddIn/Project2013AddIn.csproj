@@ -180,17 +180,23 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AddNewRelation.cs">
+    <Compile Include="AddBinary.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddNewRelation.Designer.cs">
-      <DependentUpon>AddNewRelation.cs</DependentUpon>
+    <Compile Include="AddBinary.Designer.cs">
+      <DependentUpon>AddBinary.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddConstraint.cs">
+    <Compile Include="AddMultiple.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddConstraint.Designer.cs">
-      <DependentUpon>AddConstraint.cs</DependentUpon>
+    <Compile Include="AddMultiple.Designer.cs">
+      <DependentUpon>AddMultiple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddUnary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddUnary.Designer.cs">
+      <DependentUpon>AddUnary.cs</DependentUpon>
     </Compile>
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
@@ -207,11 +213,14 @@
     <Compile Include="ViewRelationship.Designer.cs">
       <DependentUpon>ViewRelationship.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AddNewRelation.resx">
-      <DependentUpon>AddNewRelation.cs</DependentUpon>
+    <EmbeddedResource Include="AddBinary.resx">
+      <DependentUpon>AddBinary.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddConstraint.resx">
-      <DependentUpon>AddConstraint.cs</DependentUpon>
+    <EmbeddedResource Include="AddMultiple.resx">
+      <DependentUpon>AddMultiple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddUnary.resx">
+      <DependentUpon>AddUnary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Help.resx">
       <DependentUpon>Help.cs</DependentUpon>

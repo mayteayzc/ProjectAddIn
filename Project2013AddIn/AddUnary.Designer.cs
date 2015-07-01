@@ -1,6 +1,6 @@
 ﻿namespace Project2013AddIn
 {
-    partial class AddConstraint
+    partial class AddUnary
     {
         /// <summary>
         /// Required designer variable.
@@ -107,6 +107,7 @@
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // comboBoxConstraint
             // 
@@ -132,7 +133,7 @@
             this.LabelConstraint.TabIndex = 9;
             this.LabelConstraint.Text = "Constraint";
             // 
-            // AddConstraint
+            // AddUnary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -147,7 +148,7 @@
             this.Controls.Add(this.labelDate1);
             this.Controls.Add(this.LabelTaskName);
             this.Controls.Add(this.comboBoxTaskName);
-            this.Name = "AddConstraint";
+            this.Name = "AddUnary";
             this.Text = "Add A New Constraint";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -17,15 +17,14 @@ namespace Project2013AddIn
 
         public void btnconcurrent_Click(object sender, RibbonControlEventArgs e)
         {
-            AddNewRelation Relation = new AddNewRelation();
+            AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Concurrent";
-            Relation.NumericDays.Enabled = false;
             Relation.Show();
          }
 
         private void btnContain_Click(object sender, RibbonControlEventArgs e)
         {
-            AddNewRelation Relation = new AddNewRelation();
+            AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Contain";
             Relation.NumericDays.Enabled = false;
             Relation.Show();
@@ -33,23 +32,21 @@ namespace Project2013AddIn
 
         private void btnDisjoint_Click(object sender, RibbonControlEventArgs e)
         {
-            AddNewRelation Relation = new AddNewRelation();
-            Relation.ComboBoxRela.SelectedItem = "Disjoint";
-            Relation.NumericDays.Enabled = false;
+            AddMultiple Relation = new AddMultiple();
+            Relation.comboBoxRelation.SelectedItem = "Disjoint";
             Relation.Show();
         }
 
         private void btnMeet_Click(object sender, RibbonControlEventArgs e)
         {
-            AddNewRelation Relation = new AddNewRelation();
-            Relation.ComboBoxRela.SelectedItem = "Meet";
-            Relation.NumericDays.Enabled = false;
+            AddMultiple Relation = new AddMultiple();
+            Relation.comboBoxRelation.SelectedItem = "Meet";
             Relation.Show();
         }
 
         private void btnOverlap_Click(object sender, RibbonControlEventArgs e)
         {
-            AddNewRelation Relation = new AddNewRelation();
+            AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Overlap";
             Relation.Show();
         }
@@ -62,7 +59,7 @@ namespace Project2013AddIn
 
         private void btnCannot_Click(object sender, RibbonControlEventArgs e)
         {
-            AddConstraint constraint = new AddConstraint();
+            AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
             if (Globals.ThisAddIn.Application.ActiveSelection != null)
                 constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
@@ -75,7 +72,7 @@ namespace Project2013AddIn
 
         private void btnDueaft_Click(object sender, RibbonControlEventArgs e)
         {
-            AddConstraint constraint = new AddConstraint();
+            AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Due After";
             constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
@@ -86,7 +83,7 @@ namespace Project2013AddIn
 
         private void btnDuebf_Click(object sender, RibbonControlEventArgs e)
         {
-            AddConstraint constraint = new AddConstraint();
+            AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Due Before";
             constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
@@ -97,7 +94,7 @@ namespace Project2013AddIn
 
         private void btnStartaft_Click(object sender, RibbonControlEventArgs e)
         {
-            AddConstraint constraint = new AddConstraint();
+            AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Start After";
             constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
@@ -108,7 +105,7 @@ namespace Project2013AddIn
 
         private void btnStartbf_Click(object sender, RibbonControlEventArgs e)
         {
-            AddConstraint constraint = new AddConstraint();
+            AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Start Before";
             constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";

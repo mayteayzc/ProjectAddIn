@@ -14,11 +14,11 @@ using HostApplication = Microsoft.Office.Interop.MSProject.Application;
 
 namespace Project2013AddIn
 {
-    public partial class AddNewRelation : Form
+    public partial class AddBinary : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-        public AddNewRelation()
+        public AddBinary()
         {
             InitializeComponent();
             int count = project.Tasks.Count;
@@ -67,7 +67,8 @@ namespace Project2013AddIn
                 string tk2 = this.ComboBoxAct2.SelectedItem.ToString();
                 string relation = this.ComboBoxRela.SelectedItem.ToString();
                 int days = (int) this.NumericDays.Value;
-                bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days);
+                bool Isnew = true;
+                bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days,Isnew);
 
                 if (success)
                    this.Hide();

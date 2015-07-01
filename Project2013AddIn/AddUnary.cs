@@ -13,11 +13,11 @@ using HostApplication = Microsoft.Office.Interop.MSProject.Application;
 
 namespace Project2013AddIn
 {
-    public partial class AddConstraint : Form
+    public partial class AddUnary : Form
     {
         MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-        public AddConstraint()
+        public AddUnary()
         {
             InitializeComponent();
             int count = project.Tasks.Count;
@@ -66,6 +66,7 @@ namespace Project2013AddIn
             //check if there are existing constraints that contradicting the new constraint.
             //Microsoft.Office.Interop.MSProject.Dependencies.
                 bool success = false;
+                bool Isnew = true; 
                 if (constraint == "Can Not Occur")
                 {
                     if (dateTimePicker1.Value.CompareTo(dateTimePicker2.Value) > 0||dateTimePicker1.Value.CompareTo(dateTimePicker2.Value)==0)
@@ -73,14 +74,19 @@ namespace Project2013AddIn
                         MessageBox.Show("End Date must be later than Start Date. Please select valid date before continue");                             
                     }
                     else
-                        success = ThisAddIn.UnaryRelation(tkname, constraint, d1, d2);
+                        success = ThisAddIn.UnaryRelation(tkname, constraint, d1, d2,Isnew);
                 }
                 else
-                success=ThisAddIn.UnaryRelation(tkname, constraint, d1, d2);
+                success=ThisAddIn.UnaryRelation(tkname, constraint, d1, d2,Isnew);
                 
                 if (success)
                     this.Hide();
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

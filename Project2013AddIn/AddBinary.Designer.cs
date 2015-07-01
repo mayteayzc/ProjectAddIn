@@ -1,6 +1,6 @@
 ﻿namespace Project2013AddIn
 {
-    partial class AddNewRelation
+    partial class AddBinary
     {
         /// <summary>
         /// Required designer variable.

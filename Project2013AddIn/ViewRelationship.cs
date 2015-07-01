@@ -115,6 +115,78 @@ namespace Project2013AddIn
             dataGridView2.DataSource = dt2;
 
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Delete current selection?","Confirmed",MessageBoxButtons.YesNo)==DialogResult.Yes)
+            {
+                if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageBinary"])
+                    dataGridView1.Rows.RemoveAt(this.dataGridView1.CurrentRow.Index);
+                if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageUnary"])
+                    dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
+            }
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+
+            //set all task to auto schedule first.
+            foreach (MSProject.Task task in project.Tasks)
+                task.Manual = false;
+
+            //then set to manual again for pdm++ scheduling
+            foreach (MSProject.Task task in project.Tasks)
+                task.Manual = true;
+
+            //empty the custom field.
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+            MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
+            if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
+                project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
+            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), "");
+            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), "");
+
+            //then reassign the relationships and record them.
+            //first assign unary can avoid shifting forward wrongly, since unary may shift forward but binary will always shift backwards.
+            int j = 0;
+            while (dataGridView2.Rows[j].Cells[0].Value != null)
+            {
+                DataGridViewRow row2 = dataGridView2.Rows[j];
+                string date1 = row2.Cells[2].Value.ToString();
+                string date2 = row2.Cells[3].Value.ToString();
+                DateTime d1 = Convert.ToDateTime(date1);
+                DateTime d2;
+                if (date2 == null || date2 == "")
+                    d2 = DateTime.Today;
+                else
+                    d2 = Convert.ToDateTime(date2);
+
+                ThisAddIn.UnaryRelation(row2.Cells[0].Value.ToString(), row2.Cells[1].Value.ToString(), d1, d2,false);
+
+                j++;
+            }
+
+            int i = 0;
+            while(dataGridView1.Rows[i].Cells[0].Value!=null)
+            {
+               DataGridViewRow row1=dataGridView1.Rows[i];
+               string days = row1.Cells[3].Value.ToString();
+               int d = Convert.ToInt32(days);
+               ThisAddIn.BinaryRelation(row1.Cells[0].Value.ToString(), row1.Cells[1].Value.ToString(), row1.Cells[2].Value.ToString(), d,false);
+
+               i++;
+            }
+
+           
+            this.Hide();  
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }
 

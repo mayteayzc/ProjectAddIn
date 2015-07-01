@@ -12,12 +12,15 @@ namespace Project2013AddIn
 {
     public partial class ThisAddIn
     {
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        public void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-         
+            
+            //MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+           // if(project.Application.ProjectBeforeTaskDelete(project.Tasks.UniqueID[1],false))
+
         }
 
-        static public bool BinaryRelation(string task1, string task2, string binaryRelationship, int days)
+        static public bool BinaryRelation(string task1, string task2, string binaryRelationship, int days,bool Isnew)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             int id1 = 0, id2 = 0;
@@ -44,6 +47,12 @@ namespace Project2013AddIn
                 MessageBox.Show("Error: Tasks can not be found.");
             }
 
+            //if not new, clear the links first before re-assign
+            if(!Isnew)
+            {
+
+            }
+
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
                 project.Tasks.UniqueID[id1].Duration = 480;
@@ -51,15 +60,15 @@ namespace Project2013AddIn
             if (project.Tasks.UniqueID[id2].Duration == null)
                 project.Tasks.UniqueID[id2].Duration = 480;
 
-            if (project.Tasks.UniqueID[id1].Start == null)
+            if (project.Tasks.UniqueID[id1].StartText == null || project.Tasks.UniqueID[id1].StartText=="")
             {
-                project.Tasks.UniqueID[id1].StartText = DateTime.Today.ToString("dd/MM/yy");
+                project.Tasks.UniqueID[id1].StartText = DateTime.Today.ToString("dd/MM/yyyy");
                 project.Application.GanttBarFormat(project.Tasks.UniqueID[id1].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
             }
 
-            if (project.Tasks.UniqueID[id2].Start == null)
+            if (project.Tasks.UniqueID[id2].StartText == null || project.Tasks.UniqueID[id2].StartText == "")
             {
-                project.Tasks.UniqueID[id2].StartText = DateTime.Today.ToString("dd/MM/yy");
+                project.Tasks.UniqueID[id2].StartText = DateTime.Today.ToString("dd/MM/yyyy");
                 project.Application.GanttBarFormat(project.Tasks.UniqueID[id2].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
             }
 
@@ -76,9 +85,60 @@ namespace Project2013AddIn
                 first = project.Tasks.UniqueID[id1];
                 second = project.Tasks.UniqueID[id2];
             }
+            
+            //check if there is exisiting binary relationships
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
 
+            string Binary = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship")); 
+            string BinaryData;
+
+            //process binary relationships
+            int l1 = Binary.Length;
+            int l2;
+            int p1 = Binary.IndexOf(";");
+            int p2;
+            string tk1, tk2, rela, d;
+
+            while (p1 > 0)
+            {
+                BinaryData = Binary.Substring(0, p1);
+                l2 = BinaryData.Length;
+                p2 = BinaryData.IndexOf(",");
+                tk1 = BinaryData.Substring(0, p2);
+
+                BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                p2 = BinaryData.IndexOf(",");
+                tk2 = BinaryData.Substring(0, p2);
+                l2 = BinaryData.Length;
+
+                BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                p2 = BinaryData.IndexOf(",");
+                rela = BinaryData.Substring(0, p2);
+                l2 = BinaryData.Length;
+
+                BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                d = BinaryData;
+
+                if((tk1==first.Name.ToString() && tk2==second.Name.ToString())||(tk2==first.Name.ToString() && tk1==second.Name.ToString()))
+                {
+                    if (rela == binaryRelationship)
+                        MessageBox.Show("Error: The binary relationship " + rela + " can not be assigned twice for the same two tasks.");
+                    else
+                        MessageBox.Show("Error: The binary relationship " + rela + " and " + binaryRelationship + " can not coexist for the same two tasks.");
+                    return false;
+                }
+
+                Binary = Binary.Substring(p1 + 1, l1 - p1 - 1);
+                p1 = Binary.IndexOf(";");
+                l1 = Binary.Length;
+            }
+
+            //if no contradicting assignment, then can process the new binary relationship
             first.Manual = true;
             second.Manual = true;
+            bool processed = false;
 
             switch (binaryRelationship)
             {
@@ -91,7 +151,10 @@ namespace Project2013AddIn
                         return false;
                     }
                     else
+                    {
                         first.Start = second.Start;
+                        processed = true;
+                    }
                     break;
 
                 case "Contain":
@@ -105,9 +168,9 @@ namespace Project2013AddIn
                                 contained = true;
                             if (DateTime.Compare(first.Start, second.Start) == 0)
                                 contained = true;
-                        }
-                            
+                        }   
                     }
+                    processed = true;
                     break;
 
                 case "Disjoint":
@@ -117,11 +180,13 @@ namespace Project2013AddIn
                         break;
                     else
                         second.Start = first.Finish;
+                    processed = true;
                     break;
 
                 case "Meet":
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
                     {
+                        //just in case garbage in that second start on weekend.
                         if (second.Start.DayOfWeek == DayOfWeek.Saturday)
                         {
                             while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
@@ -148,6 +213,7 @@ namespace Project2013AddIn
                     }
                     else
                         second.Start = first.Finish;
+                    processed = true;
                     break;
 
                 case "Overlap":
@@ -155,7 +221,7 @@ namespace Project2013AddIn
                     //by default everyday includes 8 working hrs, 480 mins.
                     if (days > first.Duration / 480 || days > second.Duration / 480)
                     {
-                        MessageBox.Show("Error: Overlap days cannot be longer than the durations of the tasks.");
+                        MessageBox.Show("Error: Overlap days cannot be longer than the durations of the tasks "+"("+first.Name.ToString()+","+second.Name.ToString()+").");
                         return false;
                     }
                     else
@@ -186,30 +252,33 @@ namespace Project2013AddIn
                             reference = second.Start;
                             D = 0;
                         }
+                        processed = true;
                     }
                     break;
             }
-            //since we need only one field, let's use the last field.
-
-            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+            
+            if(processed)
             {
-                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-                project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";");
-            }
-            else
-            //add new info to existing string.
-            {
-                string BinaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
-                string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
-                project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), NewBinaryString);
+                if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                {
+                    project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
+                    project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";");
+                }
+                else
+                //add new info to existing string.
+                {
+                    string BinaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+                    string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
+                    project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), NewBinaryString);
 
+                }
             }
+            
             return true;
         }
 
 
-        static public bool UnaryRelation(string taskname, string unaryRelationship, DateTime date1, DateTime date2)
+        static public bool UnaryRelation(string taskname, string unaryRelationship, DateTime date1, DateTime date2,bool Isnew)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             int id = 0;
@@ -234,18 +303,75 @@ namespace Project2013AddIn
             {
                 MSProject.Task thistask = project.Tasks.UniqueID[id];
 
+                if(!Isnew)
+                {
+                    //un-split the task if neccessary.
+                    //clear the mark of start before etc.
+
+                }
+
                 if (thistask.Duration == null)
                     thistask.Duration = 480;
-                if (thistask.Start == null)
+                if (thistask.StartText == null||thistask.StartText=="")
                 {
-                    thistask.StartText = DateTime.Today.ToString("dd/MM/yy");
+                    thistask.StartText = DateTime.Today.ToString("dd/MM/yyyy");
                     project.Application.GanttBarFormat(thistask.ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
                 }
+
+                //check if there are contradicting unary relationships
+                MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
+                if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
+                    project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
+
+                string Unary = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+                string UnaryData;
+                int l3 = Unary.Length;
+                int l4;
+                int p3 = Unary.IndexOf(";");
+                int p4;
+                string tk, re, d1, d2;
+
+                while (p3 > 0)
+                {
+                    UnaryData = Unary.Substring(0, p3);
+                    l4 = UnaryData.Length;
+                    p4 = UnaryData.IndexOf(",");
+                    tk = UnaryData.Substring(0, p4);
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    p4 = UnaryData.IndexOf(",");
+                    re = UnaryData.Substring(0, p4);
+                    l4 = UnaryData.Length;
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    p4 = UnaryData.IndexOf(",");
+                    d1 = UnaryData.Substring(0, p4);
+                    l4 = UnaryData.Length;
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    d2 = UnaryData;
+
+                    //can not occur can coexit with all others, the remaining cant coexit with each other.
+                    if(tk==thistask.Name.ToString())
+                    {
+                        if (re != "Can Not Occur")
+                        {
+                            if (unaryRelationship != "Can Not Occur")
+                                MessageBox.Show("Error: The unary relationship " + re + " and " + unaryRelationship + " can not coexist for the same task.");
+                                return false;
+                        }
+                    }
+
+                    Unary = Unary.Substring(p3 + 1, l3 - p3 - 1);
+                    p3 = Unary.IndexOf(";");
+                    l3 = Unary.Length;
+                }
+
 
                 switch (unaryRelationship)
                 {
                     case "Can Not Occur":
-                        DialogResult result = MessageBox.Show("Can this task be split?", "Can Not Occur", MessageBoxButtons.YesNoCancel);
+                        DialogResult result = MessageBox.Show("Can "+thistask.Name.ToString()+" be split?", "Can Not Occur", MessageBoxButtons.YesNoCancel);
                         if (result == DialogResult.Yes)
                             thistask.Split(date1, date2);
                         if (result == DialogResult.No)
@@ -289,19 +415,16 @@ namespace Project2013AddIn
                         break;
 
                 }
-
-
-                
+               
                 //check if renamed before
-                MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
                 project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
                 if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
                 {
                     project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
                     if (unaryRelationship == "Can Not Occur")
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ";");
+                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";");
                     else
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("dd/MM/yy") + "," + ";");
+                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";");
                 }
                 else
                 //add new info to existing string.
@@ -310,20 +433,104 @@ namespace Project2013AddIn
                     string NewUnaryString;
                     if (unaryRelationship == "Can Not Occur")
                     {
-                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("dd/MM/yy") + "," + date2.ToString("dd/MM/yy") + ";";
+                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
                         project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                     }
                     else
                     {
-                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("dd/MM/yy") + "," + ";";
+                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
                         project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                     }
                 }
             } return true;
         }
+
+        static public bool MultipleRelation(string relation, string task1, string task2, string task3, string task4, string task5)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            //binary case,should I not separate and process all here?
+            if (task3 == "NA")
+            {
+                ThisAddIn.BinaryRelation(task1, task2, relation, 0, true);
+            }
+            else
+            {
+                int taskCount;
+                if (task4 == "NA")
+                    taskCount = 3;
+                else if (task5 == "NA")
+                    taskCount = 4;
+                else
+                    taskCount = 5;
+
+
+                MSProject.Task[] alltasks = new MSProject.Task[taskCount];
+                int id1 = 1, id2 = 1, id3 = 1, id4 = 1, id5 = 1;
+
+                //found corresponding tasks
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.Name.Equals(task1))
+                        id1 = task.UniqueID;
+
+                    if (task.Name.Equals(task2))
+                        id2 = task.UniqueID;
+
+                    if (task.Name.Equals(task3))
+                        id3 = task.UniqueID;
+
+                    if (task.Name.Equals(task4))
+                        id4 = task.UniqueID;
+
+                    if (task.Name.Equals(task5))
+                        id5 = task.UniqueID;
+                }
+
+                //rank the tasks according to their start date
+                alltasks[0] = project.Tasks.UniqueID[id1];
+                alltasks[1] = project.Tasks.UniqueID[id2];
+                alltasks[2] = project.Tasks.UniqueID[id3];
+                alltasks[3] = project.Tasks.UniqueID[id4];
+                alltasks[4] = project.Tasks.UniqueID[id5];
+                MSProject.Task tk;
+
+                int i, j;
+                for (i = 0; i < taskCount; i++)
+                {
+                    for (j = i + 1; j < taskCount; j++)
+                    {
+                        if (DateTime.Compare(alltasks[i].Start, alltasks[j].Start) > 0)
+                        {
+                            tk = alltasks[i];
+                            alltasks[i] = alltasks[j];
+                            alltasks[j] = tk;
+                        }
+                    }
+                }
+                switch (relation)
+                {
+                    case "Disjoint":
+                        for(i = 0; i<taskCount; i++)
+                        {
+                            if (DateTime.Compare(alltasks[i].Finish, alltasks[i+1].Start) > 0)
+                                alltasks[i+1].Start = alltasks[i].Finish;         
+                        }
+                        break;
+
+                    case "Meet":
+                        for (i = 0; i < taskCount; i++)
+                            alltasks[i + 1].Start = alltasks[i].Finish;
+                        break;
+                }
+
+            } return true;
+        }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+       
+
+
 
         #region VSTO generated code
 
