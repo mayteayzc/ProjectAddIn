@@ -51,7 +51,7 @@
             // 
             this.comboBoxRelation.FormattingEnabled = true;
             this.comboBoxRelation.Items.AddRange(new object[] {
-            "Meet ",
+            "Meet",
             "Disjoint"});
             this.comboBoxRelation.Location = new System.Drawing.Point(12, 37);
             this.comboBoxRelation.Name = "comboBoxRelation";
