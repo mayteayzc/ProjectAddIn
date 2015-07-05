@@ -14,11 +14,159 @@ namespace Project2013AddIn
     {
         public void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            
+            this.Application.ProjectBeforeTaskDelete += Application_ProjectBeforeTaskDelete;           
 
         }
 
-        static public bool BinaryRelation(string task1, string task2, string binaryRelationship, int days,bool Isnew)
+        void Application_ProjectBeforeTaskDelete(MSProject.Task tsk, ref bool Cancel)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            //what if first task has been deleted? use i to find the first visible tasks
+            int i = 1;
+            string unary, binary, multiple;
+            multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+            binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+            unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+
+            while(project.Tasks.UniqueID[i]==null)
+            {
+                i++;
+            }
+            
+            if (tsk == project.Tasks.UniqueID[i])
+            {
+                MSProject.Task tsk2 = project.Tasks.UniqueID[i+1];
+                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), multiple);
+                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), binary);
+                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), unary);
+            }
+            //delete everything related to taski
+            DialogResult confirmed= MessageBox.Show("Delete this task will remove all the relationships related to this task.", "Confirm?", MessageBoxButtons.YesNo);
+            if(confirmed==DialogResult.Yes)
+            {
+                //process Multiple relationship
+                string newmultiple="";
+                bool related=false;
+                string MultipleData;
+                int l5 = multiple.Length;
+                int l6;
+                int p5 = multiple.IndexOf(";");
+                int p6;
+                string rela;
+                string[] tasks = new string[5];
+                int m = 0;
+
+                while (p5 > 0)
+                {
+                    MultipleData = multiple.Substring(0, p5);
+                    p6 = MultipleData.IndexOf(",");
+                    l6 = MultipleData.Length;
+                    rela = MultipleData.Substring(0, p6);
+                    MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
+
+                    while (p6 > 0)
+                    {
+                        p6 = MultipleData.IndexOf(",");
+                        tasks[m] = MultipleData.Substring(0, p6);
+                        MultipleData = MultipleData.Substring(p6 + 1);
+                        p6 = MultipleData.IndexOf(",");
+                        m++;
+                    }
+                    tasks[m] = MultipleData;
+
+                    for (m = 0; m < 5; m++)
+                    {
+                        if (tasks[m] == tsk.Name.ToString())
+                            related = true;
+                    }
+
+                    if (!related)
+                        newmultiple = newmultiple + MultipleData;
+
+                    multiple = multiple.Substring(p5 + 1);
+                    p5 = multiple.IndexOf(";");
+
+                }
+
+                //process Binary relationship
+                string BinaryData;
+                string newbinary="";
+                int l1 = binary.Length;
+                int l2;
+                int p1 = binary.IndexOf(";");
+                int p2;
+                string tk1, tk2, d;
+
+                while (p1 > 0)
+                {
+                    BinaryData = binary.Substring(0, p1);
+                    l2 = BinaryData.Length;
+                    p2 = BinaryData.IndexOf(",");
+                    tk1 = BinaryData.Substring(0, p2);
+
+                    BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                    p2 = BinaryData.IndexOf(",");
+                    tk2 = BinaryData.Substring(0, p2);
+                    l2 = BinaryData.Length;
+
+                    BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                    p2 = BinaryData.IndexOf(",");
+                    rela = BinaryData.Substring(0, p2);
+                    l2 = BinaryData.Length;
+
+                    BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                    d = BinaryData;
+
+                    if (tk1 != tsk.Name.ToString() && tk2 != tsk.Name.ToString())
+                        newbinary = newbinary + BinaryData + ";";
+
+                    binary = binary.Substring(p1 + 1, l1 - p1 - 1);
+                    p1 = binary.IndexOf(";");
+                    l1 = binary.Length;
+                }
+
+                //process Unary relationship
+                string UnaryData;
+                string newunary = "";
+                int l3 = unary.Length;
+                int l4;
+                int p3 = unary.IndexOf(";");
+                int p4;
+                string tk, d1, d2;
+
+                while (p3 > 0)
+                {
+                    UnaryData = unary.Substring(0, p3);
+                    l4 = UnaryData.Length;
+                    p4 = UnaryData.IndexOf(",");
+                    tk = UnaryData.Substring(0, p4);
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    p4 = UnaryData.IndexOf(",");
+                    rela = UnaryData.Substring(0, p4);
+                    l4 = UnaryData.Length;
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    p4 = UnaryData.IndexOf(",");
+                    d1 = UnaryData.Substring(0, p4);
+                    l4 = UnaryData.Length;
+
+                    UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
+                    d2 = UnaryData;
+
+                    if (tk == tsk.Name.ToString())
+                        newunary = newunary + UnaryData;
+
+                    unary = unary.Substring(p3 + 1, l3 - p3 - 1);
+                    p3 = unary.IndexOf(";");
+                    l3 = unary.Length;
+                }
+
+
+            }
+        }
+
+        static public bool BinaryRelation(string task1, string task2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             int id1 = 0, id2 = 0;
@@ -43,12 +191,6 @@ namespace Project2013AddIn
             if (found1 == false || found2 == false)
             {
                 MessageBox.Show("Error: Tasks can not be found.");
-            }
-
-            //if not new, clear the links first before re-assign
-            if(!Isnew)
-            {
-
             }
 
             //check empty fileds.
@@ -276,7 +418,7 @@ namespace Project2013AddIn
         }
 
 
-        static public bool UnaryRelation(string taskname, string unaryRelationship, DateTime date1, DateTime date2,bool Isnew)
+        static public bool UnaryRelation(string taskname, string unaryRelationship, DateTime date1, DateTime date2)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             int id = 0;
@@ -300,13 +442,6 @@ namespace Project2013AddIn
             else
             {
                 MSProject.Task thistask = project.Tasks.UniqueID[id];
-
-                if(!Isnew)
-                {
-                    //un-split the task if neccessary.
-                    //clear the mark of start before etc.
-
-                }
 
                 if (thistask.Duration == null)
                     thistask.Duration = 480;
@@ -503,9 +638,47 @@ namespace Project2013AddIn
             if (project.Application.CustomFieldGetName(MultipleField) != "Multiple Relationship")
                 project.Application.CustomFieldRename(MultipleField, "Multiple Relationship", Type.Missing);
 
-            //string Multiple = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
-            //string MultipleData;
+            string Multiple = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+            string MultipleData="";
+            int l5 = Multiple.Length;
+            int l6;
+            int p5 = Multiple.IndexOf(";");
+            int p6;
+            string rela;
+            string[] tasks = new string[5];
+            int m = 0;
 
+            while (p5 > 0)
+            {
+                MultipleData=Multiple.Substring(0,p5);
+                p6 = MultipleData.IndexOf(",");
+                l6=MultipleData.Length;
+                rela=MultipleData.Substring(0,p6);
+                MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
+                
+                while(p6>0)
+                {
+                    p6 = MultipleData.IndexOf(",");
+                    tasks[m] = MultipleData.Substring(0, p6);
+                    MultipleData = MultipleData.Substring(p6+1);
+                    p6 = MultipleData.IndexOf(",");
+                    m++;
+                }
+                tasks[m] = MultipleData;
+
+                for (m = 0; m < 5;m++ )
+                {
+                    if ((tasks[m] == task1 || tasks[m] == task2 || tasks[m] == task3 || tasks[m] == task4 || tasks[m] == task5) && (rela == relation))
+                    {
+                        MessageBox.Show("Error: Task " + tasks[m] + " is already in a " + rela + " relationship.");
+                        return false;
+                    }
+                }
+
+                Multiple = Multiple.Substring(p5 + 1);
+                p5 = Multiple.IndexOf(";");
+                
+            }
 
             //rank the tasks according to their start date
             for (i = 0; i < taskCount; i++)
@@ -578,7 +751,9 @@ namespace Project2013AddIn
             string MultipleString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
             string tasknames = alltasks[0].Name.ToString();
             for (i = 1; i < taskCount; i++)
-                tasknames = tasknames + ","+alltasks[i].Name.ToString();
+            {
+                tasknames = tasknames + "," + alltasks[i].Name.ToString();
+            }
             string NewMultipleString = MultipleString + relation + ","+tasknames+ ";";
             project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), NewMultipleString);         
             return true;    

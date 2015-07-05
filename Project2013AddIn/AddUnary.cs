@@ -65,8 +65,7 @@ namespace Project2013AddIn
 
             //check if there are existing constraints that contradicting the new constraint.
             //Microsoft.Office.Interop.MSProject.Dependencies.
-                bool success = false;
-                bool Isnew = true; 
+                bool success = false; 
                 if (constraint == "Can Not Occur")
                 {
                     if (dateTimePicker1.Value.CompareTo(dateTimePicker2.Value) > 0||dateTimePicker1.Value.CompareTo(dateTimePicker2.Value)==0)
@@ -74,10 +73,10 @@ namespace Project2013AddIn
                         MessageBox.Show("End Date must be later than Start Date. Please select valid date before continue");                             
                     }
                     else
-                        success = ThisAddIn.UnaryRelation(tkname, constraint, d1, d2,Isnew);
+                        success = ThisAddIn.UnaryRelation(tkname, constraint, d1, d2);
                 }
                 else
-                success=ThisAddIn.UnaryRelation(tkname, constraint, d1, d2,Isnew);
+                success=ThisAddIn.UnaryRelation(tkname, constraint, d1, d2);
                 
                 if (success)
                     this.Hide();

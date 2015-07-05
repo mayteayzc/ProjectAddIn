@@ -36,12 +36,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(newPDM));
             this.tab1 = this.Factory.CreateRibbonTab();
+            this.group5 = this.Factory.CreateRibbonGroup();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.Control = this.Factory.CreateRibbonGroup();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.group4 = this.Factory.CreateRibbonGroup();
-            this.group5 = this.Factory.CreateRibbonGroup();
             this.btnDisjoint = this.Factory.CreateRibbonButton();
             this.btnMeet = this.Factory.CreateRibbonButton();
             this.btnconcurrent = this.Factory.CreateRibbonButton();
@@ -58,11 +58,11 @@
             this.btnMetaint = this.Factory.CreateRibbonButton();
             this.btnAltSch = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
+            this.group5.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.Control.SuspendLayout();
             this.group3.SuspendLayout();
-            this.group5.SuspendLayout();
             // 
             // tab1
             // 
@@ -75,6 +75,13 @@
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "PDM++";
             this.tab1.Name = "tab1";
+            // 
+            // group5
+            // 
+            this.group5.Items.Add(this.btnDisjoint);
+            this.group5.Items.Add(this.btnMeet);
+            this.group5.Label = "Multiple Relationship";
+            this.group5.Name = "group5";
             // 
             // group1
             // 
@@ -113,13 +120,6 @@
             // 
             this.group4.Label = "Dynamic Requirement";
             this.group4.Name = "group4";
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.btnDisjoint);
-            this.group5.Items.Add(this.btnMeet);
-            this.group5.Label = "Multiple Relationship";
-            this.group5.Name = "group5";
             // 
             // btnDisjoint
             // 
@@ -174,6 +174,7 @@
             // buttonBetween
             // 
             this.buttonBetween.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonBetween.Image = global::Project2013AddIn.Properties.Resources.between;
             this.buttonBetween.Label = "Between";
             this.buttonBetween.Name = "buttonBetween";
             this.buttonBetween.ShowImage = true;
@@ -259,6 +260,8 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
+            this.group5.ResumeLayout(false);
+            this.group5.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
@@ -267,8 +270,6 @@
             this.Control.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
-            this.group5.ResumeLayout(false);
-            this.group5.PerformLayout();
 
         }
 

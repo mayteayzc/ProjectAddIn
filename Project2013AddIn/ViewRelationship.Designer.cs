@@ -36,11 +36,15 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageUnary = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.tabPageMultiple = new System.Windows.Forms.TabPage();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPageBinary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPageUnary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.tabPageMultiple.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // btnDelete
@@ -75,6 +79,7 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabPageMultiple);
             this.tabControl1.Controls.Add(this.tabPageBinary);
             this.tabControl1.Controls.Add(this.tabPageUnary);
             this.tabControl1.Location = new System.Drawing.Point(34, 32);
@@ -122,6 +127,27 @@
             this.dataGridView2.Size = new System.Drawing.Size(442, 371);
             this.dataGridView2.TabIndex = 0;
             // 
+            // tabPageMultiple
+            // 
+            this.tabPageMultiple.Controls.Add(this.dataGridView3);
+            this.tabPageMultiple.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMultiple.Name = "tabPageMultiple";
+            this.tabPageMultiple.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMultiple.Size = new System.Drawing.Size(441, 371);
+            this.tabPageMultiple.TabIndex = 2;
+            this.tabPageMultiple.Text = "Multiple Relationship";
+            this.tabPageMultiple.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.AllowUserToAddRows = false;
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.ReadOnly = true;
+            this.dataGridView3.Size = new System.Drawing.Size(441, 371);
+            this.dataGridView3.TabIndex = 0;
+            // 
             // ViewRelationship
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,6 +164,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPageUnary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.tabPageMultiple.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -152,5 +180,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabPage tabPageUnary;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.TabPage tabPageMultiple;
+        private System.Windows.Forms.DataGridView dataGridView3;
     }
 }
