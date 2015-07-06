@@ -67,8 +67,7 @@ namespace Project2013AddIn
                 string tk2 = this.ComboBoxAct2.SelectedItem.ToString();
                 string relation = this.ComboBoxRela.SelectedItem.ToString();
                 int days = (int) this.NumericDays.Value;
-                bool Isnew = true;
-                bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days,Isnew);
+                bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days);
 
                 if (success)
                    this.Hide();

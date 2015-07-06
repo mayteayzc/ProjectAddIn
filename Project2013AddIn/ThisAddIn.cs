@@ -24,6 +24,17 @@ namespace Project2013AddIn
             //what if first task has been deleted? use i to find the first visible tasks
             int i = 1;
             string unary, binary, multiple;
+            MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+            MSProject.PjCustomField MultipleField = MSProject.PjCustomField.pjCustomTaskText28;
+
+            if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
+                project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
+            if (project.Application.CustomFieldGetName(MultipleField) != "Multiple Relationship")
+                project.Application.CustomFieldRename(MultipleField, "Multiple Relationship", Type.Missing);
+
             multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
             binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
             unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
@@ -33,7 +44,7 @@ namespace Project2013AddIn
                 i++;
             }
             
-            if (tsk == project.Tasks.UniqueID[i])
+            if (tsk.Name.ToString() == project.Tasks.UniqueID[i].Name.ToString())
             {
                 MSProject.Task tsk2 = project.Tasks.UniqueID[i+1];
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), multiple);
@@ -49,7 +60,7 @@ namespace Project2013AddIn
                 bool related=false;
                 string MultipleData;
                 int l5 = multiple.Length;
-                int l6;
+                //int l6;
                 int p5 = multiple.IndexOf(";");
                 int p6;
                 string rela;
@@ -60,9 +71,8 @@ namespace Project2013AddIn
                 {
                     MultipleData = multiple.Substring(0, p5);
                     p6 = MultipleData.IndexOf(",");
-                    l6 = MultipleData.Length;
                     rela = MultipleData.Substring(0, p6);
-                    MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
+                    MultipleData = MultipleData.Substring(p6 + 1);
 
                     while (p6 > 0)
                     {
@@ -162,6 +172,10 @@ namespace Project2013AddIn
                     l3 = unary.Length;
                 }
 
+              //then re-store the relationships without the deleted task.
+              project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), newmultiple);
+              project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), newbinary);
+              project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), newunary);
 
             }
         }
@@ -313,48 +327,47 @@ namespace Project2013AddIn
                     processed = true;
                     break;
 
-                //case "Disjoint":
+                case "Disjoint":
                     //only change when overlap.
                     //check if there is 3rd task in disjoint.Need to store sassigned relationships first.
-                    //if (DateTime.Compare(first.Finish, second.Start) < 0)
-                       // break;
-                    //else
-                        //second.Start = first.Finish;
-                    //processed = true;
-                    //break;
+                    if (DateTime.Compare(first.Finish, second.Start) < 0)
+                        break;
+                    else
+                        second.Start = first.Finish;
+                    return true;
 
-                //case "Meet":
-                //    if (DateTime.Compare(first.Finish, second.Start) < 0)
-                //    {
-                //        //just in case garbage in that second start on weekend.
-                //        if (second.Start.DayOfWeek == DayOfWeek.Saturday)
-                //        {
-                //            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
-                //                first.Start = first.Start.AddDays(1);
-                //        }
 
-                //        if (second.Start.DayOfWeek == DayOfWeek.Sunday)
-                //        {
-                //            while (DateTime.Compare(first.Finish.AddDays(2), second.Start) < 0)
-                //                first.Start = first.Start.AddDays(1);
-                //        }
+                case "Meet":
+                    if (DateTime.Compare(first.Finish, second.Start) < 0)
+                    {
+                        //just in case garbage in that second start on weekend.
+                        if (second.Start.DayOfWeek == DayOfWeek.Saturday)
+                        {
+                            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
+                                first.Start = first.Start.AddDays(1);
+                        }
 
-                //        if (second.Start.DayOfWeek == DayOfWeek.Monday)
-                //        {
-                //            while (DateTime.Compare(first.Finish.AddDays(3), second.Start) < 0)
-                //                first.Start = first.Start.AddDays(1);
-                //        }
-                //        else
-                //        {
-                //            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
-                //                first.Start = first.Start.AddDays(1);
-                //        }
+                        if (second.Start.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            while (DateTime.Compare(first.Finish.AddDays(2), second.Start) < 0)
+                                first.Start = first.Start.AddDays(1);
+                        }
 
-                //    }
-                //    else
-                //        second.Start = first.Finish;
-                //    processed = true;
-                //    break;
+                        if (second.Start.DayOfWeek == DayOfWeek.Monday)
+                        {
+                            while (DateTime.Compare(first.Finish.AddDays(3), second.Start) < 0)
+                                first.Start = first.Start.AddDays(1);
+                        }
+                        else
+                        {
+                            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
+                                first.Start = first.Start.AddDays(1);
+                        }
+
+                    }
+                    else
+                        second.Start = first.Finish;
+                    return true;
 
                 case "Overlap":
                     //here is at least, for overlap more than specified days, no change is made.
@@ -399,19 +412,15 @@ namespace Project2013AddIn
             
             if(processed)
             {
-               // if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
-                //{
-                //    project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-                //    project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";");
-               // }
-               // else
-                //add new info to existing string.
-               // {
-                    string BinaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
-                    string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
-                    project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), NewBinaryString);
+                string BinaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+                string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
+                int i = 1;
+                while(project.Tasks.UniqueID[i]==null)
+                {
+                    i++;
+                }
+                project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), NewBinaryString);
 
-              //  }
             }
             
             return true;
@@ -564,15 +573,21 @@ namespace Project2013AddIn
                 {
                     string UnaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
                     string NewUnaryString;
+                    int i=1;
+                    while (project.Tasks.UniqueID[i] == null)
+                    {
+                        i++;
+                    }
+
                     if (unaryRelationship == "Can Not Occur")
                     {
                         NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
+                        project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                     }
                     else
                     {
                         NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
+                        project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                     }
                 }
             } return true;
@@ -582,10 +597,10 @@ namespace Project2013AddIn
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-            int taskCount;
+            int taskCount=2;
             if (task3 == "NA")
                 taskCount = 2;
-            if (task4 == "NA")
+            else if (task4 == "NA")
                 taskCount = 3;
             else if (task5 == "NA")
                 taskCount = 4;
@@ -638,125 +653,146 @@ namespace Project2013AddIn
             if (project.Application.CustomFieldGetName(MultipleField) != "Multiple Relationship")
                 project.Application.CustomFieldRename(MultipleField, "Multiple Relationship", Type.Missing);
 
-            string Multiple = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
-            string MultipleData="";
-            int l5 = Multiple.Length;
-            int l6;
-            int p5 = Multiple.IndexOf(";");
-            int p6;
-            string rela;
-            string[] tasks = new string[5];
-            int m = 0;
+            bool success = false;
+            if(taskCount==2)
+                success=BinaryRelation(task1, task2, relation, 0);
 
-            while (p5 > 0)
+            else
             {
-                MultipleData=Multiple.Substring(0,p5);
-                p6 = MultipleData.IndexOf(",");
-                l6=MultipleData.Length;
-                rela=MultipleData.Substring(0,p6);
-                MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
-                
-                while(p6>0)
+                string Multiple = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+                string MultipleData = "";
+                int l5 = Multiple.Length;
+                int l6;
+                int p5 = Multiple.IndexOf(";");
+                int p6;
+                string rela;
+                string[] tasks = new string[5];
+                int m = 0;
+
+                while (p5 > 0)
                 {
+                    MultipleData = Multiple.Substring(0, p5);
                     p6 = MultipleData.IndexOf(",");
-                    tasks[m] = MultipleData.Substring(0, p6);
-                    MultipleData = MultipleData.Substring(p6+1);
-                    p6 = MultipleData.IndexOf(",");
-                    m++;
-                }
-                tasks[m] = MultipleData;
+                    l6 = MultipleData.Length;
+                    rela = MultipleData.Substring(0, p6);
+                    MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
 
-                for (m = 0; m < 5;m++ )
+                    while (p6 > 0)
+                    {
+                        p6 = MultipleData.IndexOf(",");
+                        tasks[m] = MultipleData.Substring(0, p6);
+                        MultipleData = MultipleData.Substring(p6 + 1);
+                        p6 = MultipleData.IndexOf(",");
+                        m++;
+                    }
+                    tasks[m] = MultipleData;
+
+                    for (m = 0; m < 5; m++)
+                    {
+                        if ((tasks[m] == task1 || tasks[m] == task2 || tasks[m] == task3 || tasks[m] == task4 || tasks[m] == task5) && (rela == relation))
+                        {
+                            MessageBox.Show("Error: Task " + tasks[m] + " is already in a " + rela + " relationship.");
+                            return false;
+                        }
+                    }
+
+                    Multiple = Multiple.Substring(p5 + 1);
+                    p5 = Multiple.IndexOf(";");
+
+                }
+
+                //rank the tasks according to their start date
+                for (i = 0; i < taskCount - 1; i++)
                 {
-                    if ((tasks[m] == task1 || tasks[m] == task2 || tasks[m] == task3 || tasks[m] == task4 || tasks[m] == task5) && (rela == relation))
+                    for (j = i + 1; j < taskCount; j++)
                     {
-                        MessageBox.Show("Error: Task " + tasks[m] + " is already in a " + rela + " relationship.");
-                        return false;
+                        if (DateTime.Compare(alltasks[i].Start, alltasks[j].Start) > 0)
+                        {
+                            tk = alltasks[i];
+                            alltasks[i] = alltasks[j];
+                            alltasks[j] = tk;
+                        }
                     }
                 }
 
-                Multiple = Multiple.Substring(p5 + 1);
-                p5 = Multiple.IndexOf(";");
-                
-            }
-
-            //rank the tasks according to their start date
-            for (i = 0; i < taskCount; i++)
-            {
-                for (j = i + 1; j < taskCount; j++)
+                switch (relation)
                 {
-                    if (DateTime.Compare(alltasks[i].Start, alltasks[j].Start) > 0)
-                    {
-                        tk = alltasks[i];
-                        alltasks[i] = alltasks[j];
-                        alltasks[j] = tk;
-                    }
-                }
-            }
-
-            switch (relation)
-            {
-                case "Disjoint":
-                    for(i = 0; i<taskCount-1; i++)
-                    {
-                        if (DateTime.Compare(alltasks[i].Finish, alltasks[i + 1].Start) < 0)
-                            break;
-                        else
-                            alltasks[i+1].Start = alltasks[i].Finish;         
-                    }
-                    break;
-
-                case "Meet":
-                    //need to lop twice to avoid mistakes, once may induce error, refer to notebook.
-                    int loop;
-                    for (loop = 1; loop < 3;loop++ )
-                    {
+                    case "Disjoint":
                         for (i = 0; i < taskCount - 1; i++)
                         {
                             if (DateTime.Compare(alltasks[i].Finish, alltasks[i + 1].Start) < 0)
-                            {
-                                //just in case garbage in that second start on weekend.
-                                //if first ends earlier, shift first to meet second, but if second starts on weekend or monday, never will they meet.
-                                if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Saturday)
-                                {
-                                    while (DateTime.Compare(alltasks[i].Finish.AddDays(1), alltasks[i + 1].Start) < 0)
-                                        alltasks[i].Start = alltasks[i].Start.AddDays(1);
-                                }
-
-                                if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Sunday)
-                                {
-                                    while (DateTime.Compare(alltasks[i].Finish.AddDays(2), alltasks[i + 1].Start) < 0)
-                                        alltasks[i].Start = alltasks[i].Start.AddDays(1);
-                                }
-
-                                if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Monday)
-                                {
-                                    while (DateTime.Compare(alltasks[i].Finish.AddDays(3), alltasks[i + 1].Start) < 0)
-                                        alltasks[i].Start = alltasks[i].Start.AddDays(1);
-                                }
-                                else
-                                {
-                                    while (DateTime.Compare(alltasks[i].Finish.AddDays(1), alltasks[i + 1].Start) < 0)
-                                        alltasks[i].Start = alltasks[i].Start.AddDays(1);
-                                }
-                            }
+                                break;
                             else
-                                //first ends later than the start of second
                                 alltasks[i + 1].Start = alltasks[i].Finish;
                         }
-                    }                           
-                    break;
-            }     
-            //store info into custom field text28
-            string MultipleString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
-            string tasknames = alltasks[0].Name.ToString();
-            for (i = 1; i < taskCount; i++)
+                        success = true;
+                        break;
+
+                    case "Meet":
+                        //need to lop twice to avoid mistakes, once may induce error, refer to notebook.
+                        int loop;
+                        for (loop = 1; loop < 3; loop++)
+                        {
+                            for (i = 0; i < taskCount - 1; i++)
+                            {
+                                if (DateTime.Compare(alltasks[i].Finish, alltasks[i + 1].Start) < 0)
+                                {
+                                    //just in case garbage in that second start on weekend.
+                                    //if first ends earlier, shift first to meet second, but if second starts on weekend or monday, never will they meet.
+                                    if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Saturday)
+                                    {
+                                        while (DateTime.Compare(alltasks[i].Finish.AddDays(1), alltasks[i + 1].Start) < 0)
+                                            alltasks[i].Start = alltasks[i].Start.AddDays(1);
+                                    }
+
+                                    if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Sunday)
+                                    {
+                                        while (DateTime.Compare(alltasks[i].Finish.AddDays(2), alltasks[i + 1].Start) < 0)
+                                            alltasks[i].Start = alltasks[i].Start.AddDays(1);
+                                    }
+
+                                    if (alltasks[i + 1].Start.DayOfWeek == DayOfWeek.Monday)
+                                    {
+                                        while (DateTime.Compare(alltasks[i].Finish.AddDays(3), alltasks[i + 1].Start) < 0)
+                                            alltasks[i].Start = alltasks[i].Start.AddDays(1);
+                                    }
+                                    else
+                                    {
+                                        while (DateTime.Compare(alltasks[i].Finish.AddDays(1), alltasks[i + 1].Start) < 0)
+                                            alltasks[i].Start = alltasks[i].Start.AddDays(1);
+                                    }
+                                }
+                                else
+                                    //first ends later than the start of second
+                                    alltasks[i + 1].Start = alltasks[i].Finish;
+                            }
+                        }
+                        success = true;
+                        break;
+                }     
+            }            
+
+            if(success)
             {
-                tasknames = tasknames + "," + alltasks[i].Name.ToString();
-            }
-            string NewMultipleString = MultipleString + relation + ","+tasknames+ ";";
-            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), NewMultipleString);         
-            return true;    
+                //store info into custom field text28
+                string MultipleString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+                string tasknames = alltasks[0].Name.ToString();
+                for (i = 1; i < taskCount; i++)
+                {
+                    tasknames = tasknames + "," + alltasks[i].Name.ToString();
+                }
+                string NewMultipleString = MultipleString + relation + "," + tasknames + ";";
+                
+                //first task may not be task1.
+                i = 1;
+                while (project.Tasks.UniqueID[i] == null)
+                {
+                    i++;
+                }
+                project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), NewMultipleString);
+
+            } return true;  
+            
         } 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
