@@ -59,7 +59,6 @@ namespace Project2013AddIn
             
             //before add relationship must check if there are exisitng pdm++ relationship which is contradicting the new relation.
             //also need to check MS project relationsips. How??
-            //for disjoint and meet, there could be more than 2 tasks involved, must check they are all disjoint/meet.
 
             else
             {
@@ -67,11 +66,41 @@ namespace Project2013AddIn
                 string tk2 = this.ComboBoxAct2.SelectedItem.ToString();
                 string relation = this.ComboBoxRela.SelectedItem.ToString();
                 int days = (int) this.NumericDays.Value;
-                bool success=ThisAddIn.BinaryRelation(tk1, tk2, relation, days);
+                int id1 = 0, id2 = 0;
+                bool found1 = false, found2 = false;
+
+                //found corresponding tasks
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.Name.Equals(tk1))
+                    {
+                        id1 = task.UniqueID;
+                        found1 = true;
+                    }
+
+                    if (task.Name.Equals(tk2))
+                    {
+                        id2 = task.UniqueID;
+                        found2 = true;
+                    }
+                }
+
+                if (found1 == false || found2 == false)
+                {
+                    MessageBox.Show("Error: Tasks can not be found.");
+                }
+                bool success=ThisAddIn.BinaryRelation(id1, id2, relation, days);
 
                 if (success)
-                   this.Hide();
-
+                {
+                    Pen pen = new Pen(Color.FromArgb(255, 0, 0, 255), 8);
+                    pen.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                    pen.EndCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
+                    PaintEventArgs e;
+                    e.Graphics.DrawLine(pen, 20, 175, 300, 175);
+                    this.Hide();
+                }
+                    
              }
         }
 

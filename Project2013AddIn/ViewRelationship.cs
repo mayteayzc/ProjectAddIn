@@ -34,9 +34,10 @@ namespace Project2013AddIn
 
             //check if first task has been deleted
             int i=1;
-            while(project.Tasks.UniqueID[i]==null)
+            foreach(MSProject.Task task in project.Tasks)
             {
-                i++;
+                if (task.ID == 1)
+                    i = task.UniqueID;
             }
 
             string Multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
@@ -58,7 +59,7 @@ namespace Project2013AddIn
             dt2.Columns.Add("Date2", typeof(string));
             dt3.Columns.Add("Multiple Relationship", typeof(string));
             dt3.Columns.Add("Tasks", typeof(string));
-
+            
             //process binary relationships
             int l1 = Binary.Length;
             int l2;
@@ -149,6 +150,7 @@ namespace Project2013AddIn
 
             }
             dataGridView3.DataSource = dt3;
+            dataGridView3.Columns[1].Width = 300;
             dataGridView1.DataSource = dt1;
             dataGridView2.DataSource = dt2;
 
@@ -192,9 +194,17 @@ namespace Project2013AddIn
                 project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
             if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
                 project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
-            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"),"");
-            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), "");
-            project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), "");
+
+            int i=1;
+            foreach (MSProject.Task task in project.Tasks)
+            {
+                if (task.ID == 1)
+                    i = task.UniqueID;
+            }
+
+            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"),"");
+            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), "");
+            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), "");
 
             //then reassign the relationships and record them.
             //first assign unary can avoid shifting forward wrongly, since unary may shift forward but binary will always shift backwards. so does multiple
@@ -216,14 +226,42 @@ namespace Project2013AddIn
                 j++;
             }
 
-            int i = 0;
+            i = 0;
             while(dataGridView1.Rows[i].Cells[0].Value!=null)
             {
                DataGridViewRow row1=dataGridView1.Rows[i];
                string days = row1.Cells[3].Value.ToString();
                int d = Convert.ToInt32(days);
-               ThisAddIn.BinaryRelation(row1.Cells[0].Value.ToString(), row1.Cells[1].Value.ToString(), row1.Cells[2].Value.ToString(), d);
+               string tk1, tk2;
+               tk1=row1.Cells[0].Value.ToString();
+               tk2=row1.Cells[1].Value.ToString();
+               int id1 = 1;
+               int id2 = 1;
+               bool found1=false;
+               bool found2=false;
 
+              foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.Name.Equals(tk1))
+                    {
+                        id1 = task.UniqueID;
+                        found1 = true;
+                    }
+                        
+                    if (task.Name.Equals(tk2))
+                    {
+                        id2 = task.UniqueID;
+                        found2=true;
+                    }                        
+                }
+
+                if (found1 == false || found2 == false)
+                {
+                    MessageBox.Show("Error: Tasks can not be found.");
+                    return;
+                }
+
+               ThisAddIn.BinaryRelation(id1,id2, row1.Cells[2].Value.ToString(), d);
                i++;
             }
 

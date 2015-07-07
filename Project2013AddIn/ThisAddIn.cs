@@ -35,18 +35,24 @@ namespace Project2013AddIn
             if (project.Application.CustomFieldGetName(MultipleField) != "Multiple Relationship")
                 project.Application.CustomFieldRename(MultipleField, "Multiple Relationship", Type.Missing);
 
+            foreach (MSProject.Task task in project.Tasks)
+            {
+                if (task.ID == 1)
+                    i = task.UniqueID;
+            }
+
             multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
             binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
             unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
-
-            while(project.Tasks.UniqueID[i]==null)
-            {
-                i++;
-            }
-            
+          
             if (tsk.Name.ToString() == project.Tasks.UniqueID[i].Name.ToString())
             {
-                MSProject.Task tsk2 = project.Tasks.UniqueID[i+1];
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.ID == 2)
+                        i = task.UniqueID;
+                }
+                MSProject.Task tsk2 = project.Tasks.UniqueID[i];
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), multiple);
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), binary);
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), unary);
@@ -58,7 +64,7 @@ namespace Project2013AddIn
                 //process Multiple relationship
                 string newmultiple="";
                 bool related=false;
-                string MultipleData;
+                string MultipleData1,MultipleData2;
                 int l5 = multiple.Length;
                 //int l6;
                 int p5 = multiple.IndexOf(";");
@@ -69,20 +75,21 @@ namespace Project2013AddIn
 
                 while (p5 > 0)
                 {
-                    MultipleData = multiple.Substring(0, p5);
-                    p6 = MultipleData.IndexOf(",");
-                    rela = MultipleData.Substring(0, p6);
-                    MultipleData = MultipleData.Substring(p6 + 1);
+                    MultipleData1 = multiple.Substring(0, p5);
+                    MultipleData2 = multiple.Substring(0, p5);
+                    p6 = MultipleData2.IndexOf(",");
+                    rela = MultipleData2.Substring(0, p6);
+                    MultipleData2 = MultipleData2.Substring(p6 + 1);
+                    p6 = MultipleData2.IndexOf(",");
 
                     while (p6 > 0)
-                    {
-                        p6 = MultipleData.IndexOf(",");
-                        tasks[m] = MultipleData.Substring(0, p6);
-                        MultipleData = MultipleData.Substring(p6 + 1);
-                        p6 = MultipleData.IndexOf(",");
+                    {                        
+                        tasks[m] = MultipleData2.Substring(0, p6);
+                        MultipleData2 = MultipleData2.Substring(p6 + 1);
+                        p6 = MultipleData2.IndexOf(",");
                         m++;
                     }
-                    tasks[m] = MultipleData;
+                    tasks[m] = MultipleData2;
 
                     for (m = 0; m < 5; m++)
                     {
@@ -91,10 +98,11 @@ namespace Project2013AddIn
                     }
 
                     if (!related)
-                        newmultiple = newmultiple + MultipleData;
+                        newmultiple = newmultiple + MultipleData1 + ";";
 
                     multiple = multiple.Substring(p5 + 1);
                     p5 = multiple.IndexOf(";");
+                    m = 0;
 
                 }
 
@@ -180,32 +188,10 @@ namespace Project2013AddIn
             }
         }
 
-        static public bool BinaryRelation(string task1, string task2, string binaryRelationship, int days)
+        static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            int id1 = 0, id2 = 0;
-            bool found1 = false, found2 = false;
-
-            //found corresponding tasks
-            foreach (MSProject.Task task in project.Tasks)
-            {
-                if (task.Name.Equals(task1))
-                {
-                    id1 = task.UniqueID;
-                    found1 = true;
-                }
-
-                if (task.Name.Equals(task2))
-                {
-                    id2 = task.UniqueID;
-                    found2 = true;
-                }
-            }
-
-            if (found1 == false || found2 == false)
-            {
-                MessageBox.Show("Error: Tasks can not be found.");
-            }
+            
 
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
@@ -244,8 +230,14 @@ namespace Project2013AddIn
             MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
             if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
                 project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-
-            string Binary = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship")); 
+            
+            int i=1;
+            foreach (MSProject.Task task in project.Tasks)
+            {
+                if (task.ID == 1)
+                    i = task.UniqueID;
+            }
+            string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship")); 
             string BinaryData;
 
             //process binary relationships
@@ -414,11 +406,7 @@ namespace Project2013AddIn
             {
                 string BinaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
                 string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
-                int i = 1;
-                while(project.Tasks.UniqueID[i]==null)
-                {
-                    i++;
-                }
+
                 project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), NewBinaryString);
 
             }
@@ -557,39 +545,28 @@ namespace Project2013AddIn
                         break;
 
                 }
-               
-                //check if renamed before
-                project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
-                if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
+
+
+                string UnaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+                string NewUnaryString;
+                int i = 1;
+                foreach(MSProject.Task task in project.Tasks)
                 {
-                    project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
-                    if (unaryRelationship == "Can Not Occur")
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";");
-                    else
-                        project.Tasks.UniqueID[1].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";");
+                    if (task.ID == 1)
+                        i = task.UniqueID;
+                }
+
+                if (unaryRelationship == "Can Not Occur")
+                {
+                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                 }
                 else
-                //add new info to existing string.
                 {
-                    string UnaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
-                    string NewUnaryString;
-                    int i=1;
-                    while (project.Tasks.UniqueID[i] == null)
-                    {
-                        i++;
-                    }
-
-                    if (unaryRelationship == "Can Not Occur")
-                    {
-                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
-                        project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
-                    }
-                    else
-                    {
-                        NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
-                        project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
-                    }
+                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                 }
+
             } return true;
         }
 
@@ -633,9 +610,13 @@ namespace Project2013AddIn
 
             alltasks[0] = project.Tasks.UniqueID[id1];
             alltasks[1] = project.Tasks.UniqueID[id2];
-            alltasks[2] = project.Tasks.UniqueID[id3];
-            alltasks[3] = project.Tasks.UniqueID[id4];
-            alltasks[4] = project.Tasks.UniqueID[id5];
+            if (taskCount > 2)
+                alltasks[2] = project.Tasks.UniqueID[id3];
+            if (taskCount > 3)
+                alltasks[3] = project.Tasks.UniqueID[id4];
+            if (taskCount > 4)
+                alltasks[4] = project.Tasks.UniqueID[id5];
+
             MSProject.Task tk;
 
             for(i=0;i<taskCount;i++)
@@ -655,14 +636,18 @@ namespace Project2013AddIn
 
             bool success = false;
             if(taskCount==2)
-                success=BinaryRelation(task1, task2, relation, 0);
+                success=BinaryRelation(id1, id2, relation, 0);
 
             else
             {
-                string Multiple = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+                i = 1;
+                while (project.Tasks.UniqueID[i] == null)
+                {
+                    i++;
+                }
+                string Multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
                 string MultipleData = "";
                 int l5 = Multiple.Length;
-                int l6;
                 int p5 = Multiple.IndexOf(";");
                 int p6;
                 string rela;
@@ -673,13 +658,12 @@ namespace Project2013AddIn
                 {
                     MultipleData = Multiple.Substring(0, p5);
                     p6 = MultipleData.IndexOf(",");
-                    l6 = MultipleData.Length;
                     rela = MultipleData.Substring(0, p6);
-                    MultipleData = MultipleData.Substring(p6 + 1, p6 - l6 - 1);
+                    MultipleData = MultipleData.Substring(p6 + 1);
+                    p6 = MultipleData.IndexOf(",");
 
                     while (p6 > 0)
                     {
-                        p6 = MultipleData.IndexOf(",");
                         tasks[m] = MultipleData.Substring(0, p6);
                         MultipleData = MultipleData.Substring(p6 + 1);
                         p6 = MultipleData.IndexOf(",");
@@ -698,6 +682,7 @@ namespace Project2013AddIn
 
                     Multiple = Multiple.Substring(p5 + 1);
                     p5 = Multiple.IndexOf(";");
+                    m = 0;
 
                 }
 
@@ -775,20 +760,22 @@ namespace Project2013AddIn
             if(success)
             {
                 //store info into custom field text28
-                string MultipleString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
-                string tasknames = alltasks[0].Name.ToString();
-                for (i = 1; i < taskCount; i++)
+                i = 1;
+                foreach (MSProject.Task task in project.Tasks)
                 {
-                    tasknames = tasknames + "," + alltasks[i].Name.ToString();
+                    if (task.ID == 1)
+                        i = task.UniqueID;
+                }
+                string MultipleString = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
+                string tasknames = alltasks[0].Name.ToString();
+                int m;
+                for (m = 1; m < taskCount; m++)
+                {
+                    tasknames = tasknames + "," + alltasks[m].Name.ToString();
                 }
                 string NewMultipleString = MultipleString + relation + "," + tasknames + ";";
                 
                 //first task may not be task1.
-                i = 1;
-                while (project.Tasks.UniqueID[i] == null)
-                {
-                    i++;
-                }
                 project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), NewMultipleString);
 
             } return true;  

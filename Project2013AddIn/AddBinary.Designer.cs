@@ -70,8 +70,6 @@
             this.ComboBoxRela.Items.AddRange(new object[] {
             "Concurrent",
             "Contain",
-            "Disjoint",
-            "Meet",
             "Overlap"});
             this.ComboBoxRela.Location = new System.Drawing.Point(390, 53);
             this.ComboBoxRela.Name = "ComboBoxRela";
@@ -152,7 +150,7 @@
             this.NumericDays.Size = new System.Drawing.Size(120, 20);
             this.NumericDays.TabIndex = 11;
             // 
-            // AddNewRelation
+            // AddBinary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -171,7 +169,7 @@
             this.Controls.Add(this.ComboBoxAct2);
             this.Controls.Add(this.ComboBoxAct1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "AddNewRelation";
+            this.Name = "AddBinary";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add a new PDM++ relationship";

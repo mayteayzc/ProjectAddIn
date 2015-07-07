@@ -32,18 +32,18 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageMultiple = new System.Windows.Forms.TabPage();
             this.tabPageBinary = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageUnary = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.tabPageMultiple = new System.Windows.Forms.TabPage();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
+            this.tabPageMultiple.SuspendLayout();
             this.tabPageBinary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPageUnary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            this.tabPageMultiple.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,6 +88,17 @@
             this.tabControl1.Size = new System.Drawing.Size(449, 397);
             this.tabControl1.TabIndex = 7;
             // 
+            // tabPageMultiple
+            // 
+            this.tabPageMultiple.Controls.Add(this.dataGridView3);
+            this.tabPageMultiple.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMultiple.Name = "tabPageMultiple";
+            this.tabPageMultiple.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMultiple.Size = new System.Drawing.Size(441, 371);
+            this.tabPageMultiple.TabIndex = 2;
+            this.tabPageMultiple.Text = "Multiple Relationship";
+            this.tabPageMultiple.UseVisualStyleBackColor = true;
+            // 
             // tabPageBinary
             // 
             this.tabPageBinary.Controls.Add(this.dataGridView1);
@@ -127,17 +138,6 @@
             this.dataGridView2.Size = new System.Drawing.Size(442, 371);
             this.dataGridView2.TabIndex = 0;
             // 
-            // tabPageMultiple
-            // 
-            this.tabPageMultiple.Controls.Add(this.dataGridView3);
-            this.tabPageMultiple.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMultiple.Name = "tabPageMultiple";
-            this.tabPageMultiple.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMultiple.Size = new System.Drawing.Size(441, 371);
-            this.tabPageMultiple.TabIndex = 2;
-            this.tabPageMultiple.Text = "Multiple Relationship";
-            this.tabPageMultiple.UseVisualStyleBackColor = true;
-            // 
             // dataGridView3
             // 
             this.dataGridView3.AllowUserToAddRows = false;
@@ -160,11 +160,11 @@
             this.Name = "ViewRelationship";
             this.Text = "View Relationship";
             this.tabControl1.ResumeLayout(false);
+            this.tabPageMultiple.ResumeLayout(false);
             this.tabPageBinary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPageUnary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            this.tabPageMultiple.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
 

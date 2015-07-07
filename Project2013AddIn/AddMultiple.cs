@@ -76,8 +76,9 @@ namespace Project2013AddIn
             //at least fill in 2 tasks
             if (this.comboBoxTask1.SelectedItem.ToString() == "NA" || this.comboBoxTask2.SelectedItem.ToString() == "NA" || comboBoxRelation.SelectedItem.ToString() == "")
                 MessageBox.Show("Please fill in all feilds.");
+
             //if panelmore not visible,check if the two tasks are the same
-            if (btnMore.Text=="More Tasks")
+            else if (btnMore.Text=="More Tasks")
             {
                 if (this.comboBoxTask1.SelectedIndex == this.comboBoxTask2.SelectedIndex)
                     MessageBox.Show("Please select two different activities.");
