@@ -117,6 +117,8 @@ namespace Project2013AddIn
         private void btnUpdate_Click(object sender, RibbonControlEventArgs e)
         {
             //read from table and update according to the datatable.
+            //same as pressing ok in view relationship
+            //event=viewrelationship.btnok_click?
             
             
         }

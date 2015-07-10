@@ -192,7 +192,6 @@ namespace Project2013AddIn
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             
-
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
                 project.Tasks.UniqueID[id1].Duration = 480;
@@ -202,13 +201,13 @@ namespace Project2013AddIn
 
             if (project.Tasks.UniqueID[id1].StartText == null || project.Tasks.UniqueID[id1].StartText=="")
             {
-                project.Tasks.UniqueID[id1].StartText = DateTime.Today.ToString("yyyy-MM-dd");
+                project.Tasks.UniqueID[id1].Start= DateTime.Today;
                 project.Application.GanttBarFormat(project.Tasks.UniqueID[id1].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
             }
 
             if (project.Tasks.UniqueID[id2].StartText == null || project.Tasks.UniqueID[id2].StartText == "")
             {
-                project.Tasks.UniqueID[id2].StartText = DateTime.Today.ToString("yyyy-MM-dd");
+                project.Tasks.UniqueID[id2].Start = DateTime.Today;
                 project.Application.GanttBarFormat(project.Tasks.UniqueID[id2].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
             }
 
@@ -300,6 +299,7 @@ namespace Project2013AddIn
                     {
                         first.Start = second.Start;
                         processed = true;
+                        second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
                     }
                     break;
 
@@ -311,12 +311,21 @@ namespace Project2013AddIn
                         {
                             first.Start = first.Start.AddDays(1);
                             if (DateTime.Compare(first.Finish, second.Finish) == 0)
+                            {
                                 contained = true;
+                                second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToFinish, 0);
+                            }
+                                
                             if (DateTime.Compare(first.Start, second.Start) == 0)
+                            {
                                 contained = true;
+                                second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
+                            }
+                                
                         }   
                     }
                     processed = true;
+                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
                     break;
 
                 case "Disjoint":
@@ -325,7 +334,10 @@ namespace Project2013AddIn
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
                         break;
                     else
+                    {
                         second.Start = first.Finish;
+                    }
+                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
 
 
@@ -358,7 +370,10 @@ namespace Project2013AddIn
 
                     }
                     else
+                    {
                         second.Start = first.Finish;
+                    }
+                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
 
                 case "Overlap":
@@ -398,6 +413,7 @@ namespace Project2013AddIn
                             D = 0;
                         }
                         processed = true;
+                        //color codes for overlapped days????
                     }
                     break;
             }
@@ -625,7 +641,7 @@ namespace Project2013AddIn
                     alltasks[i].Duration = 480;
                 if (alltasks[i].StartText == null || alltasks[i].StartText == "")
                 {
-                    alltasks[i].StartText = DateTime.Today.ToString("yyyy-MM-dd");
+                    alltasks[i].Start = DateTime.Today;
                     project.Application.GanttBarFormat(alltasks[i].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
                 }
             }
@@ -709,6 +725,9 @@ namespace Project2013AddIn
                                 break;
                             else
                                 alltasks[i + 1].Start = alltasks[i].Finish;
+                            
+                            //add links 
+                            alltasks[i + 1].TaskDependencies.Add(alltasks[i], MSProject.PjTaskLinkType.pjFinishToStart, 0);
                         }
                         success = true;
                         break;
@@ -750,6 +769,9 @@ namespace Project2013AddIn
                                 else
                                     //first ends later than the start of second
                                     alltasks[i + 1].Start = alltasks[i].Finish;
+
+                                //add links 
+                                alltasks[i + 1].TaskDependencies.Add(alltasks[i], MSProject.PjTaskLinkType.pjFinishToStart, 0);
                             }
                         }
                         success = true;
@@ -781,6 +803,8 @@ namespace Project2013AddIn
             } return true;  
             
         } 
+
+
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }

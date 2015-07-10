@@ -91,15 +91,9 @@ namespace Project2013AddIn
                 }
                 bool success=ThisAddIn.BinaryRelation(id1, id2, relation, days);
 
-                if (success)
-                {
-                    Pen pen = new Pen(Color.FromArgb(255, 0, 0, 255), 8);
-                    pen.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
-                    pen.EndCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
-                    PaintEventArgs e;
-                    e.Graphics.DrawLine(pen, 20, 175, 300, 175);
+                if (success)                    
                     this.Hide();
-                }
+
                     
              }
         }

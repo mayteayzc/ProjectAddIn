@@ -161,28 +161,96 @@ namespace Project2013AddIn
             if(MessageBox.Show("Delete current selection?","Confirmed",MessageBoxButtons.YesNo)==DialogResult.Yes)
             {
                 if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageBinary"])
+                {
+                    //record down the information
+                    string tk1 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[0].Value.ToString();
+                    string tk2 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
+                    int id1 = 1;
+                    int id2 = 1;
+                    foreach(MSProject.Task task in project.Tasks)
+                    {
+                        if (task.Name.Equals(tk1))
+                            id1 = task.UniqueID;
+                        if (task.Name.Equals(tk2))
+                            id2 = task.UniqueID;
+                    }
+                    //remove links
+                    project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                   
+                    //delete records
                     dataGridView1.Rows.RemoveAt(this.dataGridView1.CurrentRow.Index);
+                }
+
                 if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageUnary"])
                     dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
-                if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageMultiple"])
-                    dataGridView3.Rows.RemoveAt(this.dataGridView3.CurrentRow.Index);
 
-                //delete corresponding links.
-                //
+                if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageMultiple"])
+                {
+                    string alltasks = dataGridView3.Rows[dataGridView3.CurrentRow.Index].Cells[1].Value.ToString();
+                    int l = alltasks.Length;
+                    int p = alltasks.IndexOf(",");
+                    string[] tasks = new string[5];
+                    int m = 0;
+                    int id1 = 1;
+                    int id2 = 1;
+                    int id3 = 1;
+                    int id4 = 1;
+                    int id5 = 1;
+
+                    while (p > 0)
+                    {
+                        tasks[m] = alltasks.Substring(0, p);
+                        alltasks = alltasks.Substring(p + 1);
+                        p = alltasks.IndexOf(",");
+                        m++;
+                    }
+
+                    l = alltasks.Length;
+                    tasks[m] = alltasks.Substring(0, l);
+
+                    int taskcount = 0;
+                    for (m = 0; m < 5; m++)
+                    {
+                        if (tasks[m] != null && tasks[m] != "")
+                            taskcount++;
+                    }
+                    foreach(MSProject.Task tk in project.Tasks)
+                    {
+                        if (tk.Name.Equals(tasks[0]))
+                            id1 = tk.UniqueID;
+                        if (tk.Name.Equals(tasks[1]))
+                            id2 = tk.UniqueID;
+                        if (tk.Name.Equals(tasks[2]))
+                            id3 = tk.UniqueID;
+                        if (tk.Name.Equals(tasks[3]))
+                            id4 = tk.UniqueID;
+                        if (tk.Name.Equals(tasks[4]))
+                            id5 = tk.UniqueID;
+                    }
+
+                    //remove links
+                    project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    if (taskcount > 2)
+                    {
+                        project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id3]);
+                        if (taskcount > 3)
+                        {
+                            project.Tasks.UniqueID[id3].UnlinkSuccessors(project.Tasks.UniqueID[id4]);
+                            if (taskcount > 4)
+                                project.Tasks.UniqueID[id4].UnlinkSuccessors(project.Tasks.UniqueID[id5]);
+
+                        }
+
+                    }
+                    //remove records
+                    dataGridView3.Rows.RemoveAt(this.dataGridView3.CurrentRow.Index);
+                }
+
             }
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        public void btnOk_Click(object sender, EventArgs e)
         {
-
-            //set all task to auto schedule first.
-            foreach (MSProject.Task task in project.Tasks)
-                task.Manual = false;
-
-            //then set to manual again for pdm++ scheduling
-            foreach (MSProject.Task task in project.Tasks)
-                task.Manual = true;
-
             //empty the custom field.
             MSProject.PjCustomField MultipleField = MSProject.PjCustomField.pjCustomTaskText28;
             MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
@@ -209,7 +277,8 @@ namespace Project2013AddIn
             //then reassign the relationships and record them.
             //first assign unary can avoid shifting forward wrongly, since unary may shift forward but binary will always shift backwards. so does multiple
             int j = 0;
-            while (dataGridView2.Rows[j].Cells[0].Value != null)
+            int count = dataGridView2.Rows.Count;
+            while (j<count)
             {
                 DataGridViewRow row2 = dataGridView2.Rows[j];
                 string date1 = row2.Cells[2].Value.ToString();
@@ -227,7 +296,8 @@ namespace Project2013AddIn
             }
 
             i = 0;
-            while(dataGridView1.Rows[i].Cells[0].Value!=null)
+            count = dataGridView1.Rows.Count;
+            while(i<count)
             {
                DataGridViewRow row1=dataGridView1.Rows[i];
                string days = row1.Cells[3].Value.ToString();
@@ -261,12 +331,22 @@ namespace Project2013AddIn
                     return;
                 }
 
+               //clear link.if directly re-assign, would it be a problem???or just overwrite?
+                //but need to get the auto schedule without pdm++ links, hence need to clear the link.
+               project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+               //set auto first
+               project.Tasks.UniqueID[id1].Manual = false;
+               project.Tasks.UniqueID[id2].Manual = false;
+                //set manual to edit
+               project.Tasks.UniqueID[id1].Manual = true;
+               project.Tasks.UniqueID[id2].Manual = true;
+                //then re-assign the relationship and links because the links may change type.
                ThisAddIn.BinaryRelation(id1,id2, row1.Cells[2].Value.ToString(), d);
                i++;
             }
 
             int k = 0;
-            int count = dataGridView3.Rows.Count;
+            count = dataGridView3.Rows.Count;
             while (k<count)
             {
                 DataGridViewRow row3 = dataGridView3.Rows[k];
@@ -275,6 +355,11 @@ namespace Project2013AddIn
                 int p = alltasks.IndexOf(",");
                 string[] tasks=new string[5];
                 int m=0;
+                int id1 = 1;
+                int id2 = 1;
+                int id3 = 1;
+                int id4 = 1;
+                int id5 = 1;
 
                 while(p>0)
                 {
@@ -298,8 +383,52 @@ namespace Project2013AddIn
                 {
                     tasks[m] = "NA";
                 }
-                ThisAddIn.MultipleRelation(row3.Cells[0].Value.ToString(), tasks[0],tasks[1],tasks[2],tasks[3],tasks[4]);
 
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.Name.Equals(tasks[0]))
+                        id1 = task.UniqueID;
+                    if (task.Name.Equals(tasks[1]))
+                        id2 = task.UniqueID;
+                    if (task.Name.Equals(tasks[2]))
+                        id3 = task.UniqueID;
+                    if (task.Name.Equals(tasks[3]))
+                        id4 = task.UniqueID;
+                    if (task.Name.Equals(tasks[4]))
+                        id5 = task.UniqueID;
+                }
+
+                MSProject.Task[] tks = new MSProject.Task[5];
+                tks[0] = project.Tasks.UniqueID[id1];
+                tks[1] = project.Tasks.UniqueID[id2];
+                tks[2] = project.Tasks.UniqueID[id3];
+                tks[3] = project.Tasks.UniqueID[id4];
+                tks[4] = project.Tasks.UniqueID[id5];
+                //clear link.
+                tks[0].UnlinkSuccessors(tks[1]);
+                if (taskcount > 2)
+                {
+                    tks[1].UnlinkSuccessors(tks[2]);
+                    if (taskcount > 3)
+                    {
+                        tks[2].UnlinkSuccessors(tks[3]);
+                        if (taskcount > 4)
+                            tks[3].UnlinkSuccessors(tks[4]);
+
+                    }
+
+                }
+                //set auto first               
+                foreach(MSProject.Task task in tks)
+                    task.Manual = false;
+                
+                //set manual to edit
+                foreach (MSProject.Task task in tks)
+                    task.Manual = true;
+
+                //then re-assign the relationship and links because the links may change type.
+                //passing names rather than id, since NA is more recognisable as null.
+                ThisAddIn.MultipleRelation(row3.Cells[0].Value.ToString(), tasks[0],tasks[1],tasks[2],tasks[3],tasks[4]);
                 k++;
             }
             this.Hide();  
