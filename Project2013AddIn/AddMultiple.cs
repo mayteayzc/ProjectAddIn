@@ -85,7 +85,7 @@ namespace Project2013AddIn
                 else
                 {
                     tasks[2] = tasks[3] = tasks[4] = "NA";
-                    success = ThisAddIn.MultipleRelation(relation, tasks[0], tasks[1], tasks[2], tasks[3], tasks[4]);
+                    success = ThisAddIn.MultipleRelation(relation, tasks[0], tasks[1], tasks[2], tasks[3], tasks[4],true);
                     if (success)
                         this.Hide();
                 }                    
@@ -106,8 +106,8 @@ namespace Project2013AddIn
                     MessageBox.Show("Error: Please do not select the same task twice.");
                 else
                 {
-                    
-                    success = ThisAddIn.MultipleRelation(relation, tasks[0], tasks[1], tasks[2], tasks[3], tasks[4]);
+
+                    success = ThisAddIn.MultipleRelation(relation, tasks[0], tasks[1], tasks[2], tasks[3], tasks[4],true);
                     if (success)
                         this.Hide();
                 }
