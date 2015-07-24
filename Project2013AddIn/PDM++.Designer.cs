@@ -87,7 +87,7 @@
             // 
             this.btnDisjoint.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnDisjoint.Image = ((System.Drawing.Image)(resources.GetObject("btnDisjoint.Image")));
-            this.btnDisjoint.Label = "Disjoint";
+            this.btnDisjoint.Label = "Disjoint (D)";
             this.btnDisjoint.Name = "btnDisjoint";
             this.btnDisjoint.ScreenTip = "Two activities can not happen together.";
             this.btnDisjoint.ShowImage = true;
@@ -97,7 +97,7 @@
             // 
             this.btnMeet.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnMeet.Image = ((System.Drawing.Image)(resources.GetObject("btnMeet.Image")));
-            this.btnMeet.Label = "Meet";
+            this.btnMeet.Label = "Meet (M)";
             this.btnMeet.Name = "btnMeet";
             this.btnMeet.ScreenTip = "Activity 2 starts immediately after Activity 1 or vice versa.";
             this.btnMeet.ShowImage = true;
@@ -115,7 +115,7 @@
             // 
             this.btnconcurrent.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnconcurrent.Image = ((System.Drawing.Image)(resources.GetObject("btnconcurrent.Image")));
-            this.btnconcurrent.Label = "Concurrent";
+            this.btnconcurrent.Label = "Concurrent (CT)";
             this.btnconcurrent.Name = "btnconcurrent";
             this.btnconcurrent.ScreenTip = "Two activities start and end at the same time.";
             this.btnconcurrent.ShowImage = true;
@@ -125,7 +125,7 @@
             // 
             this.btnContain.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnContain.Image = ((System.Drawing.Image)(resources.GetObject("btnContain.Image")));
-            this.btnContain.Label = "Contain";
+            this.btnContain.Label = "Contain (CN)";
             this.btnContain.Name = "btnContain";
             this.btnContain.ScreenTip = "Activity 2 happens only within the duration of Activity 1.";
             this.btnContain.ShowImage = true;
@@ -135,7 +135,7 @@
             // 
             this.btnOverlap.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnOverlap.Image = ((System.Drawing.Image)(resources.GetObject("btnOverlap.Image")));
-            this.btnOverlap.Label = "Overlap";
+            this.btnOverlap.Label = "Overlap (O)";
             this.btnOverlap.Name = "btnOverlap";
             this.btnOverlap.ScreenTip = "Duration of two activities overlap each other.";
             this.btnOverlap.ShowImage = true;
@@ -156,7 +156,7 @@
             // 
             this.buttonBetween.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.buttonBetween.Image = global::Project2013AddIn.Properties.Resources.between;
-            this.buttonBetween.Label = "Between";
+            this.buttonBetween.Label = "Between (B)";
             this.buttonBetween.Name = "buttonBetween";
             this.buttonBetween.ShowImage = true;
             this.buttonBetween.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonBetween_Click);
@@ -165,7 +165,7 @@
             // 
             this.btnCannot.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnCannot.Image = ((System.Drawing.Image)(resources.GetObject("btnCannot.Image")));
-            this.btnCannot.Label = "Cannot Occur";
+            this.btnCannot.Label = "Cannot Occur (CO)";
             this.btnCannot.Name = "btnCannot";
             this.btnCannot.ShowImage = true;
             this.btnCannot.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCannot_Click);
@@ -174,7 +174,7 @@
             // 
             this.btnDueaft.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnDueaft.Image = ((System.Drawing.Image)(resources.GetObject("btnDueaft.Image")));
-            this.btnDueaft.Label = "Due After";
+            this.btnDueaft.Label = "Due After (DA)";
             this.btnDueaft.Name = "btnDueaft";
             this.btnDueaft.ShowImage = true;
             this.btnDueaft.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDueaft_Click);
@@ -183,7 +183,7 @@
             // 
             this.btnDuebf.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnDuebf.Image = ((System.Drawing.Image)(resources.GetObject("btnDuebf.Image")));
-            this.btnDuebf.Label = "Due Before";
+            this.btnDuebf.Label = "Due Before (DB)";
             this.btnDuebf.Name = "btnDuebf";
             this.btnDuebf.ShowImage = true;
             this.btnDuebf.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDuebf_Click);
@@ -192,7 +192,7 @@
             // 
             this.btnStartaft.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnStartaft.Image = ((System.Drawing.Image)(resources.GetObject("btnStartaft.Image")));
-            this.btnStartaft.Label = "Start After";
+            this.btnStartaft.Label = "Start After (SA)";
             this.btnStartaft.Name = "btnStartaft";
             this.btnStartaft.ShowImage = true;
             this.btnStartaft.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStartaft_Click);
@@ -201,7 +201,7 @@
             // 
             this.btnStartbf.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnStartbf.Image = ((System.Drawing.Image)(resources.GetObject("btnStartbf.Image")));
-            this.btnStartbf.Label = "Start Before";
+            this.btnStartbf.Label = "Start Before (SB)";
             this.btnStartbf.Name = "btnStartbf";
             this.btnStartbf.ShowImage = true;
             this.btnStartbf.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStartbf_Click);

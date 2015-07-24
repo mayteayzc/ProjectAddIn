@@ -16,7 +16,6 @@ namespace Project2013AddIn
         {
             this.Application.ProjectBeforeTaskDelete += Application_ProjectBeforeTaskDelete;
 
-
         }
 
         void Application_ProjectBeforeTaskDelete(MSProject.Task tsk, ref bool Cancel)
@@ -192,7 +191,7 @@ namespace Project2013AddIn
         static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days, bool Isnew)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            
+
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
                 project.Tasks.UniqueID[id1].Duration = 480;
@@ -201,16 +200,12 @@ namespace Project2013AddIn
                 project.Tasks.UniqueID[id2].Duration = 480;
 
             if (project.Tasks.UniqueID[id1].StartText == null || project.Tasks.UniqueID[id1].StartText=="")
-            {
                 project.Tasks.UniqueID[id1].Start= DateTime.Today;
-                project.Application.GanttBarFormat(project.Tasks.UniqueID[id1].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
-            }
+
 
             if (project.Tasks.UniqueID[id2].StartText == null || project.Tasks.UniqueID[id2].StartText == "")
-            {
                 project.Tasks.UniqueID[id2].Start = DateTime.Today;
-                project.Application.GanttBarFormat(project.Tasks.UniqueID[id2].ID, Type.Missing, MSProject.PjBarEndShape.pjLeftBracket, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjRightBracket);
-            }
+
 
             MSProject.Task first;
             MSProject.Task second;
@@ -231,9 +226,8 @@ namespace Project2013AddIn
             if(Isnew)
             {
                 MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-                if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                //if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
                     project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-                
                 foreach (MSProject.Task task in project.Tasks)
                 {
                     if (task.ID == 1)
@@ -304,6 +298,12 @@ namespace Project2013AddIn
                     {
                         first.Start = second.Start;
                         processed = true;
+                        if(Isnew)
+                        {
+                            first.Notes = first.Notes + "CT" + second.ID.ToString()+",";
+                            second.Notes = second.Notes + "CT" + first.ID.ToString()+",";
+                            ThisAddIn.SetGanttBarFormat(first, second);  
+                        }                                        
                         second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
                     }
                     break;
@@ -321,9 +321,23 @@ namespace Project2013AddIn
                         longer = first;
                         shorter = second;
                     }
-                        
+
+
+                    if (Isnew)
+                    {
+                        longer.Notes = longer.Notes + "CN" + shorter.ID.ToString() + ",";
+                        shorter.Notes = shorter.Notes + "CN" + longer.ID.ToString() + ",";
+                        //why bar style applied to all tasks
+                        project.Application.GanttBarStyleEdit("-1", true, "PDM++", MSProject.PjBarEndShape.pjNoBarEndShape, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjColor.pjRed, MSProject.PjFillPattern.pjSolidFillPattern);
+                        //project.Application.GanttBarFormat(longer.ID,Type.Missing,MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed,MSProject.PjBarEndShape.pjNoBarEndShape,MSProject.PjBarType.pjSolid,MSProject.PjColor.pjRed,Type.Missing,Type.Missing,Type.Missing,Type.Missing,Type.Missing,false,Type.Missing);
+
+                        //ThisAddIn.SetGanttBarFormat(longer, shorter);
+                    }
+                    
+
                     if (DateTime.Compare(first.Finish, second.Finish) < 0)
                     {
+                        
                         while (!contained)
                         {
                             first.Start = first.Start.AddDays(1);
@@ -350,13 +364,20 @@ namespace Project2013AddIn
 
                 case "Disjoint":
                     //only change when overlap.
-                    //check if there is 3rd task in disjoint.Need to store sassigned relationships first.
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
                         break;
                     else
                     {
                         second.Start = first.Finish;
                     }
+
+                    if(Isnew)
+                    {
+                        first.Notes = first.Notes + "D" + second.ID.ToString()+",";
+                        second.Notes = second.Notes + "D" + first.ID.ToString()+",";
+                        ThisAddIn.SetGanttBarFormat(first, second);
+                    }
+
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
 
@@ -392,6 +413,12 @@ namespace Project2013AddIn
                     else
                     {
                         second.Start = first.Finish;
+                    }
+                    if(Isnew)
+                    {
+                        first.Notes = first.Notes + "M" + second.ID.ToString()+",";
+                        second.Notes = second.Notes + "M" + first.ID.ToString()+",";
+                        ThisAddIn.SetGanttBarFormat(first, second);
                     }
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
@@ -433,7 +460,13 @@ namespace Project2013AddIn
                             D = 0;
                         }
                         processed = true;
-                        //color codes for overlapped days????
+                        if(Isnew)
+                        {
+                            first.Notes = first.Notes + "O" + second.ID.ToString()+"("+days.ToString()+"),";
+                            second.Notes = second.Notes + "O" + first.ID.ToString()+"("+days.ToString()+"),";
+                            ThisAddIn.SetGanttBarFormat(first, second);
+                        }
+
                     }
                     break;
             }
@@ -844,9 +877,16 @@ namespace Project2013AddIn
             
         } 
 
+        static public void SetGanttBarFormat (MSProject.Task tk1, MSProject.Task tk2)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
+            project.Application.GanttBarFormat(tk1.ID, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjMaroon);
+            project.Application.GanttBarFormat(tk2.ID, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjMaroon);
+        }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+
         }
        
 
