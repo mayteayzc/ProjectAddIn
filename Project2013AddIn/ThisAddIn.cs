@@ -327,11 +327,13 @@ namespace Project2013AddIn
                     {
                         longer.Notes = longer.Notes + "CN" + shorter.ID.ToString() + ",";
                         shorter.Notes = shorter.Notes + "CN" + longer.ID.ToString() + ",";
-                        //why bar style applied to all tasks
-                        project.Application.GanttBarStyleEdit("-1", true, "PDM++", MSProject.PjBarEndShape.pjNoBarEndShape, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjColor.pjRed, MSProject.PjFillPattern.pjSolidFillPattern);
-                        //project.Application.GanttBarFormat(longer.ID,Type.Missing,MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed,MSProject.PjBarEndShape.pjNoBarEndShape,MSProject.PjBarType.pjSolid,MSProject.PjColor.pjRed,Type.Missing,Type.Missing,Type.Missing,Type.Missing,Type.Missing,false,Type.Missing);
+                        
+                        project.Application.SelectRow(longer.ID, false, 0, false, false);
+                        project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, false, Type.Missing);
 
-                        //ThisAddIn.SetGanttBarFormat(longer, shorter);
+                        project.Application.SelectRow(shorter.ID, false, 0, false, false);
+                        project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, false, Type.Missing);
+
                     }
                     
 
