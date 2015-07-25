@@ -300,10 +300,17 @@ namespace Project2013AddIn
                         processed = true;
                         if(Isnew)
                         {
-                            first.Notes = first.Notes + "CT" + second.ID.ToString()+",";
-                            second.Notes = second.Notes + "CT" + first.ID.ToString()+",";
-                            ThisAddIn.SetGanttBarFormat(first, second);  
-                        }                                        
+                            if (first.Text27 != "" && first.Text27 != null)
+                                first.Text27 = first.Text27 + ",";
+                            else
+                                first.Text27 = first.Text27 + "CT" + second.ID.ToString();
+
+                            if (first.Text27 != "" && second.Text27 != null)
+                                first.Text27 = second.Text27 + ",";
+                            else
+                                second.Text27 = second.Text27 + "CT" + first.ID.ToString();                 
+                        }
+                        ThisAddIn.SetGanttBarFormat(first, second); 
                         second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
                     }
                     break;
@@ -325,17 +332,19 @@ namespace Project2013AddIn
 
                     if (Isnew)
                     {
-                        longer.Notes = longer.Notes + "CN" + shorter.ID.ToString() + ",";
-                        shorter.Notes = shorter.Notes + "CN" + longer.ID.ToString() + ",";
-                        
-                        project.Application.SelectRow(longer.ID, false, 0, false, false);
-                        project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, false, Type.Missing);
+                        //use new custome field 27
+                        if (longer.Text27 != "" && longer.Text27 != null)
+                            longer.Text27 = longer.Text27 + ",";
+                        else
+                            longer.Text27 = longer.Text27 + "CN" + shorter.ID.ToString();
 
-                        project.Application.SelectRow(shorter.ID, false, 0, false, false);
-                        project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, MSProject.PjBarShape.pjRectangleTop, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, false, Type.Missing);
-
+                        if (shorter.Text27 != "" && shorter.Text27 != null)
+                            shorter.Text27 = shorter.Text27 + ",";
+                        else
+                            shorter.Text27 = shorter.Text27 + "CN" + longer.ID.ToString();  
                     }
-                    
+
+                    ThisAddIn.SetGanttBarFormat(longer, shorter);
 
                     if (DateTime.Compare(first.Finish, second.Finish) < 0)
                     {
@@ -375,11 +384,18 @@ namespace Project2013AddIn
 
                     if(Isnew)
                     {
-                        first.Notes = first.Notes + "D" + second.ID.ToString()+",";
-                        second.Notes = second.Notes + "D" + first.ID.ToString()+",";
-                        ThisAddIn.SetGanttBarFormat(first, second);
+                        if (first.Text27 != "" && first.Text27 != null)
+                            first.Text27 = first.Text27 + ",";
+                        else
+                            first.Text27 = first.Text27 + "D" + second.ID.ToString();
+
+                        if (first.Text27 != "" && second.Text27 != null)
+                            first.Text27 = second.Text27 + ",";
+                        else
+                            second.Text27 = second.Text27 + "D" + first.ID.ToString();     
                     }
 
+                    ThisAddIn.SetGanttBarFormat(first, second);  
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
 
@@ -418,10 +434,18 @@ namespace Project2013AddIn
                     }
                     if(Isnew)
                     {
-                        first.Notes = first.Notes + "M" + second.ID.ToString()+",";
-                        second.Notes = second.Notes + "M" + first.ID.ToString()+",";
-                        ThisAddIn.SetGanttBarFormat(first, second);
+                        if (first.Text27 != "" && first.Text27 != null)
+                            first.Text27 = first.Text27 + ",";
+                        else
+                            first.Text27 = first.Text27 + "M" + second.ID.ToString();
+
+                        if (first.Text27 != "" && second.Text27 != null)
+                            first.Text27 = second.Text27 + ",";
+                        else
+                            second.Text27 = second.Text27 + "M" + first.ID.ToString();                  
                     }
+
+                    ThisAddIn.SetGanttBarFormat(first, second); 
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     return true;
 
@@ -464,11 +488,17 @@ namespace Project2013AddIn
                         processed = true;
                         if(Isnew)
                         {
-                            first.Notes = first.Notes + "O" + second.ID.ToString()+"("+days.ToString()+"),";
-                            second.Notes = second.Notes + "O" + first.ID.ToString()+"("+days.ToString()+"),";
-                            ThisAddIn.SetGanttBarFormat(first, second);
-                        }
+                            if (first.Text27 != "" && first.Text27 != null)
+                                first.Text27 = first.Text27 + ",";
+                            else
+                                first.Text27 = first.Text27 + "O" + second.ID.ToString() + "(" + days.ToString() + ")";
 
+                            if (first.Text27 != "" && second.Text27 != null)
+                                first.Text27 = second.Text27 + ",";
+                            else
+                                second.Text27 = second.Text27 + "O" + first.ID.ToString() + "(" + days.ToString() + "),";                       
+                        }
+                        ThisAddIn.SetGanttBarFormat(first, second);
                     }
                     break;
             }
@@ -883,8 +913,11 @@ namespace Project2013AddIn
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-            project.Application.GanttBarFormat(tk1.ID, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjMaroon);
-            project.Application.GanttBarFormat(tk2.ID, Type.Missing, Type.Missing, Type.Missing, Type.Missing, MSProject.PjBarShape.pjRectangleMiddle, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjMaroon);
+            project.Application.SelectRow(tk1.ID, false, 0, false, false);
+            project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjPurple, MSProject.PjBarShape.pjRectangleBottom, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing,Type.Missing, Type.Missing, "Text27", false, Type.Missing);
+
+            project.Application.SelectRow(tk2.ID, false, 0, false, false);
+            project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjPurple, MSProject.PjBarShape.pjRectangleBottom, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjRed, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, Type.Missing,Type.Missing, Type.Missing,"Text27", false, Type.Missing);
         }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
