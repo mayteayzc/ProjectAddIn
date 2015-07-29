@@ -340,7 +340,11 @@ namespace Project2013AddIn
                     //for the first time, need to get the auto schedule without pdm++ links, hence need to clear the link.
                     if (DoubleAssign < 1)
                     {
-                        project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                        if(DateTime.Compare(project.Tasks.UniqueID[id2].Start,project.Tasks.UniqueID[id1].Start)<0)
+                            project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+
+                        else
+                            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
 
                         project.Tasks.UniqueID[id1].Manual = false;
                         project.Tasks.UniqueID[id2].Manual = false;
