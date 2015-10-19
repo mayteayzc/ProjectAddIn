@@ -198,11 +198,23 @@
     <Compile Include="AddUnary.Designer.cs">
       <DependentUpon>AddUnary.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConditonalTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConditonalTask.Designer.cs">
+      <DependentUpon>ConditonalTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Help.Designer.cs">
       <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MoreTasks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoreTasks.Designer.cs">
+      <DependentUpon>MoreTasks.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -222,8 +234,14 @@
     <EmbeddedResource Include="AddUnary.resx">
       <DependentUpon>AddUnary.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConditonalTask.resx">
+      <DependentUpon>ConditonalTask.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoreTasks.resx">
+      <DependentUpon>MoreTasks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

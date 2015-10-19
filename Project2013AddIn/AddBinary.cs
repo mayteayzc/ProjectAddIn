@@ -111,6 +111,19 @@ namespace Project2013AddIn
                 NumericDays.Enabled = true;
             else
                 NumericDays.Enabled=false;
+
+            if ((ComboBoxRela.SelectedItem.ToString() == "Meet") || (ComboBoxRela.SelectedItem.ToString() == "Disjoint"))
+                this.btnMoreTasks.Enabled = true;
+            else
+                this.btnMoreTasks.Enabled = false;
+        }
+
+        private void btnMoreTasks_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            MoreTasks MoreTk = new MoreTasks();
+            MoreTk.comboBoxRelation.SelectedItem = this.ComboBoxRela.SelectedItem.ToString();
+            MoreTk.Show();
         }
 
 }

@@ -36,9 +36,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.NumericDays = new System.Windows.Forms.NumericUpDown();
+            this.btnMoreTasks = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericDays)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,8 +68,9 @@
             this.ComboBoxRela.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ComboBoxRela.FormattingEnabled = true;
             this.ComboBoxRela.Items.AddRange(new object[] {
-            "Concurrent",
             "Contain",
+            "Disjoint",
+            "Meet",
             "Overlap"});
             this.ComboBoxRela.Location = new System.Drawing.Point(390, 53);
             this.ComboBoxRela.Name = "ComboBoxRela";
@@ -106,7 +107,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(357, 108);
+            this.btnOK.Location = new System.Drawing.Point(485, 108);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(90, 23);
             this.btnOK.TabIndex = 6;
@@ -116,23 +117,13 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(581, 108);
+            this.btnCancel.Location = new System.Drawing.Point(595, 108);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 23);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnHelp
-            // 
-            this.btnHelp.Location = new System.Drawing.Point(468, 108);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(90, 23);
-            this.btnHelp.TabIndex = 8;
-            this.btnHelp.Text = "Help";
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // label4
             // 
@@ -150,6 +141,16 @@
             this.NumericDays.Size = new System.Drawing.Size(120, 20);
             this.NumericDays.TabIndex = 11;
             // 
+            // btnMoreTasks
+            // 
+            this.btnMoreTasks.Location = new System.Drawing.Point(359, 108);
+            this.btnMoreTasks.Name = "btnMoreTasks";
+            this.btnMoreTasks.Size = new System.Drawing.Size(107, 23);
+            this.btnMoreTasks.TabIndex = 12;
+            this.btnMoreTasks.Text = "More Tasks";
+            this.btnMoreTasks.UseVisualStyleBackColor = true;
+            this.btnMoreTasks.Click += new System.EventHandler(this.btnMoreTasks_Click);
+            // 
             // AddBinary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,9 +158,9 @@
             this.AutoSize = true;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(697, 166);
+            this.Controls.Add(this.btnMoreTasks);
             this.Controls.Add(this.NumericDays);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label3);
@@ -190,9 +191,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown NumericDays;
+        public System.Windows.Forms.Button btnMoreTasks;
 
     }
 }

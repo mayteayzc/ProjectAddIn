@@ -15,7 +15,6 @@ namespace Project2013AddIn
         public void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.ProjectBeforeTaskDelete += Application_ProjectBeforeTaskDelete;
-
         }
 
         void Application_ProjectBeforeTaskDelete(MSProject.Task tsk, ref bool Cancel)
@@ -191,6 +190,7 @@ namespace Project2013AddIn
         static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days, bool Isnew)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            //MessageBox.Show(project.ProjectFinish.ToString());
 
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
@@ -287,34 +287,34 @@ namespace Project2013AddIn
 
             switch (binaryRelationship)
             {
-                case "Concurrent":
-                    //activity 1 is the reference.
-                    //Can we assume most likely one task is dependent on the other task?
-                    if (first.Duration != second.Duration)
-                    {
-                        MessageBox.Show("Please make sure task 1 and task 2 have equal duration in a Concurrent relationship.");
-                        return false;
-                    }
-                    else
-                    {
-                        first.Start = second.Start;
-                        processed = true;
-                        if(Isnew)
-                        {
-                            if (first.Text27 != "" && first.Text27 != null)
-                                first.Text27 = first.Text27 + ",";
+                //case "Concurrent":
+                //    //activity 1 is the reference.
+                //    //Can we assume most likely one task is dependent on the other task?
+                //    if (first.Duration != second.Duration)
+                //    {
+                //        MessageBox.Show("Please make sure task 1 and task 2 have equal duration in a Concurrent relationship.");
+                //        return false;
+                //    }
+                //    else
+                //    {
+                //        first.Start = second.Start;
+                //        processed = true;
+                //        if(Isnew)
+                //        {
+                //            if (first.Text27 != "" && first.Text27 != null)
+                //                first.Text27 = first.Text27 + ",";
                             
-                                first.Text27 = first.Text27 + "CT" + second.ID.ToString();
+                //                first.Text27 = first.Text27 + "CT" + second.ID.ToString();
 
-                            if (second.Text27 != "" && second.Text27 != null)
-                                second.Text27 = second.Text27 + ",";
+                //            if (second.Text27 != "" && second.Text27 != null)
+                //                second.Text27 = second.Text27 + ",";
                             
-                                second.Text27 = second.Text27 + "CT" + first.ID.ToString();                 
-                        }
-                        ThisAddIn.SetGanttBarFormat(first, second); 
-                        second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
-                    }
-                    break;
+                //                second.Text27 = second.Text27 + "CT" + first.ID.ToString();                 
+                //        }
+                //        ThisAddIn.SetGanttBarFormat(first, second); 
+                //        second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjStartToStart, 0);
+                //    }
+                //    break;
 
                 case "Contain":
                     bool contained = false;
@@ -493,7 +493,7 @@ namespace Project2013AddIn
                             if (second.Text27 != "" && second.Text27 != null)
                                 second.Text27 = second.Text27 + ",";
                             
-                                second.Text27 = second.Text27 + "O" + first.ID.ToString() + "(" + days.ToString() + "),";                       
+                                second.Text27 = second.Text27 + "O" + first.ID.ToString() + "(" + days.ToString() + ")";                       
                         }
                         ThisAddIn.SetGanttBarFormat(first, second);
                     }

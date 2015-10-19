@@ -15,32 +15,28 @@ namespace Project2013AddIn
         {
         }
 
-        public void btnconcurrent_Click(object sender, RibbonControlEventArgs e)
-        {
-            AddBinary Relation = new AddBinary();
-            Relation.ComboBoxRela.SelectedItem = "Concurrent";
-            Relation.Show();
-         }
-
         private void btnContain_Click(object sender, RibbonControlEventArgs e)
         {
             AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Contain";
             Relation.NumericDays.Enabled = false;
+            Relation.btnMoreTasks.Enabled = false;
             Relation.Show();
         }
 
         private void btnDisjoint_Click(object sender, RibbonControlEventArgs e)
         {
-            AddMultiple Relation = new AddMultiple();
-            Relation.comboBoxRelation.SelectedItem = "Disjoint";
+            AddBinary Relation = new AddBinary();
+            Relation.ComboBoxRela.SelectedItem = "Disjoint";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
         }
 
         private void btnMeet_Click(object sender, RibbonControlEventArgs e)
         {
-            AddMultiple Relation = new AddMultiple();
-            Relation.comboBoxRelation.SelectedItem = "Meet";
+            AddBinary Relation = new AddBinary();
+            Relation.ComboBoxRela.SelectedItem = "Meet";
+            Relation.NumericDays.Enabled = false;
             Relation.Show();
         }
 
@@ -48,6 +44,7 @@ namespace Project2013AddIn
         {
             AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Overlap";
+            Relation.btnMoreTasks.Enabled = false;
             Relation.Show();
         }
 
@@ -125,7 +122,17 @@ namespace Project2013AddIn
 
         private void buttonBetween_Click(object sender, RibbonControlEventArgs e)
         {
+            AddUnary constraint = new AddUnary();
+            constraint.comboBoxConstraint.SelectedItem = "Between";
+            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
+            constraint.labelDate1.Text = "Start Date";
+            constraint.labelDate2.Text = "End Date";
+            constraint.Show();
+        }
 
+        private void btnConditionalTask_Click(object sender, RibbonControlEventArgs e)
+        {
+            
         }
 
 

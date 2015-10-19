@@ -36,12 +36,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(newPDM));
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group5 = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.btnContain = this.Factory.CreateRibbonButton();
             this.btnDisjoint = this.Factory.CreateRibbonButton();
             this.btnMeet = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.btnconcurrent = this.Factory.CreateRibbonButton();
-            this.btnContain = this.Factory.CreateRibbonButton();
             this.btnOverlap = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.buttonBetween = this.Factory.CreateRibbonButton();
@@ -54,20 +52,19 @@
             this.btnView = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
-            this.btnMetaint = this.Factory.CreateRibbonButton();
-            this.btnAltSch = this.Factory.CreateRibbonButton();
+            this.btnOptimization = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
+            this.btnConditionalTask = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.group5.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.Control.SuspendLayout();
             this.group3.SuspendLayout();
+            this.group4.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group5);
             this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.Control);
@@ -76,12 +73,24 @@
             this.tab1.Label = "PDM++";
             this.tab1.Name = "tab1";
             // 
-            // group5
+            // group1
             // 
-            this.group5.Items.Add(this.btnDisjoint);
-            this.group5.Items.Add(this.btnMeet);
-            this.group5.Label = "Multiple Relationship";
-            this.group5.Name = "group5";
+            this.group1.Items.Add(this.btnContain);
+            this.group1.Items.Add(this.btnDisjoint);
+            this.group1.Items.Add(this.btnMeet);
+            this.group1.Items.Add(this.btnOverlap);
+            this.group1.Label = "Binary Relationship";
+            this.group1.Name = "group1";
+            // 
+            // btnContain
+            // 
+            this.btnContain.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnContain.Image = ((System.Drawing.Image)(resources.GetObject("btnContain.Image")));
+            this.btnContain.Label = "Contain (C)";
+            this.btnContain.Name = "btnContain";
+            this.btnContain.ScreenTip = "Activity 2 happens only within the duration of Activity 1.";
+            this.btnContain.ShowImage = true;
+            this.btnContain.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnContain_Click);
             // 
             // btnDisjoint
             // 
@@ -102,34 +111,6 @@
             this.btnMeet.ScreenTip = "Activity 2 starts immediately after Activity 1 or vice versa.";
             this.btnMeet.ShowImage = true;
             this.btnMeet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnMeet_Click);
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.btnconcurrent);
-            this.group1.Items.Add(this.btnContain);
-            this.group1.Items.Add(this.btnOverlap);
-            this.group1.Label = "Binary Relationship";
-            this.group1.Name = "group1";
-            // 
-            // btnconcurrent
-            // 
-            this.btnconcurrent.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnconcurrent.Image = ((System.Drawing.Image)(resources.GetObject("btnconcurrent.Image")));
-            this.btnconcurrent.Label = "Concurrent (CT)";
-            this.btnconcurrent.Name = "btnconcurrent";
-            this.btnconcurrent.ScreenTip = "Two activities start and end at the same time.";
-            this.btnconcurrent.ShowImage = true;
-            this.btnconcurrent.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnconcurrent_Click);
-            // 
-            // btnContain
-            // 
-            this.btnContain.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnContain.Image = ((System.Drawing.Image)(resources.GetObject("btnContain.Image")));
-            this.btnContain.Label = "Contain (CN)";
-            this.btnContain.Name = "btnContain";
-            this.btnContain.ScreenTip = "Activity 2 happens only within the duration of Activity 1.";
-            this.btnContain.ShowImage = true;
-            this.btnContain.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnContain_Click);
             // 
             // btnOverlap
             // 
@@ -233,25 +214,32 @@
             // 
             // group3
             // 
-            this.group3.Items.Add(this.btnMetaint);
-            this.group3.Items.Add(this.btnAltSch);
-            this.group3.Label = "Alternative Schedule";
+            this.group3.Items.Add(this.btnOptimization);
+            this.group3.Label = "Optimization";
             this.group3.Name = "group3";
             // 
-            // btnMetaint
+            // btnOptimization
             // 
-            this.btnMetaint.Label = "Meta Interval";
-            this.btnMetaint.Name = "btnMetaint";
-            // 
-            // btnAltSch
-            // 
-            this.btnAltSch.Label = "Alternative Schedule";
-            this.btnAltSch.Name = "btnAltSch";
+            this.btnOptimization.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnOptimization.Image = ((System.Drawing.Image)(resources.GetObject("btnOptimization.Image")));
+            this.btnOptimization.Label = "Optimization";
+            this.btnOptimization.Name = "btnOptimization";
+            this.btnOptimization.ShowImage = true;
             // 
             // group4
             // 
+            this.group4.Items.Add(this.btnConditionalTask);
             this.group4.Label = "Dynamic Requirement";
             this.group4.Name = "group4";
+            // 
+            // btnConditionalTask
+            // 
+            this.btnConditionalTask.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnConditionalTask.Image = ((System.Drawing.Image)(resources.GetObject("btnConditionalTask.Image")));
+            this.btnConditionalTask.Label = "Conditional Task";
+            this.btnConditionalTask.Name = "btnConditionalTask";
+            this.btnConditionalTask.ShowImage = true;
+            this.btnConditionalTask.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConditionalTask_Click);
             // 
             // newPDM
             // 
@@ -261,8 +249,6 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group5.ResumeLayout(false);
-            this.group5.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
@@ -271,6 +257,8 @@
             this.Control.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
+            this.group4.ResumeLayout(false);
+            this.group4.PerformLayout();
 
         }
 
@@ -278,7 +266,6 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnconcurrent;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnContain;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDisjoint;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMeet;
@@ -290,13 +277,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStartaft;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStartbf;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMetaint;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAltSch;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnOptimization;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConditionalTask;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Control;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnView;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdate;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonBetween;
     }
 
