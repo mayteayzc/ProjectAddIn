@@ -38,7 +38,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.NumericDays = new System.Windows.Forms.NumericUpDown();
-            this.btnMoreTasks = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericDays)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,7 +56,7 @@
             this.ComboBoxAct2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.ComboBoxAct2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ComboBoxAct2.FormattingEnabled = true;
-            this.ComboBoxAct2.Location = new System.Drawing.Point(205, 53);
+            this.ComboBoxAct2.Location = new System.Drawing.Point(21, 117);
             this.ComboBoxAct2.Name = "ComboBoxAct2";
             this.ComboBoxAct2.Size = new System.Drawing.Size(145, 21);
             this.ComboBoxAct2.TabIndex = 1;
@@ -72,7 +71,7 @@
             "Disjoint",
             "Meet",
             "Overlap"});
-            this.ComboBoxRela.Location = new System.Drawing.Point(390, 53);
+            this.ComboBoxRela.Location = new System.Drawing.Point(21, 210);
             this.ComboBoxRela.Name = "ComboBoxRela";
             this.ComboBoxRela.Size = new System.Drawing.Size(145, 21);
             this.ComboBoxRela.TabIndex = 2;
@@ -90,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(258, 33);
+            this.label2.Location = new System.Drawing.Point(68, 101);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 4;
@@ -99,7 +98,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(432, 33);
+            this.label3.Location = new System.Drawing.Point(54, 194);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 5;
@@ -107,7 +106,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(485, 108);
+            this.btnOK.Location = new System.Drawing.Point(39, 358);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(90, 23);
             this.btnOK.TabIndex = 6;
@@ -117,7 +116,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(595, 108);
+            this.btnCancel.Location = new System.Drawing.Point(151, 358);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 23);
             this.btnCancel.TabIndex = 7;
@@ -128,7 +127,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(606, 33);
+            this.label4.Location = new System.Drawing.Point(65, 259);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 13);
             this.label4.TabIndex = 10;
@@ -136,20 +135,10 @@
             // 
             // NumericDays
             // 
-            this.NumericDays.Location = new System.Drawing.Point(565, 54);
+            this.NumericDays.Location = new System.Drawing.Point(21, 275);
             this.NumericDays.Name = "NumericDays";
-            this.NumericDays.Size = new System.Drawing.Size(120, 20);
+            this.NumericDays.Size = new System.Drawing.Size(145, 20);
             this.NumericDays.TabIndex = 11;
-            // 
-            // btnMoreTasks
-            // 
-            this.btnMoreTasks.Location = new System.Drawing.Point(359, 108);
-            this.btnMoreTasks.Name = "btnMoreTasks";
-            this.btnMoreTasks.Size = new System.Drawing.Size(107, 23);
-            this.btnMoreTasks.TabIndex = 12;
-            this.btnMoreTasks.Text = "More Tasks";
-            this.btnMoreTasks.UseVisualStyleBackColor = true;
-            this.btnMoreTasks.Click += new System.EventHandler(this.btnMoreTasks_Click);
             // 
             // AddBinary
             // 
@@ -157,8 +146,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(697, 166);
-            this.Controls.Add(this.btnMoreTasks);
+            this.ClientSize = new System.Drawing.Size(297, 393);
             this.Controls.Add(this.NumericDays);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
@@ -193,7 +181,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown NumericDays;
-        public System.Windows.Forms.Button btnMoreTasks;
 
     }
 }

@@ -48,18 +48,15 @@
             this.btnDuebf = this.Factory.CreateRibbonButton();
             this.btnStartaft = this.Factory.CreateRibbonButton();
             this.btnStartbf = this.Factory.CreateRibbonButton();
-            this.Control = this.Factory.CreateRibbonGroup();
+            this.Manage = this.Factory.CreateRibbonGroup();
             this.btnView = this.Factory.CreateRibbonButton();
-            this.btnUpdate = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
             this.btnOptimization = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.btnConditionalTask = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
-            this.Control.SuspendLayout();
-            this.group3.SuspendLayout();
+            this.Manage.SuspendLayout();
             this.group4.SuspendLayout();
             // 
             // tab1
@@ -67,8 +64,7 @@
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.group2);
-            this.tab1.Groups.Add(this.Control);
-            this.tab1.Groups.Add(this.group3);
+            this.tab1.Groups.Add(this.Manage);
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "PDM++";
             this.tab1.Name = "tab1";
@@ -187,12 +183,12 @@
             this.btnStartbf.ShowImage = true;
             this.btnStartbf.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStartbf_Click);
             // 
-            // Control
+            // Manage
             // 
-            this.Control.Items.Add(this.btnView);
-            this.Control.Items.Add(this.btnUpdate);
-            this.Control.Label = "Control";
-            this.Control.Name = "Control";
+            this.Manage.Items.Add(this.btnView);
+            this.Manage.Items.Add(this.btnOptimization);
+            this.Manage.Label = "Manage";
+            this.Manage.Name = "Manage";
             // 
             // btnView
             // 
@@ -203,26 +199,11 @@
             this.btnView.ShowImage = true;
             this.btnView.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnViewDetail_Click);
             // 
-            // btnUpdate
-            // 
-            this.btnUpdate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
-            this.btnUpdate.Label = "Update Schedule";
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.ShowImage = true;
-            this.btnUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdate_Click);
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.btnOptimization);
-            this.group3.Label = "Optimization";
-            this.group3.Name = "group3";
-            // 
             // btnOptimization
             // 
             this.btnOptimization.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnOptimization.Image = ((System.Drawing.Image)(resources.GetObject("btnOptimization.Image")));
-            this.btnOptimization.Label = "Optimization";
+            this.btnOptimization.Label = "Heuristic Optimization";
             this.btnOptimization.Name = "btnOptimization";
             this.btnOptimization.ShowImage = true;
             // 
@@ -253,10 +234,8 @@
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
-            this.Control.ResumeLayout(false);
-            this.Control.PerformLayout();
-            this.group3.ResumeLayout(false);
-            this.group3.PerformLayout();
+            this.Manage.ResumeLayout(false);
+            this.Manage.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
 
@@ -276,13 +255,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDuebf;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStartaft;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStartbf;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnOptimization;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConditionalTask;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup Control;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup Manage;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnView;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonBetween;
     }
 

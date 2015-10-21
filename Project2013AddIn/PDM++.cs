@@ -20,7 +20,6 @@ namespace Project2013AddIn
             AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Contain";
             Relation.NumericDays.Enabled = false;
-            Relation.btnMoreTasks.Enabled = false;
             Relation.Show();
         }
 
@@ -44,7 +43,6 @@ namespace Project2013AddIn
         {
             AddBinary Relation = new AddBinary();
             Relation.ComboBoxRela.SelectedItem = "Overlap";
-            Relation.btnMoreTasks.Enabled = false;
             Relation.Show();
         }
 

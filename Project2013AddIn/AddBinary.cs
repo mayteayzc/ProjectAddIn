@@ -90,7 +90,7 @@ namespace Project2013AddIn
                     MessageBox.Show("Error: Tasks can not be found.");
                 }
 
-                bool success=ThisAddIn.BinaryRelation(id1, id2, relation, days,true);
+                bool success=ThisAddIn.BinaryRelation(id1, id2, relation, days);
 
                 if (success)                    
                     this.Hide();
@@ -112,19 +112,10 @@ namespace Project2013AddIn
             else
                 NumericDays.Enabled=false;
 
-            if ((ComboBoxRela.SelectedItem.ToString() == "Meet") || (ComboBoxRela.SelectedItem.ToString() == "Disjoint"))
-                this.btnMoreTasks.Enabled = true;
-            else
-                this.btnMoreTasks.Enabled = false;
         }
 
-        private void btnMoreTasks_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            MoreTasks MoreTk = new MoreTasks();
-            MoreTk.comboBoxRelation.SelectedItem = this.ComboBoxRela.SelectedItem.ToString();
-            MoreTk.Show();
-        }
+
+
 
 }
 } 

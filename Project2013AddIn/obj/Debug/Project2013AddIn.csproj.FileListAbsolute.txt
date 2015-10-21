@@ -15,6 +15,4 @@ D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.ViewRe
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.csproj.GenerateResource.Cache
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.dll
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.pdb
-D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.AddMultiple.resources
-D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.MoreTasks.resources
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.ConditonalTask.resources
