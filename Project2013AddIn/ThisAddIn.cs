@@ -188,10 +188,14 @@ namespace Project2013AddIn
             }
         }
 
-        static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days)
+        static public bool BinaryTGA(int id1, int id2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            //MessageBox.Show(project.ProjectFinish.ToString());
+            //check if there is exisiting binary relationships
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+            //problem with this method: must do sth like select a cell before applying pdm++
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
 
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
@@ -223,11 +227,7 @@ namespace Project2013AddIn
             }
             
             int i = 1;
-            //check if there is exisiting binary relationships
-             MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            //problem with this method: must do sth like select a cell before applying pdm++
-            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
-                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
+            
             foreach (MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
@@ -356,41 +356,13 @@ namespace Project2013AddIn
 
                     ThisAddIn.SetGanttBarFormat(first, second);  
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
-                    return true;
+                    processed= true;
+                    break;
 
 
                 case "Meet":
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
-                    {
-                        //just in case garbage in that second start on weekend.
-                        if (second.Start.DayOfWeek == DayOfWeek.Saturday)
-                        {
-                            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
-                                first.Start = first.Start.AddDays(1);
-                        }
-
-                        if (second.Start.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            while (DateTime.Compare(first.Finish.AddDays(2), second.Start) < 0)
-                                first.Start = first.Start.AddDays(1);
-                        }
-
-                        if (second.Start.DayOfWeek == DayOfWeek.Monday)
-                        {
-                            while (DateTime.Compare(first.Finish.AddDays(3), second.Start) < 0)
-                                first.Start = first.Start.AddDays(1);
-                        }
-                        else
-                        {
-                            while (DateTime.Compare(first.Finish.AddDays(1), second.Start) < 0)
-                                first.Start = first.Start.AddDays(1);
-                        }
-
-                    }
-                    else
-                    {
-                        second.Start = first.Finish;
-                    }
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, 0);
 
                     if (first.Text27 != "" && first.Text27 != null)
                         first.Text27 = first.Text27 + ",";
@@ -404,7 +376,9 @@ namespace Project2013AddIn
 
                     ThisAddIn.SetGanttBarFormat(first, second); 
                     second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
-                    return true;
+                    processed = true;
+                    break;
+
 
                 case "Overlap":
                     //here is at least, for overlap more than specified days, no change is made.
@@ -416,33 +390,6 @@ namespace Project2013AddIn
                     }
                     else
                     {
-                        //if (DateTime.Compare(first.Finish, second.Start) < 0)
-                        //{
-                        //    while (DateTime.Compare(first.Finish, second.Start) < 0)
-                        //        first.Start = first.Start.AddDays(1);
-                        //}
-
-                        //int D = 0;
-                        //DateTime reference = second.Start;
-                        //while (D != days)
-                        //{
-                        //    //Count overlap days.
-                        //    while (DateTime.Compare(reference, first.Finish) < 0)
-                        //    {
-                        //        if (reference.DayOfWeek == DayOfWeek.Monday || reference.DayOfWeek == DayOfWeek.Tuesday ||
-                        //            reference.DayOfWeek == DayOfWeek.Wednesday || reference.DayOfWeek == DayOfWeek.Thursday ||
-                        //            reference.DayOfWeek == DayOfWeek.Friday)
-                        //            D = D + 1;
-                        //        reference = reference.AddDays(1);
-                        //    }
-
-                        //    if (D > days || D == days)
-                        //        break;
-                        //    first.Start = first.Start.AddDays(1);
-                        //    reference = second.Start;
-                        //    D = 0;
-                        //}
-                       
                         if (first.Text27 != "" && first.Text27 != null)
                             first.Text27 = first.Text27 + ",";
                           
@@ -453,7 +400,7 @@ namespace Project2013AddIn
                             
                             second.Text27 = second.Text27 + "O" + first.ID.ToString() + "(" + days.ToString() + ")";   
                         
-                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, days);
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, days*480);
                         ThisAddIn.SetGanttBarFormat(first, second);
                         processed = true;
                      }
@@ -476,10 +423,111 @@ namespace Project2013AddIn
             return true;
         }
 
-        static public bool BinaryCheck (int id1, int id2, string binaryrela,int days)
+        static public bool BinaryTGA_Check(int id1, int id2, string binaryRelationship, int days)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            MSProject.Task first;
+            MSProject.Task second;
+
+            if (DateTime.Compare(project.Tasks.UniqueID[id2].Start, project.Tasks.UniqueID[id1].Start) < 0)
+            {
+                first = project.Tasks.UniqueID[id2];
+                second = project.Tasks.UniqueID[id1];
+            }
+            else
+            {
+                first = project.Tasks.UniqueID[id1];
+                second = project.Tasks.UniqueID[id2];
+            }
+
+            first.Manual = true;
+            second.Manual = true;
+            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+            project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+
+            switch (binaryRelationship)
+            {
+                case "Contain":
+                    bool contained = false;
+                    MSProject.Task longer, shorter;
+                    if (second.Duration > first.Duration)
+                    {
+                        longer = second;
+                        shorter = first;
+                    }
+                    else
+                    {
+                        longer = first;
+                        shorter = second;
+                    }
+
+                    if (DateTime.Compare(first.Finish, second.Finish) < 0)
+                    {
+                        while (!contained)
+                        {
+                            first.Start = first.Start.AddDays(1);
+                            if (DateTime.Compare(first.Finish, second.Finish) == 0)
+                            {
+                                contained = true;
+                                shorter.TaskDependencies.Add(longer, MSProject.PjTaskLinkType.pjFinishToFinish, 0);
+                            }
+
+                            if (DateTime.Compare(first.Start, second.Start) == 0)
+                            {
+                                contained = true;
+                                shorter.TaskDependencies.Add(longer, MSProject.PjTaskLinkType.pjStartToStart, 0);
+                            }
+                        }
+                    }
+                    else
+                        shorter.TaskDependencies.Add(longer, MSProject.PjTaskLinkType.pjStartToStart, 0);
+                    break;
+
+                case "Disjoint":
+                    //only change when overlap.
+                    if (DateTime.Compare(first.Finish, second.Start) > 0)
+                        second.Start = first.Finish;
+
+                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                    break;
+
+
+                case "Meet":
+                    if (DateTime.Compare(first.Finish, second.Start) < 0)
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, 0);
+                    else
+                        second.Start = first.Finish;
+
+                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                    break;
+
+
+                case "Overlap":
+                    //here is at least, for overlap more than specified days, no change is made.
+                    //by default everyday includes 8 working hrs, 480 mins.
+                    if (days > first.Duration / 480 || days > second.Duration / 480)
+                    {
+                        MessageBox.Show("Error: Overlap days cannot be longer than the durations of the tasks " + "(" + first.Name.ToString() + "," + second.Name.ToString() + ").");
+                        return false;
+                    }
+                    else
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, days * 480);
+
+                    break;
+            }
+          return true;
+        }
+
+        static public bool BinaryFGA (int id1, int id2, string binaryrela,int days)
         {
             return true;
         }
+
+        static public bool BinaryFGA_Check (int id1, int id2, string binaryrela, int days)
+        {
+            return true;
+        }
+
         static public bool UnaryRelation(string taskname, string unaryRelationship, DateTime date1, DateTime date2)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
@@ -524,7 +572,7 @@ namespace Project2013AddIn
                 int l4;
                 int p3 = Unary.IndexOf(";");
                 int p4;
-                string tk, re, d1, d2;
+                string tk, re, d1, d2, s;
 
                 while (p3 > 0)
                 {
@@ -546,6 +594,13 @@ namespace Project2013AddIn
                     UnaryData = UnaryData.Substring(p4 + 1, l4 - p4 - 1);
                     d2 = UnaryData;
 
+                    //for can not occur, it also stores the data of whether can split or not, need to process
+                    if (re.StartsWith("C"))
+                    {
+                        s = re.Substring(re.IndexOf("/"));
+                        re = "Can Not Occur";
+                    }
+
                     //can not occur can coexit with all others, the remaining cant coexit with each other.
                     if (tk == thistask.Name.ToString())
                     {
@@ -562,16 +617,24 @@ namespace Project2013AddIn
                     l3 = Unary.Length;
                 }
 
-
+                string split="";
                 switch (unaryRelationship)
                 {
                     case "Can Not Occur":
                         DialogResult result = MessageBox.Show("Can " + thistask.Name.ToString() + " be split?", "Can Not Occur", MessageBoxButtons.YesNoCancel);
                         if (result == DialogResult.Yes)
+                        {
                             thistask.Split(date1, date2);
+                            split = "y";
+                        }
+                            
                         if (result == DialogResult.No)
+                        {
+                            split = "n";
                             if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Start) > 0)
                                 thistask.Start = date2;
+                        }
+                            
                         break;
 
                     case "Due After"://what does due after means exactly?? if due after 30/4, then finish 30/04 can? or must be 01/05??
@@ -608,22 +671,21 @@ namespace Project2013AddIn
                         thistask.ConstraintDate = date1;
                         thistask.Manual = true;
                         break;
-
                 }
 
-
-                string UnaryString = project.Tasks.UniqueID[1].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
-                string NewUnaryString;
                 int i = 1;
                 foreach (MSProject.Task task in project.Tasks)
                 {
                     if (task.ID == 1)
                         i = task.UniqueID;
                 }
+  
+                string UnaryString = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+                string NewUnaryString;
 
                 if (unaryRelationship == "Can Not Occur")
                 {
-                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
+                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship+"/"+split+","+ date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
                     project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), NewUnaryString);
                 }
                 else
@@ -636,6 +698,100 @@ namespace Project2013AddIn
             
         }
        
+        static public void UnaryCheck (string taskname, string unaryRelationship, DateTime date1, DateTime date2)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            int id = 0;
+            bool found1 = false;
+
+            foreach (MSProject.Task task in project.Tasks)
+            {
+                if (task.Name.Equals(taskname))
+                {
+                    id = task.UniqueID;
+                    found1 = true;
+                }
+            }
+
+            if (found1 == false)
+            {
+                MessageBox.Show("Error: Task can not be found.");
+                return;
+            }
+
+            else
+            {
+                MSProject.Task thistask = project.Tasks.UniqueID[id];
+                //need to remove the constraint first
+                string sp = "";
+                
+                if(unaryRelationship.StartsWith("C"))
+                {
+                    sp = unaryRelationship.Substring(unaryRelationship.IndexOf("/"));
+                    unaryRelationship = "Can Not Occur";
+                }
+
+                switch (unaryRelationship)
+                {
+                    case "Can Not Occur":                     
+                        if (sp=="y")
+                            thistask.Split(date1, date2);
+                        if (sp=="n")
+                        {
+                            if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Start) > 0)
+                                thistask.Start = date2;
+                        }
+                        break;
+
+                    case "Due After":
+                        thistask.Manual = false;
+                        thistask.ConstraintType = MSProject.PjConstraint.pjFNET; //FinishNoEarlierThan	Value=6. Finish no earlier than (FNET).
+                        thistask.ConstraintDate = date1;
+                        thistask.Manual = true;
+                        break;
+
+                    case "Due Before":
+                        thistask.Manual = false;
+                        thistask.ConstraintType = MSProject.PjConstraint.pjFNLT;//FinishNoLaterThan	Value=7. Finish no later than (FNLT).
+                        thistask.ConstraintDate = date1;
+                        thistask.Manual = true;
+                        break;
+
+                    case "Start After"://similar question as due after.
+                        thistask.Manual = false;
+                        thistask.ConstraintType = MSProject.PjConstraint.pjSNET;//StartNoEarlierThan	Value=4. Start no earlier than (SNET).
+                        thistask.ConstraintDate = date1;
+                        thistask.Manual = true;
+                        break;
+
+                    case "Start Before":
+                        thistask.Manual = false;
+                        thistask.ConstraintType = MSProject.PjConstraint.pjSNLT;////StartNoLaterThan	Value=5. Start no later than (SNLT).
+                        thistask.ConstraintDate = date1;
+                        thistask.Manual = true;
+                        break;
+                }
+               
+                return;
+            }
+            
+        
+        }
+
+        static public void GeneticAlgorithm()
+        {
+            //check if there is more than one relationships
+
+            
+        }
+
+        static public DateTime GetFinishDate(Array chromosome)
+        {
+            DateTime finishdate = DateTime.Today;
+            //call binayTGA and binaryFGA many times depent on input array argument
+            //return finishdate as fitness value to GA
+            return finishdate;
+        }
 
         static public void SetGanttBarFormat (MSProject.Task tk1, MSProject.Task tk2)
         {
@@ -647,6 +803,15 @@ namespace Project2013AddIn
             project.Application.SelectRow(tk2.ID, false, 0, false, false);
             project.Application.GanttBarFormat(Type.Missing, Type.Missing, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjYellow, MSProject.PjBarShape.pjRectangleBottom, MSProject.PjFillPattern.pjSolidFillPattern, MSProject.PjColor.pjFuchsia, MSProject.PjBarEndShape.pjNoBarEndShape, MSProject.PjBarType.pjSolid, MSProject.PjColor.pjRed, Type.Missing, "Text27", Type.Missing, Type.Missing, Type.Missing, false, Type.Missing);
         }
+
+        static public void ResetGanttBarFormat (MSProject.Task tk)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            project.Application.SelectRow(tk.ID, false, 0, false, false);
+            project.Application.GanttBarFormat(Type.Missing,Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true, Type.Missing);
+
+        }
+
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
 

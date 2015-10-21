@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
 using MSProject = Microsoft.Office.Interop.MSProject;
 using HostApplication = Microsoft.Office.Interop.MSProject.Application;
@@ -131,6 +132,12 @@ namespace Project2013AddIn
         private void btnConditionalTask_Click(object sender, RibbonControlEventArgs e)
         {
             
+        }
+
+        private void btnOptimization_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (MessageBox.Show("This function will calculate the near optimum arrangement of PDM++ binary relationships based using heuristic approch, click Yes to continue.", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                ThisAddIn.GeneticAlgorithm();
         }
 
 

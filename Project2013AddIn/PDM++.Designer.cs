@@ -206,6 +206,7 @@
             this.btnOptimization.Label = "Heuristic Optimization";
             this.btnOptimization.Name = "btnOptimization";
             this.btnOptimization.ShowImage = true;
+            this.btnOptimization.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnOptimization_Click);
             // 
             // group4
             // 

@@ -131,12 +131,13 @@ namespace Project2013AddIn
         {
             if(MessageBox.Show("Delete current selection?","Confirmed",MessageBoxButtons.YesNo)==DialogResult.Yes)
             {
-                this.btnCancel.IsAccessible = false; //after delete, must update
+                this.btnOK.IsAccessible = false; //after delete, must update
                 if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageBinary"])
                 {
                     //record down the information
                     string tk1 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[0].Value.ToString();
                     string tk2 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
+                    string rela =dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value.ToString();
                     int id1 = 1;
                     int id2 = 1;
                     foreach(MSProject.Task task in project.Tasks)
@@ -148,6 +149,54 @@ namespace Project2013AddIn
                     }
                     //remove links
                     project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    //delete related records in text27
+                    string note1 = project.Tasks.UniqueID[id1].Text27;
+                    string note2 = project.Tasks.UniqueID[id2].Text27;
+                    string relation = "";
+                    string remove1, remove2;
+
+                    switch (rela)
+                    {
+                        case "Contain":
+                            relation="CN";
+                            break;
+
+                        case "Disjoint":
+                            relation="D";
+                            break;
+
+                        case "Meet":
+                            relation="M";
+                            break;
+
+                        case "Overlap":
+                            relation="O";
+                            break;
+                    }
+
+                    remove1=relation+project.Tasks.UniqueID[id2].ID.ToString();
+                    remove2=relation+project.Tasks.UniqueID[id1].ID.ToString();
+
+                    if (note1.IndexOf(",") > 0)
+                        note1 = note1.Replace("," + remove1, "");
+
+                    else
+                        note1 = note1.Replace(remove1, "");
+
+                    if (note2.IndexOf(",") > 0)
+                        note2=note2.Replace("," + remove2, "");
+                    else
+                        note2=note2.Replace(remove2, "");
+
+                    project.Tasks.UniqueID[id1].Text27 = note1;
+                    project.Tasks.UniqueID[id2].Text27 = note2;
+
+                    //reset gantt chart style
+                    if (note1 == "" || note1 == null)
+                        ThisAddIn.ResetGanttBarFormat(project.Tasks.UniqueID[id1]);
+
+                    if (note2 == "" || note2 == null)
+                        ThisAddIn.ResetGanttBarFormat(project.Tasks.UniqueID[id2]);
                    
                     //delete records
                     dataGridView1.Rows.RemoveAt(this.dataGridView1.CurrentRow.Index);
@@ -216,7 +265,7 @@ namespace Project2013AddIn
             string Binary="";
             while (k < count)
             {
-                DataGridViewRow row1 = dataGridView1.Rows[i];
+                DataGridViewRow row1 = dataGridView1.Rows[k];
                 string days = row1.Cells[3].Value.ToString();
                 string tk1, tk2,rela;
                 tk1 = row1.Cells[0].Value.ToString();
@@ -232,7 +281,7 @@ namespace Project2013AddIn
             this.Hide();  
     }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
             this.Hide();
         }

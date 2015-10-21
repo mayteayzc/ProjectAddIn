@@ -90,7 +90,7 @@ namespace Project2013AddIn
                     MessageBox.Show("Error: Tasks can not be found.");
                 }
 
-                bool success=ThisAddIn.BinaryRelation(id1, id2, relation, days);
+                bool success=ThisAddIn.BinaryTGA(id1, id2, relation, days);
 
                 if (success)                    
                     this.Hide();
