@@ -442,8 +442,20 @@ namespace Project2013AddIn
 
             first.Manual = true;
             second.Manual = true;
-            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
-            project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+            bool id1_before_id2 = true;
+            //to remove the existing links between 1 and 2, check which one is the predecessor first.
+            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+            {
+                if (predecessor.UniqueID == project.Tasks.UniqueID[id2].UniqueID)
+                {
+                    id1_before_id2 = false;
+                    project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                }
+
+            }
+
+            if (id1_before_id2)
+                project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
 
             switch (binaryRelationship)
             {
@@ -518,13 +530,84 @@ namespace Project2013AddIn
           return true;
         }
 
-        static public bool BinaryFGA (int id1, int id2, string binaryrela,int days)
+        static public bool BinaryFGA(int id1, int id2, string binaryrela, int days)
         {
-            return true;
-        }
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            MSProject.Task first;
+            MSProject.Task second;
 
-        static public bool BinaryFGA_Check (int id1, int id2, string binaryrela, int days)
-        {
+            if (DateTime.Compare(project.Tasks.UniqueID[id2].Start, project.Tasks.UniqueID[id1].Start) < 0)
+            {
+                first = project.Tasks.UniqueID[id2];
+                second = project.Tasks.UniqueID[id1];
+            }
+            else
+            {
+                first = project.Tasks.UniqueID[id1];
+                second = project.Tasks.UniqueID[id2];
+            }
+
+            first.Manual = true;
+            second.Manual = true;
+            bool id1_before_id2=true;
+            //to remove the existing links between 1 and 2, check which one is the predecessor first.
+            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+            {
+                if (predecessor.UniqueID == id2)
+                {
+                   id1_before_id2 = false;
+                   project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                }
+                
+            }
+
+            if(id1_before_id2)
+            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+
+            switch (binaryrela)
+            {
+                case "Contain":
+                    MSProject.Task longer, shorter;
+                    if (second.Duration > first.Duration)
+                    {
+                        longer = second;
+                        shorter = first;
+                    }
+                    else
+                    {
+                        longer = first;
+                        shorter = second;
+                    }
+                    //shift the first task, depends on the length of the first, constain at start or at end
+                    //no need to format gantt bar, because they have been formatted when assigned, here is only to change the sequence or arrangement
+                    if (longer==first)                      
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToStart, 0);
+                    else
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjFinishToFinish, 0);
+                    break;
+
+                case "Disjoint":
+                    //only change when overlap.
+                    //if it is alrealy in disjoint, then still need to alter the sequence
+                    first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                    break;
+
+                case "Meet":
+                    first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                    break;
+
+                case "Overlap":
+                    //here is at least, for overlap more than specified days, no change is made.
+                    //by default everyday includes 8 working hrs, 480 mins.
+                    if (days > first.Duration / 480 || days > second.Duration / 480)
+                    {
+                        MessageBox.Show("Error: Overlap days cannot be longer than the durations of the tasks " + "(" + first.Name.ToString() + "," + second.Name.ToString() + ").");
+                        return false;
+                    }
+                    else
+                        first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjFinishToFinish, first.Duration-days * 480);
+                    break;
+            }
             return true;
         }
 

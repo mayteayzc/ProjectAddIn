@@ -148,7 +148,21 @@ namespace Project2013AddIn
                             id2 = task.UniqueID;
                     }
                     //remove links
-                    project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    bool id1_before_id2 = true;
+                    //to remove the existing links between 1 and 2, check which one is the predecessor first.
+                    foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+                    {
+                        if (predecessor.UniqueID == id2)
+                        {
+                            id1_before_id2 = false;
+                            project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                        }
+
+                    }
+
+                    if (id1_before_id2)
+                        project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    
                     //delete related records in text27
                     string note1 = project.Tasks.UniqueID[id1].Text27;
                     string note2 = project.Tasks.UniqueID[id2].Text27;
@@ -207,7 +221,7 @@ namespace Project2013AddIn
                     //remove records
                     dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
                     //remove unary constraints
-                    string tk = dataGridView1.Rows[dataGridView2.CurrentRow.Index].Cells[0].Value.ToString();
+                    string tk = dataGridView2.Rows[dataGridView2.CurrentRow.Index].Cells[0].Value.ToString();
                     int id = 1;
                     foreach (MSProject.Task task in project.Tasks)
                     {

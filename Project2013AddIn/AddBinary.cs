@@ -93,9 +93,7 @@ namespace Project2013AddIn
                 bool success=ThisAddIn.BinaryTGA(id1, id2, relation, days);
 
                 if (success)                    
-                    this.Hide();
-
-                    
+                    this.Hide();                  
              }
         }
 
