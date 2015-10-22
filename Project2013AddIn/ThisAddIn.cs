@@ -23,17 +23,14 @@ namespace Project2013AddIn
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             //what if first task has been deleted? use i to find the first visible tasks
             int i = 1;
-            string unary, binary, multiple;
+            string unary, binary;
             MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
             MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            MSProject.PjCustomField MultipleField = MSProject.PjCustomField.pjCustomTaskText28;
 
             if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
                 project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
             if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
                 project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-            if (project.Application.CustomFieldGetName(MultipleField) != "Multiple Relationship")
-                project.Application.CustomFieldRename(MultipleField, "Multiple Relationship", Type.Missing);
 
             foreach (MSProject.Task task in project.Tasks)
             {
@@ -41,7 +38,6 @@ namespace Project2013AddIn
                     i = task.UniqueID;
             }
 
-            multiple = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"));
             binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
             unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
           
@@ -53,7 +49,6 @@ namespace Project2013AddIn
                         i = task.UniqueID;
                 }
                 MSProject.Task tsk2 = project.Tasks.UniqueID[i];
-                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), multiple);
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), binary);
                 tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), unary);
             }
@@ -61,51 +56,6 @@ namespace Project2013AddIn
             DialogResult confirmed= MessageBox.Show("Delete this task will remove all the relationships related to this task.", "Confirm?", MessageBoxButtons.YesNo);
             if(confirmed==DialogResult.Yes)
             {
-                //process Multiple relationship
-                string newmultiple="";
-                bool related=false;
-                string MultipleData1,MultipleData2;
-                int l5 = multiple.Length;
-                //int l6;
-                int p5 = multiple.IndexOf(";");
-                int p6;
-                string rela;
-                string[] tasks = new string[5];
-                int m = 0;
-
-                while (p5 > 0)
-                {
-                    MultipleData1 = multiple.Substring(0, p5);
-                    MultipleData2 = multiple.Substring(0, p5);
-                    p6 = MultipleData2.IndexOf(",");
-                    rela = MultipleData2.Substring(0, p6);
-                    MultipleData2 = MultipleData2.Substring(p6 + 1);
-                    p6 = MultipleData2.IndexOf(",");
-
-                    while (p6 > 0)
-                    {                        
-                        tasks[m] = MultipleData2.Substring(0, p6);
-                        MultipleData2 = MultipleData2.Substring(p6 + 1);
-                        p6 = MultipleData2.IndexOf(",");
-                        m++;
-                    }
-                    tasks[m] = MultipleData2;
-
-                    for (m = 0; m < 5; m++)
-                    {
-                        if (tasks[m] == tsk.Name.ToString())
-                            related = true;
-                    }
-
-                    if (!related)
-                        newmultiple = newmultiple + MultipleData1 + ";";
-
-                    multiple = multiple.Substring(p5 + 1);
-                    p5 = multiple.IndexOf(";");
-                    m = 0;
-
-                }
-
                 //process Binary relationship
                 string BinaryData;
                 string newbinary="";
@@ -113,7 +63,7 @@ namespace Project2013AddIn
                 int l2;
                 int p1 = binary.IndexOf(";");
                 int p2;
-                string tk1, tk2, d;
+                string tk1, tk2, rela, d;
 
                 while (p1 > 0)
                 {
@@ -181,7 +131,6 @@ namespace Project2013AddIn
                 }
 
               //then re-store the relationships without the deleted task.
-              project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Multiple Relationship"), newmultiple);
               project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), newbinary);
               project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), newunary);
 
@@ -863,9 +812,113 @@ namespace Project2013AddIn
 
         static public void GeneticAlgorithm()
         {
-            //check if there is more than one relationships
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
+            //check if there is more than one binary relationships
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+            {
+                MessageBox.Show("There is no PDM++ binary relationships available for optimization.");
+                return;
+            }
             
+            else
+            {
+                string binary;
+                int i = 1;
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.ID == 1)
+                        i = task.UniqueID;
+                }
+                binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+
+                if (binary.IndexOf(";") > 0)
+                {
+                    //namely there are at least 2 binary relationships
+                    //need to count the number of binary relationships, and to store the info abour each relationships
+                    string[] relation;
+                    int[] task1, task2, days;
+                    int recordcount=0;
+                    int l1 = binary.Length;
+                    int l2;
+                    int p1 = binary.IndexOf(";");
+                    int p2;
+                    string BinaryData,tk1, tk2, rela, d;
+                    int id1=0;
+                    int id2=0;
+
+                    while (p1 > 0)
+                    {
+                        BinaryData= binary.Substring(0, p1);
+                        l2 = BinaryData.Length;
+                        p2 = BinaryData.IndexOf(",");
+                        tk1 = BinaryData.Substring(0, p2);
+
+                        BinaryData = BinaryData.Substring(p2+1 , l2 - p2-1);
+                        p2 = BinaryData.IndexOf(",");
+                        tk2 = BinaryData.Substring(0, p2);
+                        l2 = BinaryData.Length;
+
+                        BinaryData = BinaryData.Substring(p2+1 , l2 - p2-1);
+                        p2 = BinaryData.IndexOf(",");
+                        rela = BinaryData.Substring(0, p2);
+                        l2 = BinaryData.Length;
+
+                        BinaryData = BinaryData.Substring(p2 +1, l2 - p2-1);
+                        d = BinaryData;
+
+                        //found corresponding tasks
+                        foreach (MSProject.Task task in project.Tasks)
+                        {
+                            if (task.Name.Equals(tk1))
+                                id1 = task.UniqueID;
+                               
+                            if (task.Name.Equals(tk2))
+                                id2 = task.UniqueID;
+                        }
+
+                        task1[recordcount]=id1;
+                        task2[recordcount]=id2;
+                        relation[recordcount]=rela;
+                        days[recordcount] = Convert.ToInt32(d);
+                        recordcount++;
+
+                        binary = binary.Substring(p1+1 , l1 - p1-1);
+                        p1 = binary.IndexOf(";");
+                        l1 = binary.Length;
+                    }
+
+                    //now knows the number of relationships and details are stored.
+                    //assume population equals the size of records
+                    int population=recordcount;
+                    int[,] chromosome = new int[population,recordcount];
+                    Random rn=new Random();
+
+                    for(int j=0;j<population;j++)
+                    {
+                        for (int k=0;k<recordcount;k++)
+                            chromosome[j, k] = rn.Next(0, 1);
+                    }
+
+                    //evaluate fitness
+                    DateTime[] fitness = new DateTime[population];
+                    for(int f=0;f<population;f++)
+                    {
+                        for (int m=0;m<recordcount;m++)
+                        {
+                            if(chromosome[f,m]==1)
+                            {
+                                ThisAddIn.BinaryTGA(task1[m], task2[m], relation[m], days[m]);
+                            }
+                        }
+                    }
+                }
+                else
+                    return;
+
+                
+            }
         }
 
         static public DateTime GetFinishDate(Array chromosome)
