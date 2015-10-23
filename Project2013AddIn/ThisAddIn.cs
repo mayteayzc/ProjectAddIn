@@ -137,7 +137,7 @@ namespace Project2013AddIn
             }
         }
 
-        static public bool BinaryTGA(int id1, int id2, string binaryRelationship, int days)
+        static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             //check if there is exisiting binary relationships
@@ -372,7 +372,7 @@ namespace Project2013AddIn
             return true;
         }
 
-        static public bool BinaryTGA_Check(int id1, int id2, string binaryRelationship, int days)
+        static public bool BinaryTGA(int id1, int id2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             MSProject.Task first;
@@ -391,21 +391,7 @@ namespace Project2013AddIn
 
             first.Manual = true;
             second.Manual = true;
-            bool id1_before_id2 = true;
-            //to remove the existing links between 1 and 2, check which one is the predecessor first.
-            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
-            {
-                if (predecessor.UniqueID == project.Tasks.UniqueID[id2].UniqueID)
-                {
-                    id1_before_id2 = false;
-                    project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
-                }
-
-            }
-
-            if (id1_before_id2)
-                project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
-
+            
             switch (binaryRelationship)
             {
                 case "Contain":
@@ -498,20 +484,6 @@ namespace Project2013AddIn
 
             first.Manual = true;
             second.Manual = true;
-            bool id1_before_id2=true;
-            //to remove the existing links between 1 and 2, check which one is the predecessor first.
-            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
-            {
-                if (predecessor.UniqueID == id2)
-                {
-                   id1_before_id2 = false;
-                   project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
-                }
-                
-            }
-
-            if(id1_before_id2)
-            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
 
             switch (binaryrela)
             {
@@ -835,8 +807,9 @@ namespace Project2013AddIn
 
                 if (binary.IndexOf(";") > 0)
                 {
-                    //namely there are at least 2 binary relationships
+                    //namely there are at least 1 binary relationships
                     //need to count the number of binary relationships, and to store the info abour each relationships
+                    //count using string.split by ; get count first, before initialize string
                     string[] relation;
                     int[] task1, task2, days;
                     int recordcount=0;
@@ -892,36 +865,161 @@ namespace Project2013AddIn
                     //now knows the number of relationships and details are stored.
                     //assume population equals the size of records
                     int population=recordcount;
-                    int[,] chromosome = new int[population,recordcount];
+                    int[,] gen1 = new int[population,recordcount];
                     Random rn=new Random();
 
                     for(int j=0;j<population;j++)
                     {
                         for (int k=0;k<recordcount;k++)
-                            chromosome[j, k] = rn.Next(0, 1);
+                            gen1[j, k] = rn.Next(0, 1);
                     }
 
                     //evaluate fitness
                     DateTime[] fitness = new DateTime[population];
+                    ThisAddIn.RemoveAllLink();
                     for(int f=0;f<population;f++)
                     {
                         for (int m=0;m<recordcount;m++)
                         {
-                            if(chromosome[f,m]==1)
+                            if (gen1[f, m] == 1) 
+                                ThisAddIn.BinaryTGA(task1[m], task2[m], relation[m], days[m]);                          
+                            else
+                                ThisAddIn.BinaryFGA(task1[m], task2[m], relation[m], days[m]);
+                        }
+                        //after process one chromosome,get the fitness
+                        fitness[f] = ThisAddIn.GetFinishDate();
+                    }
+
+                    int keep = (int)Math.Floor((double)population / 2);
+                    DateTime x;
+                    int[] min = new int[keep];
+
+                    for (int n=0;n<keep;n++)
+                    {
+                        for (int f = n+1; f < population;f++ )
+                        {
+                            if (DateTime.Compare(fitness[n], fitness[f]) > 0)
                             {
-                                ThisAddIn.BinaryTGA(task1[m], task2[m], relation[m], days[m]);
+                                x = fitness[f];
+                                fitness[f] = fitness[n];
+                                fitness[n] = x;
+
+                                min[n] = f;                             
                             }
+
                         }
                     }
-                }
-                else
-                    return;
 
-                
+                    //maintain the elitism
+                    int[,] gen2 = new int[population, recordcount];
+                    for(int j=0;j<keep;j++)
+                    {
+                        for (int k = 0; k < recordcount; k++)
+                            gen2[j, k] = gen1[min[j], k];
+                    }
+
+                    //crossover to get the rest of the population
+                    for (int j=keep-1;j<population;j++)
+                    {
+
+                    }
+
+                }
+                else //no records found, or all records have been deleted
+                    return;              
             }
         }
 
-        static public DateTime GetFinishDate(Array chromosome)
+        static public void RemoveAllLink()
+        {
+            //based on records, just to remove links, and then assign links again TGA/FGA using corresponding functions
+            //no deleting or updating of records
+            //hence no resetformat needed
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
+
+            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
+            {
+                MessageBox.Show("There is no PDM++ binary relationships.");
+                return;
+            }
+
+            else
+            {
+                string binary;
+                int i = 1;
+                foreach (MSProject.Task task in project.Tasks)
+                {
+                    if (task.ID == 1)
+                        i = task.UniqueID;
+                }
+                binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+
+                if (binary.IndexOf(";") > 0)
+                {
+                    //namely there are at least 1 binary relationships
+                    int l1 = binary.Length;
+                    int l2;
+                    int p1 = binary.IndexOf(";");
+                    int p2;
+                    string BinaryData, tk1, tk2;
+                    int id1 = 0;
+                    int id2 = 0;
+
+                    while (p1 > 0)
+                    {
+                        BinaryData = binary.Substring(0, p1);
+                        l2 = BinaryData.Length;
+                        p2 = BinaryData.IndexOf(",");
+                        tk1 = BinaryData.Substring(0, p2);
+
+                        BinaryData = BinaryData.Substring(p2 + 1, l2 - p2 - 1);
+                        p2 = BinaryData.IndexOf(",");
+                        tk2 = BinaryData.Substring(0, p2);
+                        l2 = BinaryData.Length;
+
+                        //found corresponding tasks
+                        foreach (MSProject.Task task in project.Tasks)
+                        {
+                            if (task.Name.Equals(tk1))
+                                id1 = task.UniqueID;
+
+                            if (task.Name.Equals(tk2))
+                                id2 = task.UniqueID;
+                        }
+                        //remove this one record
+                        ThisAddIn.RemoveOneLink(id1, id2);
+
+                        binary = binary.Substring(p1 + 1, l1 - p1 - 1);
+                        p1 = binary.IndexOf(";");
+                        l1 = binary.Length;
+                    }
+                }
+            }
+            //after all binary pdm++ relationships removed, need to auto schedule
+            project.ManuallyScheduledTasksAutoRespectLinks = true;
+        }
+      
+        static public void RemoveOneLink (int id1, int id2)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            bool id1_before_id2 = true;
+
+            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+            {
+                if (predecessor.UniqueID == project.Tasks.UniqueID[id2].UniqueID)
+                {
+                    id1_before_id2 = false;
+                    project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                }
+
+            }
+
+            if (id1_before_id2)
+                project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+        }
+
+        static public DateTime GetFinishDate()
         {
             DateTime finishdate = DateTime.Today;
             //call binayTGA and binaryFGA many times depent on input array argument
