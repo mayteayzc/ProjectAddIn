@@ -136,7 +136,6 @@
             this.buttonBetween.Label = "Between (B)";
             this.buttonBetween.Name = "buttonBetween";
             this.buttonBetween.ShowImage = true;
-            this.buttonBetween.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonBetween_Click);
             // 
             // btnCannot
             // 

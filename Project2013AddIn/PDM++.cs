@@ -110,24 +110,15 @@ namespace Project2013AddIn
             constraint.Show();
         }
 
-        private void btnUpdate_Click(object sender, RibbonControlEventArgs e)
-        {
-            //read from table and update according to the datatable.
-            //same as pressing ok in view relationship
-            //event=viewrelationship.btnok_click?
-            
-            
-        }
-
-        private void buttonBetween_Click(object sender, RibbonControlEventArgs e)
-        {
-            AddUnary constraint = new AddUnary();
-            constraint.comboBoxConstraint.SelectedItem = "Between";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
-            constraint.labelDate1.Text = "Start Date";
-            constraint.labelDate2.Text = "End Date";
-            constraint.Show();
-        }
+        //private void buttonBetween_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    AddUnary constraint = new AddUnary();
+        //    constraint.comboBoxConstraint.SelectedItem = "Between";
+        //    constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
+        //    constraint.labelDate1.Text = "Start Date";
+        //    constraint.labelDate2.Text = "End Date";
+        //    constraint.Show();
+        //}
 
         private void btnConditionalTask_Click(object sender, RibbonControlEventArgs e)
         {
@@ -136,7 +127,7 @@ namespace Project2013AddIn
 
         private void btnOptimization_Click(object sender, RibbonControlEventArgs e)
         {
-            if (MessageBox.Show("This function will calculate the near optimum arrangement of PDM++ binary relationships based using heuristic approch, click Yes to continue.", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("This function will calculate the near optimum arrangement of PDM++ binary relationships based on heuristic approch, click Yes to continue.", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 ThisAddIn.GeneticAlgorithm();
         }
 

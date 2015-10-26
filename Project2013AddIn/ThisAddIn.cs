@@ -324,7 +324,6 @@ namespace Project2013AddIn
                         second.Text27 = second.Text27 + "M" + first.ID.ToString();                  
 
                     ThisAddIn.SetGanttBarFormat(first, second); 
-                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
                     processed = true;
                     break;
 
@@ -804,15 +803,19 @@ namespace Project2013AddIn
                         i = task.UniqueID;
                 }
                 binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+                string[] record=binary.Split(';');
+                int recordcount = record.Count() - 1;
 
                 if (binary.IndexOf(";") > 0)
                 {
                     //namely there are at least 1 binary relationships
                     //need to count the number of binary relationships, and to store the info abour each relationships
                     //count using string.split by ; get count first, before initialize string
-                    string[] relation;
-                    int[] task1, task2, days;
-                    int recordcount=0;
+                    string[] relation=new string[recordcount];
+                    int[] task1=new int[recordcount];
+                    int[] task2 = new int[recordcount];
+                    int[] days=new int[recordcount];
+                    int num = 0;
                     int l1 = binary.Length;
                     int l2;
                     int p1 = binary.IndexOf(";");
@@ -851,11 +854,11 @@ namespace Project2013AddIn
                                 id2 = task.UniqueID;
                         }
 
-                        task1[recordcount]=id1;
-                        task2[recordcount]=id2;
-                        relation[recordcount]=rela;
-                        days[recordcount] = Convert.ToInt32(d);
-                        recordcount++;
+                        task1[num]=id1;
+                        task2[num]=id2;
+                        relation[num]=rela;
+                        days[num] = Convert.ToInt32(d);
+                        num++;
 
                         binary = binary.Substring(p1+1 , l1 - p1-1);
                         p1 = binary.IndexOf(";");
@@ -864,7 +867,7 @@ namespace Project2013AddIn
 
                     //now knows the number of relationships and details are stored.
                     //assume population equals the size of records
-                    int population=recordcount;
+                    int population=recordcount*2;
                     int[,] gen1 = new int[population,recordcount];
                     Random rn=new Random();
 
@@ -874,54 +877,118 @@ namespace Project2013AddIn
                             gen1[j, k] = rn.Next(0, 1);
                     }
 
-                    //evaluate fitness
+                    //generation cycle start here
+                    int[] Best = new int[recordcount];
                     DateTime[] fitness = new DateTime[population];
-                    ThisAddIn.RemoveAllLink();
-                    for(int f=0;f<population;f++)
-                    {
-                        for (int m=0;m<recordcount;m++)
-                        {
-                            if (gen1[f, m] == 1) 
-                                ThisAddIn.BinaryTGA(task1[m], task2[m], relation[m], days[m]);                          
-                            else
-                                ThisAddIn.BinaryFGA(task1[m], task2[m], relation[m], days[m]);
-                        }
-                        //after process one chromosome,get the fitness
-                        fitness[f] = ThisAddIn.GetFinishDate();
-                    }
 
-                    int keep = (int)Math.Floor((double)population / 2);
-                    DateTime x;
-                    int[] min = new int[keep];
-
-                    for (int n=0;n<keep;n++)
+                    for (int generation=0;generation<3;generation++)
                     {
-                        for (int f = n+1; f < population;f++ )
+                        //evaluate fitness                       
+                        ThisAddIn.RemoveAllLink();
+                        for (int f = 0; f < population; f++)
                         {
-                            if (DateTime.Compare(fitness[n], fitness[f]) > 0)
+                            for (int m = 0; m < recordcount; m++)
                             {
-                                x = fitness[f];
-                                fitness[f] = fitness[n];
-                                fitness[n] = x;
-
-                                min[n] = f;                             
+                                if (gen1[f, m] == 1)
+                                    ThisAddIn.BinaryTGA(task1[m], task2[m], relation[m], days[m]);
+                                else
+                                    ThisAddIn.BinaryFGA(task1[m], task2[m], relation[m], days[m]);
                             }
-
+                            //after process one chromosome,get the fitness and then remove all the link
+                            fitness[f] = ThisAddIn.GetFinishDate();
+                            ThisAddIn.RemoveAllLink();
                         }
-                    }
 
-                    //maintain the elitism
-                    int[,] gen2 = new int[population, recordcount];
-                    for(int j=0;j<keep;j++)
-                    {
+                        int keep = (int)Math.Floor((double)population / 2);
+                        DateTime x;
+                        int[] min = new int[keep];
+
+                        for (int n = 0; n < keep; n++)
+                        {
+                            for (int f = n + 1; f < population; f++)
+                            {
+                                if (DateTime.Compare(fitness[n], fitness[f]) > 0)
+                                {
+                                    x = fitness[f];
+                                    fitness[f] = fitness[n];
+                                    fitness[n] = x;
+
+                                    min[n] = f;
+                                }
+
+                            }
+                        }
+                        //save the best
                         for (int k = 0; k < recordcount; k++)
-                            gen2[j, k] = gen1[min[j], k];
+                            Best[k] = gen1[min[0], k];
+
+                        //maintain the elitism
+                        int[,] gen2 = new int[population, recordcount];
+                        for (int j = 0; j < keep; j++)
+                        {
+                            for (int k = 0; k < recordcount; k++)
+                                gen2[j, k] = gen1[min[j], k];
+                        }
+
+                        //crossover 
+                        int crossover = (int)Math.Ceiling((double)population / 4);
+                        int crossoverPT = rn.Next(0, recordcount);
+                        int parent1 = rn.Next(0, population);
+                        int parent2 = rn.Next(0, population);
+                        for (int j = 0; j < crossover; j = j + 2)
+                        {
+                            //offsring1, happen all the time
+                            for (int k = 0; k < crossoverPT; k++)
+                                gen2[j + keep, k] = gen1[parent1, k];
+                            for (int k = crossoverPT; k < recordcount; k++)
+                                gen2[j + keep, k] = gen1[parent2, k];
+
+                            if (j + 1 < crossover) //offspring2 only born when still got two or more quota
+                            {
+                                for (int k = 0; k < crossoverPT; k++)
+                                    gen2[j + keep + 1, k] = gen1[parent2, k];
+                                for (int k = crossoverPT; k < recordcount; k++)
+                                    gen2[j + keep + 1, k] = gen1[parent1, k];
+                            }
+                            parent1 = rn.Next(0, population);
+                            parent2 = rn.Next(0, population);
+                        }
+
+                        //mutation
+                        int mutation = population - keep - crossover;
+                        int mutationPT = rn.Next(0, recordcount);
+                        int individual = rn.Next(0, population);
+
+                        for (int j = 0; j < mutation; j++)
+                        {
+                            for (int k = 0; k < recordcount; k++)
+                                gen2[j + keep + crossover, k] = gen1[j + keep + crossover, k];
+
+                            if (gen1[j + keep + crossover, mutationPT] == 1)
+                                gen2[j + keep + crossover, mutationPT] = 0;
+                            else
+                                gen2[j + keep + crossover, mutationPT] = 1;
+                        }
+
+                        //CHECK IF GEN2 COMPLETE
+                        if (mutation + keep + crossover != population)
+                            MessageBox.Show("Error: generation 2 is not complete");
+
+                        //if ok, proceed to next generation
+                        //refresh gen1
+                        for (int j = 0; j < population; j++)
+                            for (int k = 0; k < recordcount; k++) 
+                                gen1[j, k] = gen2[j, k];
                     }
-
-                    //crossover to get the rest of the population
-                    for (int j=keep-1;j<population;j++)
+                    
+                    //after 3 rounds, display the best solution
+                    ThisAddIn.RemoveAllLink();
+                    for (int k = 0; k < recordcount; k++)
                     {
-
+                        if (Best[k] == 1)
+                            ThisAddIn.BinaryTGA(task1[k],task2[k],relation[k],days[k]);
+                        else
+                            ThisAddIn.BinaryFGA(task1[k], task2[k], relation[k], days[k]);
                     }
 
                 }
