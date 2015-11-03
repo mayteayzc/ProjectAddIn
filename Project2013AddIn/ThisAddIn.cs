@@ -874,7 +874,7 @@ namespace Project2013AddIn
                     for(int j=0;j<population;j++)
                     {
                         for (int k=0;k<recordcount;k++)
-                            gen1[j, k] = rn.Next(0, 1);
+                            gen1[j, k] = rn.Next(0, 2);
                     }
 
                     //generation cycle start here
@@ -1055,7 +1055,40 @@ namespace Project2013AddIn
                                 id2 = task.UniqueID;
                         }
                         //remove this one record
-                        ThisAddIn.RemoveOneLink(id1, id2);
+                        //ThisAddIn.RemoveOneLink(id1, id2);
+                        //foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+                        //{
+                        //    if (predecessor.UniqueID == project.Tasks.UniqueID[id2].UniqueID)
+                        //        project.Tasks.UniqueID[id1].UnlinkPredecessors(project.Tasks.UniqueID[id2]);
+
+                        //}
+
+                        //foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id2].PredecessorTasks)
+                        //{
+                        //    if (predecessor.UniqueID == project.Tasks.UniqueID[id1].UniqueID)
+                        //        project.Tasks.UniqueID[id1].UnlinkPredecessors(project.Tasks.UniqueID[id2]);
+
+                        //}
+
+                        bool id1_before_id2 = true;
+                        //to remove the existing links between 1 and 2, check which one is the predecessor first.
+                        foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+                        {
+                            if (predecessor.UniqueID == id2)
+                            {
+                                id1_before_id2 = false;
+                                project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                            }
+
+                        }
+
+                        if (id1_before_id2) //got problem at the second round of generation, no links alr, still went into this
+                            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    
+                        project.Tasks.UniqueID[id1].Manual = false;
+                        project.Tasks.UniqueID[id2].Manual = false;
+                        project.Tasks.UniqueID[id1].Manual = true;
+                        project.Tasks.UniqueID[id2].Manual = true;
 
                         binary = binary.Substring(p1 + 1, l1 - p1 - 1);
                         p1 = binary.IndexOf(";");
@@ -1063,32 +1096,21 @@ namespace Project2013AddIn
                     }
                 }
             }
-            //after all binary pdm++ relationships removed, need to auto schedule
-            project.ManuallyScheduledTasksAutoRespectLinks = true;
+
         }
       
-        static public void RemoveOneLink (int id1, int id2)
-        {
-            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            bool id1_before_id2 = true;
+       // static public void RemoveOneLink (int id1, int id2)
+       // {
+        //    MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
 
-            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
-            {
-                if (predecessor.UniqueID == project.Tasks.UniqueID[id2].UniqueID)
-                {
-                    id1_before_id2 = false;
-                    project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
-                }
+            
 
-            }
-
-            if (id1_before_id2)
-                project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
-        }
+      //  }
 
         static public DateTime GetFinishDate()
         {
-            DateTime finishdate = DateTime.Today;
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            DateTime finishdate = project.ProjectFinish();
             //call binayTGA and binaryFGA many times depent on input array argument
             //return finishdate as fitness value to GA
             return finishdate;

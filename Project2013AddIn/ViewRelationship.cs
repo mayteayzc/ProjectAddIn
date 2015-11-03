@@ -21,13 +21,13 @@ namespace Project2013AddIn
             //if never renamed before then rename first.
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
             MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
+            //MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
 
             if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
                 project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
 
-            if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
-                project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
+            //if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
+                //project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
 
             //check if first task has been deleted, if did, record the first task where the info is stored.
             int i=1;
@@ -38,7 +38,7 @@ namespace Project2013AddIn
             }
 
             string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
-            string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+            string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
             string BinaryData;
             string UnaryData;
 
@@ -137,7 +137,8 @@ namespace Project2013AddIn
                     //record down the information
                     string tk1 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[0].Value.ToString();
                     string tk2 = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
-                    string rela =dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value.ToString();
+                    string rela = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value.ToString();
+                    string d = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[3].Value.ToString();
                     int id1 = 1;
                     int id2 = 1;
                     foreach(MSProject.Task task in project.Tasks)
@@ -147,6 +148,21 @@ namespace Project2013AddIn
                         if (task.Name.Equals(tk2))
                             id2 = task.UniqueID;
                     }
+                    //delete records at datagridview
+                    dataGridView1.Rows.RemoveAt(this.dataGridView1.CurrentRow.Index);
+                    
+                    //remove from binarydata               
+                    int i = 1;
+                    foreach (MSProject.Task task in project.Tasks)
+                    {
+                        if (task.ID == 1)
+                            i = task.UniqueID;
+                    }
+
+                    string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+                    Binary = Binary.Replace(tk1 + "," + tk2 + "," + rela + "," + d + ";", "");
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), Binary);
+
                     //remove links
                     bool id1_before_id2 = true;
                     //to remove the existing links between 1 and 2, check which one is the predecessor first.
@@ -192,13 +208,13 @@ namespace Project2013AddIn
                     remove2=relation+project.Tasks.UniqueID[id1].ID.ToString();
 
                     if (note1.IndexOf(",") > 0)
-                        note1 = note1.Replace("," + remove1, "");
+                        note1 = note1.Replace(remove1 + ",", "");
 
                     else
                         note1 = note1.Replace(remove1, "");
 
                     if (note2.IndexOf(",") > 0)
-                        note2=note2.Replace("," + remove2, "");
+                        note2=note2.Replace( remove2 + ",", "");
                     else
                         note2=note2.Replace(remove2, "");
 
@@ -212,88 +228,42 @@ namespace Project2013AddIn
                     if (note2 == "" || note2 == null)
                         ThisAddIn.ResetGanttBarFormat(project.Tasks.UniqueID[id2]);
                    
-                    //delete records
-                    dataGridView1.Rows.RemoveAt(this.dataGridView1.CurrentRow.Index);
+                    
                 }
 
                 if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageUnary"])
                 {
-                    //remove records
-                    dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
-                    //remove unary constraints
+                    //RECORD
                     string tk = dataGridView2.Rows[dataGridView2.CurrentRow.Index].Cells[0].Value.ToString();
+                    string rela = dataGridView2.Rows[dataGridView2.CurrentRow.Index].Cells[1].Value.ToString();
+                    string date1 = dataGridView2.Rows[dataGridView2.CurrentRow.Index].Cells[2].Value.ToString();
+                    string date2 = dataGridView2.Rows[dataGridView2.CurrentRow.Index].Cells[3].Value.ToString();
                     int id = 1;
                     foreach (MSProject.Task task in project.Tasks)
                     {
                         if (task.Name.Equals(tk))
                             id = task.UniqueID;
                     }
+
+                    //remove records
+                    dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
+                    //remove from unary records
+                    int i = 1;
+                    foreach (MSProject.Task task in project.Tasks)
+                    {
+                        if (task.ID == 1)
+                            i = task.UniqueID;
+                    }
+                    string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+                    Unary = Unary.Replace(tk + "," + rela + "," + date1 + "," + date2 +";", "");
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), Unary);
+
                     //project.Tasks.UniqueID[id].ConstraintType=MSProject???????
                 }
 
             }
         }
 
-        public void btnUpdate_Click(object sender, EventArgs e)
-        {
-            //empty the custom field.
-            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
-
-            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
-                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-            if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
-                project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
-
-            int i=1;
-            foreach (MSProject.Task task in project.Tasks)
-            {
-                if (task.ID == 1)
-                    i = task.UniqueID;
-            }
-
-            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), "");
-            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), "");
-
-            //just to update the text field.
-            //first assign unary can avoid shifting forward wrongly, since unary may shift forward but binary will always shift backwards. so does multiple
-            int j = 0;
-            int count = dataGridView2.Rows.Count;
-            string Unary="";
-            while (j<count)
-            {
-                DataGridViewRow row2 = dataGridView2.Rows[j];
-                string date1 = row2.Cells[2].Value.ToString();
-                string date2 = row2.Cells[3].Value.ToString();
-               
-                if(row2.Cells[1].Value.ToString()=="Can Not Occur")
-                    Unary=Unary+row2.Cells[0].Value.ToString()+","+row2.Cells[1].Value.ToString()+","+date1+","+date2+";";
-                else
-                    Unary=Unary+row2.Cells[0].Value.ToString()+","+row2.Cells[1].Value.ToString()+","+date1+","+";";
-                j++;
-            }
-
-            //for binary, need to update the records in text field
-            int k = 0;
-            count = dataGridView1.Rows.Count;
-            string Binary="";
-            while (k < count)
-            {
-                DataGridViewRow row1 = dataGridView1.Rows[k];
-                string days = row1.Cells[3].Value.ToString();
-                string tk1, tk2,rela;
-                tk1 = row1.Cells[0].Value.ToString();
-                tk2 = row1.Cells[1].Value.ToString();
-                rela = row1.Cells[2].Value.ToString();
-   
-                Binary=Binary+tk1+","+tk2+","+rela+","+days+";";
-                k++;
-            }
-
-            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), Binary);
-            project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), Unary);     
-            this.Hide();  
-    }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
