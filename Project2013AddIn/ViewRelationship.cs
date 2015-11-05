@@ -20,16 +20,7 @@ namespace Project2013AddIn
             
             //if never renamed before then rename first.
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            //MSProject.PjCustomField UnaryField = MSProject.PjCustomField.pjCustomTaskText30;
 
-            if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
-                project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
-
-            //if (project.Application.CustomFieldGetName(UnaryField) != "Unary Relationship")
-                //project.Application.CustomFieldRename(UnaryField, "Unary Relationship", Type.Missing);
-
-            //check if first task has been deleted, if did, record the first task where the info is stored.
             int i=1;
             foreach(MSProject.Task task in project.Tasks)
             {
@@ -37,7 +28,7 @@ namespace Project2013AddIn
                     i = task.UniqueID;
             }
 
-            string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+            string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
             string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
             string BinaryData;
             string UnaryData;
@@ -159,9 +150,9 @@ namespace Project2013AddIn
                             i = task.UniqueID;
                     }
 
-                    string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
+                    string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
                     Binary = Binary.Replace(tk1 + "," + tk2 + "," + rela + "," + d + ";", "");
-                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), Binary);
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"), Binary);
 
                     //remove links
                     bool id1_before_id2 = true;
