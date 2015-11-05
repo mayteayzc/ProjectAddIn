@@ -444,11 +444,11 @@ namespace Project2013AddIn
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
                         first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, 0);
                     else
+                    {
                         second.Start = first.Finish;
-
-                    second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                        second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
+                    }
                     break;
-
 
                 case "Overlap":
                     //here is at least, for overlap more than specified days, no change is made.
@@ -864,7 +864,7 @@ namespace Project2013AddIn
                     }
 
                     //now knows the number of relationships and details are stored.
-                    //assume population equals the size of records
+                    //assume population equals twice the size of records
                     int population=recordcount*2;
                     int[,] gen1 = new int[population,recordcount];
                     Random rn=new Random();
@@ -899,6 +899,7 @@ namespace Project2013AddIn
                         int keep = (int)Math.Floor((double)population / 2);
                         DateTime x;
                         int[] min = new int[keep];
+                        min[0] = 0;
 
                         for (int n = 0; n < keep; n++)
                         {
@@ -1059,8 +1060,8 @@ namespace Project2013AddIn
 
                     project.Tasks.UniqueID[id1].Manual = false;
                     project.Tasks.UniqueID[id2].Manual = false;
-                    project.Tasks.UniqueID[id1].Manual = true;
-                    project.Tasks.UniqueID[id2].Manual = true;
+                    //project.Tasks.UniqueID[id1].Manual = true;
+                   // project.Tasks.UniqueID[id2].Manual = true;
 
                     binary = binary.Substring(p1 + 1, l1 - p1 - 1);
                     p1 = binary.IndexOf(";");
@@ -1076,7 +1077,7 @@ namespace Project2013AddIn
             DateTime ProjectFinish = project.Tasks.UniqueID[i].Finish;
             foreach(MSProject.Task tk in project.Tasks)
             {
-                    if (DateTime.Compare(tk.Finish, ProjectFinish) < 0)
+                    if (DateTime.Compare(tk.Finish, ProjectFinish) > 0)
                     ProjectFinish = tk.Finish;
             }
             //return finishdate as fitness value to GA
