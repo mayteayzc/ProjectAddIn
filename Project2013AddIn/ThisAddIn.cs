@@ -312,6 +312,8 @@ namespace Project2013AddIn
                 case "Meet":
                     if (DateTime.Compare(first.Finish, second.Start) < 0)
                         first.TaskDependencies.Add(second, MSProject.PjTaskLinkType.pjStartToFinish, 0);
+                    else
+                        second.TaskDependencies.Add(first, MSProject.PjTaskLinkType.pjFinishToStart, 0);
 
                     if (first.Text27 != "" && first.Text27 != null)
                         first.Text27 = first.Text27 + ",";
@@ -876,13 +878,13 @@ namespace Project2013AddIn
                     //generation cycle start here
                     int[] Best = new int[recordcount];
                     DateTime[] fitness = new DateTime[population];
-
+                    
                     for (int generation=0;generation<3;generation++)
                     {
-                        //evaluate fitness                       
-                        ThisAddIn.RemoveAllLink();
+                        //evaluate fitness                                         
                         for (int f = 0; f < population; f++)
                         {
+                            ThisAddIn.RemoveAllLink();
                             for (int m = 0; m < recordcount; m++)
                             {
                                 if (gen1[f, m] == 1)
@@ -891,8 +893,7 @@ namespace Project2013AddIn
                                     ThisAddIn.BinaryFGA(task1[m], task2[m], relation[m], days[m]);
                             }
                             //after process one chromosome,get the fitness and then remove all the link
-                            fitness[f] = ThisAddIn.GetFinishDate();
-                            ThisAddIn.RemoveAllLink();
+                            fitness[f] = ThisAddIn.GetFinishDate(i);                  
                         }
 
                         int keep = (int)Math.Floor((double)population / 2);
@@ -1068,13 +1069,18 @@ namespace Project2013AddIn
             }
         }
 
-        static public DateTime GetFinishDate()
+        static public DateTime GetFinishDate(int i)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            DateTime finishdate = project.ProjectFinish();
-            //call binayTGA and binaryFGA many times depent on input array argument
+
+            DateTime ProjectFinish = project.Tasks.UniqueID[i].Finish;
+            foreach(MSProject.Task tk in project.Tasks)
+            {
+                    if (DateTime.Compare(tk.Finish, ProjectFinish) < 0)
+                    ProjectFinish = tk.Finish;
+            }
             //return finishdate as fitness value to GA
-            return finishdate;
+            return ProjectFinish;
         }
 
         static public void SetGanttBarFormat (MSProject.Task tk1, MSProject.Task tk2)
