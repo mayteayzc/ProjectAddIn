@@ -18,9 +18,7 @@ namespace Project2013AddIn
         {
             InitializeComponent();
             
-            //if never renamed before then rename first.
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-
             int i=1;
             foreach(MSProject.Task task in project.Tasks)
             {
@@ -236,7 +234,7 @@ namespace Project2013AddIn
                             id = task.UniqueID;
                     }
 
-                    //remove records
+                    //remove records from table
                     dataGridView2.Rows.RemoveAt(this.dataGridView2.CurrentRow.Index);
                     //remove from unary records
                     int i = 1;
@@ -245,16 +243,16 @@ namespace Project2013AddIn
                         if (task.ID == 1)
                             i = task.UniqueID;
                     }
-                    string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+                    string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
                     Unary = Unary.Replace(tk + "," + rela + "," + date1 + "," + date2 +";", "");
-                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), Unary);
+                    project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"), Unary);
 
-                    //project.Tasks.UniqueID[id].ConstraintType=MSProject???????
+                    //remove from schedule
+                    project.Tasks.UniqueID[id].Manual = false;
                 }
 
             }
         }
-
 
         private void btnOK_Click(object sender, EventArgs e)
         {

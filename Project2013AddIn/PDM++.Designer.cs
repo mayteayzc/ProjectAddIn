@@ -37,22 +37,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(newPDM));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.Manage = this.Factory.CreateRibbonGroup();
+            this.group4 = this.Factory.CreateRibbonGroup();
             this.btnContain = this.Factory.CreateRibbonButton();
             this.btnDisjoint = this.Factory.CreateRibbonButton();
             this.btnMeet = this.Factory.CreateRibbonButton();
             this.btnOverlap = this.Factory.CreateRibbonButton();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.buttonBetween = this.Factory.CreateRibbonButton();
             this.btnCannot = this.Factory.CreateRibbonButton();
             this.btnDueaft = this.Factory.CreateRibbonButton();
             this.btnDuebf = this.Factory.CreateRibbonButton();
             this.btnStartaft = this.Factory.CreateRibbonButton();
             this.btnStartbf = this.Factory.CreateRibbonButton();
-            this.Manage = this.Factory.CreateRibbonGroup();
             this.btnView = this.Factory.CreateRibbonButton();
             this.btnOptimization = this.Factory.CreateRibbonButton();
-            this.group4 = this.Factory.CreateRibbonGroup();
             this.btnConditionalTask = this.Factory.CreateRibbonButton();
+            this.btnManageCondition = this.Factory.CreateRibbonButton();
+            this.btnUpdateCondition = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -77,6 +78,31 @@
             this.group1.Items.Add(this.btnOverlap);
             this.group1.Label = "Binary Relationship";
             this.group1.Name = "group1";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.btnCannot);
+            this.group2.Items.Add(this.btnDueaft);
+            this.group2.Items.Add(this.btnDuebf);
+            this.group2.Items.Add(this.btnStartaft);
+            this.group2.Items.Add(this.btnStartbf);
+            this.group2.Label = "Unary Relationship";
+            this.group2.Name = "group2";
+            // 
+            // Manage
+            // 
+            this.Manage.Items.Add(this.btnView);
+            this.Manage.Items.Add(this.btnOptimization);
+            this.Manage.Label = "Manage";
+            this.Manage.Name = "Manage";
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(this.btnConditionalTask);
+            this.group4.Items.Add(this.btnManageCondition);
+            this.group4.Items.Add(this.btnUpdateCondition);
+            this.group4.Label = "Dynamic Requirement";
+            this.group4.Name = "group4";
             // 
             // btnContain
             // 
@@ -117,25 +143,6 @@
             this.btnOverlap.ScreenTip = "Duration of two activities overlap each other.";
             this.btnOverlap.ShowImage = true;
             this.btnOverlap.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnOverlap_Click);
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(this.buttonBetween);
-            this.group2.Items.Add(this.btnCannot);
-            this.group2.Items.Add(this.btnDueaft);
-            this.group2.Items.Add(this.btnDuebf);
-            this.group2.Items.Add(this.btnStartaft);
-            this.group2.Items.Add(this.btnStartbf);
-            this.group2.Label = "Unary Relationship";
-            this.group2.Name = "group2";
-            // 
-            // buttonBetween
-            // 
-            this.buttonBetween.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonBetween.Image = global::Project2013AddIn.Properties.Resources.between;
-            this.buttonBetween.Label = "Between (B)";
-            this.buttonBetween.Name = "buttonBetween";
-            this.buttonBetween.ShowImage = true;
             // 
             // btnCannot
             // 
@@ -182,13 +189,6 @@
             this.btnStartbf.ShowImage = true;
             this.btnStartbf.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStartbf_Click);
             // 
-            // Manage
-            // 
-            this.Manage.Items.Add(this.btnView);
-            this.Manage.Items.Add(this.btnOptimization);
-            this.Manage.Label = "Manage";
-            this.Manage.Name = "Manage";
-            // 
             // btnView
             // 
             this.btnView.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -207,12 +207,6 @@
             this.btnOptimization.ShowImage = true;
             this.btnOptimization.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnOptimization_Click);
             // 
-            // group4
-            // 
-            this.group4.Items.Add(this.btnConditionalTask);
-            this.group4.Label = "Dynamic Requirement";
-            this.group4.Name = "group4";
-            // 
             // btnConditionalTask
             // 
             this.btnConditionalTask.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -221,6 +215,22 @@
             this.btnConditionalTask.Name = "btnConditionalTask";
             this.btnConditionalTask.ShowImage = true;
             this.btnConditionalTask.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConditionalTask_Click);
+            // 
+            // btnManageCondition
+            // 
+            this.btnManageCondition.Image = global::Project2013AddIn.Properties.Resources.manage_condition;
+            this.btnManageCondition.Label = "Manage Condition";
+            this.btnManageCondition.Name = "btnManageCondition";
+            this.btnManageCondition.ShowImage = true;
+            this.btnManageCondition.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnManageCondition_Click);
+            // 
+            // btnUpdateCondition
+            // 
+            this.btnUpdateCondition.Image = global::Project2013AddIn.Properties.Resources.check;
+            this.btnUpdateCondition.Label = "Update Condition";
+            this.btnUpdateCondition.Name = "btnUpdateCondition";
+            this.btnUpdateCondition.ShowImage = true;
+            this.btnUpdateCondition.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateCondition_Click);
             // 
             // newPDM
             // 
@@ -260,7 +270,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Manage;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnView;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonBetween;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateCondition;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnManageCondition;
     }
 
     partial class ThisRibbonCollection

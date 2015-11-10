@@ -57,10 +57,6 @@ namespace Project2013AddIn
         {
             AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Can Not Occur";
-            if (Globals.ThisAddIn.Application.ActiveSelection != null)
-                constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
-            else
-                constraint.comboBoxTaskName.SelectedIndex = 1;
             constraint.labelDate1.Text = "Start Date";
             constraint.labelDate2.Text = "End Date";
             constraint.Show();
@@ -70,7 +66,6 @@ namespace Project2013AddIn
         {
             AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Due After";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -81,7 +76,6 @@ namespace Project2013AddIn
         {
             AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Due Before";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -92,7 +86,6 @@ namespace Project2013AddIn
         {
             AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Start After";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
@@ -103,32 +96,33 @@ namespace Project2013AddIn
         {
             AddUnary constraint = new AddUnary();
             constraint.comboBoxConstraint.SelectedItem = "Start Before";
-            constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
             constraint.labelDate1.Text = "Date";
             constraint.labelDate2.Text = "";
             constraint.dateTimePicker2.Enabled = false;
             constraint.Show();
         }
 
-        //private void buttonBetween_Click(object sender, RibbonControlEventArgs e)
-        //{
-        //    AddUnary constraint = new AddUnary();
-        //    constraint.comboBoxConstraint.SelectedItem = "Between";
-        //    constraint.comboBoxTaskName.SelectedItem = Globals.ThisAddIn.Application.ActiveSelection.Tasks[1].Name.ToString();
-        //    constraint.labelDate1.Text = "Start Date";
-        //    constraint.labelDate2.Text = "End Date";
-        //    constraint.Show();
-        //}
-
         private void btnConditionalTask_Click(object sender, RibbonControlEventArgs e)
         {
-            
+            ConditonalTask condition = new ConditonalTask();
+            condition.Show();
         }
 
         private void btnOptimization_Click(object sender, RibbonControlEventArgs e)
         {
             if (MessageBox.Show("This function will calculate the near optimum arrangement of PDM++ binary relationships based on heuristic approch, click Yes to continue.", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 ThisAddIn.GeneticAlgorithm();
+        }
+
+        private void btnUpdateCondition_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void btnManageCondition_Click(object sender, RibbonControlEventArgs e)
+        {
+            ManageCondition manage = new ManageCondition();
+            manage.Show();
         }
 
 

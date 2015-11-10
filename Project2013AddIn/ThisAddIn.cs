@@ -140,11 +140,6 @@ namespace Project2013AddIn
         static public bool BinaryRelation(int id1, int id2, string binaryRelationship, int days)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            //check if there is exisiting binary relationships
-            //MSProject.PjCustomField BinaryField = MSProject.PjCustomField.pjCustomTaskText29;
-            ////problem with this method: must do sth like select a cell before applying pdm++
-            //if (project.Application.CustomFieldGetName(BinaryField) != "Binary Relationship")
-            //    project.Application.CustomFieldRename(BinaryField, "Binary Relationship", Type.Missing);
 
             //check empty fileds.
             if (project.Tasks.UniqueID[id1].Duration == null)
@@ -865,7 +860,7 @@ namespace Project2013AddIn
 
                     //now knows the number of relationships and details are stored.
                     //assume population equals twice the size of records
-                    int population=recordcount*2;
+                    int population=recordcount*3;
                     int[,] gen1 = new int[population,recordcount];
                     Random rn=new Random();
 
@@ -879,7 +874,7 @@ namespace Project2013AddIn
                     int[] Best = new int[recordcount];
                     DateTime[] fitness = new DateTime[population];
                     
-                    for (int generation=0;generation<3;generation++)
+                    for (int generation=0;generation<4;generation++)
                     {
                         //evaluate fitness                                         
                         for (int f = 0; f < population; f++)
@@ -988,7 +983,13 @@ namespace Project2013AddIn
                         else
                             ThisAddIn.BinaryFGA(task1[k], task2[k], relation[k], days[k]);
                     }
+                    //then auto schedule incase some task didn't respect link
+                    foreach (MSProject.Task tk in project.Tasks)
+                        tk.Manual = false;
 
+                    foreach (MSProject.Task tk in project.Tasks)
+                        tk.Manual = true;
+                    
                 }
                 else //no records found, or all records have been deleted
                     return;              
@@ -1077,8 +1078,13 @@ namespace Project2013AddIn
             DateTime ProjectFinish = project.Tasks.UniqueID[i].Finish;
             foreach(MSProject.Task tk in project.Tasks)
             {
-                    if (DateTime.Compare(tk.Finish, ProjectFinish) > 0)
-                    ProjectFinish = tk.Finish;
+                tk.Manual = false;
+            }
+
+            foreach(MSProject.Task tk in project.Tasks)
+            {
+                if (DateTime.Compare(tk.Finish, ProjectFinish) > 0)
+                ProjectFinish = tk.Finish;
             }
             //return finishdate as fitness value to GA
             return ProjectFinish;
@@ -1101,6 +1107,44 @@ namespace Project2013AddIn
             project.Application.SelectRow(tk.ID, false, 0, false, false);
             project.Application.GanttBarFormat(Type.Missing,Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true, Type.Missing);
 
+        }
+
+        static public void UpdateCondition(string Contk, string Reftk, string finish, string d)
+        {
+            MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            int ContkID = 0;
+            int ReftkID = 0;
+            foreach (MSProject.Task tk in project.Tasks)
+            {
+                if (tk.Name == Contk)
+                    ContkID = tk.UniqueID;
+
+                if (tk.Name == Reftk)
+                    ReftkID = tk.UniqueID;
+            }
+
+            //check if tasks are found
+            if (ContkID == 0 || ReftkID == 0)
+            {
+                MessageBox.Show("Conditional task or reference task can not be found.");
+                return;
+            }
+
+            //else, if found, then proceed
+            MSProject.Task ConditionalTk = project.Tasks.UniqueID[ContkID];
+            MSProject.Task ReferenceTk = project.Tasks.UniqueID[ReftkID];
+            DateTime ScheduledFinish = Convert.ToDateTime(finish);
+
+            if (DateTime.Compare(ScheduledFinish, ReferenceTk.Finish) < 0) //DELAY
+            {
+                int days = (int)(ReferenceTk.Finish - ScheduledFinish) / 480;
+                if (days > Convert.ToInt32(d))
+                    ConditionalTk.Active = true;
+                else
+                    ConditionalTk.Active = false;
+            }
+            else //if no delay
+                ConditionalTk.Active = false;
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
