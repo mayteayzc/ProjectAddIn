@@ -31,6 +31,11 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -38,6 +43,12 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Condition,
+            this.Column4});
             this.dataGridView1.Location = new System.Drawing.Point(24, 49);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -62,6 +73,37 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Conditional Task";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Reference Task";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Scheduled Finish";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Condition
+            // 
+            this.Condition.HeaderText = "Condition";
+            this.Condition.Name = "Condition";
+            this.Condition.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Days";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             // 
             // ManageCondition
             // 
@@ -83,5 +125,10 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Condition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }

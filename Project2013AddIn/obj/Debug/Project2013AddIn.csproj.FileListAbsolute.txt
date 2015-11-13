@@ -16,3 +16,4 @@ D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.csproj
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.dll
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.pdb
 D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.ConditonalTask.resources
+D:\MS\MS\FYP\Project2013AddIn\Project2013AddIn\obj\Debug\Project2013AddIn.ManageCondition.resources

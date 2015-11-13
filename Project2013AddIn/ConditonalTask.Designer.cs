@@ -114,7 +114,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(46, 351);
+            this.btnOK.Location = new System.Drawing.Point(38, 351);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 11;
@@ -124,7 +124,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(158, 351);
+            this.btnCancel.Location = new System.Drawing.Point(172, 351);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 12;
@@ -152,7 +152,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 444);
+            this.ClientSize = new System.Drawing.Size(309, 393);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnCancel);

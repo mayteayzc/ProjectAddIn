@@ -46,7 +46,7 @@
             this.ComboBoxAct1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.ComboBoxAct1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ComboBoxAct1.FormattingEnabled = true;
-            this.ComboBoxAct1.Location = new System.Drawing.Point(70, 49);
+            this.ComboBoxAct1.Location = new System.Drawing.Point(93, 71);
             this.ComboBoxAct1.Name = "ComboBoxAct1";
             this.ComboBoxAct1.Size = new System.Drawing.Size(145, 21);
             this.ComboBoxAct1.TabIndex = 0;
@@ -56,7 +56,7 @@
             this.ComboBoxAct2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.ComboBoxAct2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ComboBoxAct2.FormattingEnabled = true;
-            this.ComboBoxAct2.Location = new System.Drawing.Point(70, 117);
+            this.ComboBoxAct2.Location = new System.Drawing.Point(93, 138);
             this.ComboBoxAct2.Name = "ComboBoxAct2";
             this.ComboBoxAct2.Size = new System.Drawing.Size(145, 21);
             this.ComboBoxAct2.TabIndex = 1;
@@ -71,7 +71,7 @@
             "Disjoint",
             "Meet",
             "Overlap"});
-            this.ComboBoxRela.Location = new System.Drawing.Point(70, 197);
+            this.ComboBoxRela.Location = new System.Drawing.Point(93, 205);
             this.ComboBoxRela.Name = "ComboBoxRela";
             this.ComboBoxRela.Size = new System.Drawing.Size(145, 21);
             this.ComboBoxRela.TabIndex = 2;
@@ -80,7 +80,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(125, 33);
+            this.label1.Location = new System.Drawing.Point(143, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 3;
@@ -89,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(122, 101);
+            this.label2.Location = new System.Drawing.Point(143, 110);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 4;
@@ -98,7 +98,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(112, 181);
+            this.label3.Location = new System.Drawing.Point(131, 177);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 5;
@@ -106,7 +106,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(42, 334);
+            this.btnOK.Location = new System.Drawing.Point(72, 329);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(90, 23);
             this.btnOK.TabIndex = 6;
@@ -116,7 +116,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(160, 334);
+            this.btnCancel.Location = new System.Drawing.Point(190, 329);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 23);
             this.btnCancel.TabIndex = 7;
@@ -127,7 +127,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(125, 259);
+            this.label4.Location = new System.Drawing.Point(148, 239);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 13);
             this.label4.TabIndex = 10;
@@ -135,7 +135,7 @@
             // 
             // NumericDays
             // 
-            this.NumericDays.Location = new System.Drawing.Point(70, 275);
+            this.NumericDays.Location = new System.Drawing.Point(93, 267);
             this.NumericDays.Name = "NumericDays";
             this.NumericDays.Size = new System.Drawing.Size(145, 20);
             this.NumericDays.TabIndex = 11;
@@ -146,7 +146,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(297, 393);
+            this.ClientSize = new System.Drawing.Size(344, 392);
             this.Controls.Add(this.NumericDays);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
@@ -161,7 +161,7 @@
             this.Name = "AddBinary";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Add a new PDM++ relationship";
+            this.Text = "Add A New Binary Relationship";
             this.Load += new System.EventHandler(this.AddNewRelation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NumericDays)).EndInit();
             this.ResumeLayout(false);

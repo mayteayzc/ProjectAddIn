@@ -30,7 +30,6 @@
         {
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
             this.tabPageUnary = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.tabPageBinary = new System.Windows.Forms.TabPage();
@@ -55,20 +54,13 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(0, 0);
+            this.btnUpdate.Location = new System.Drawing.Point(289, 450);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 23);
-            this.btnUpdate.TabIndex = 8;
-            // 
-            // btnOK
-            // 
-            this.btnOK.Location = new System.Drawing.Point(289, 450);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 6;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnUpdate.TabIndex = 6;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // tabPageUnary
             // 
@@ -126,9 +118,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(527, 489);
+            this.ClientSize = new System.Drawing.Size(528, 492);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnDelete);
             this.Name = "ViewRelationship";
@@ -146,7 +137,6 @@
 
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
-        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TabPage tabPageUnary;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.TabPage tabPageBinary;

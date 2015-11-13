@@ -120,7 +120,7 @@ namespace Project2013AddIn
         {
             if(MessageBox.Show("Delete current selection?","Confirmed",MessageBoxButtons.YesNo)==DialogResult.Yes)
             {
-                this.btnOK.IsAccessible = false; //after delete, must update
+                this.btnUpdate.IsAccessible = false; //after delete, must update
                 if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageBinary"])
                 {
                     //record down the information
@@ -254,11 +254,77 @@ namespace Project2013AddIn
             }
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnUpdate_Click(object sender, EventArgs e)
         {
+            //binary
+            if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageBinary"])
+            {
+                int id1=0;
+                int id2=0;
+                string tk1, tk2, rela, d;
+                int days;
+
+                for (int i=0;i<dataGridView1.RowCount;i++)
+                {
+                    tk1 = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                    tk2 = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    rela = dataGridView1.Rows[i].Cells[2].Value.ToString();
+                    d = dataGridView1.Rows[i].Cells[3].Value.ToString();
+                    
+                    foreach (MSProject.Task tk in project.Tasks)
+                    {
+                        if(tk.Name.Equals(tk1))
+                            id1=tk.UniqueID;
+                        if(tk.Name.Equals(tk2))
+                            id2=tk.UniqueID;
+                    }
+
+                    if (id1 == 0 || id2 == 0)
+                    {
+                        MessageBox.Show("Task " + project.Tasks.UniqueID[id1].Name + " or " + project.Tasks.UniqueID[id2].Name + "Can not be found.");
+                        return;
+                    }
+
+                    days = Convert.ToInt32(d);
+                    ThisAddIn.BinaryTGA(id1, id2, rela, days);              
+                }
+
+            }
+            if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageUnary"])
+            {
+                int id = 0;
+                string tk, rela, d1, d2;
+                DateTime date1;
+                DateTime date2=DateTime.Today;
+
+                for (int i = 0; i < dataGridView2.RowCount; i++)
+                {
+                    tk = dataGridView2.Rows[i].Cells[0].Value.ToString();
+                    rela = dataGridView2.Rows[i].Cells[1].Value.ToString();
+                    d1 = dataGridView2.Rows[i].Cells[2].Value.ToString();
+                    d2= dataGridView2.Rows[i].Cells[3].Value.ToString();
+
+                    foreach (MSProject.Task task in project.Tasks)
+                    {
+                        if (task.Name.Equals(tk))
+                            id= task.UniqueID;
+                    }
+
+                    if (id == 0)
+                    {
+                        MessageBox.Show("Task " + project.Tasks.UniqueID[id].Name + "Can not be found.");
+                        return;
+                    }
+
+                    date1 = Convert.ToDateTime(d1);
+                    if(d2!=null& d2!="")
+                        date2 = Convert.ToDateTime(d2);
+                    
+                    ThisAddIn.UnaryUpdate(id,rela,date1,date2);
+                }
+            }
+
             this.Hide();
         }
     }
 }
-
-       

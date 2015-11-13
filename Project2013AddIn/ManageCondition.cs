@@ -117,5 +117,10 @@ namespace Project2013AddIn
                     
             }
         }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

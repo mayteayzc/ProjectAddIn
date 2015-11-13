@@ -593,7 +593,7 @@ namespace Project2013AddIn
                     //for can not occur, it also stores the data of whether can split or not, need to process
                     if (re.StartsWith("C"))
                     {
-                        s = re.Substring(re.IndexOf("/"));
+                        s = re.Substring(re.IndexOf("/")+1);
                         re = "Can Not Occur";
                     }
 
@@ -629,15 +629,13 @@ namespace Project2013AddIn
                             split = "n";
                             if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Start) > 0)
                                 thistask.Start = date2;
-                        }
-                            
+                        }                    
                         break;
 
                     case "Due After"://what does due after means exactly?? if due after 30/4, then finish 30/04 can? or must be 01/05??
                         thistask.Manual = false;
                         thistask.ConstraintType = MSProject.PjConstraint.pjFNET; //FinishNoEarlierThan	Value=6. Finish no earlier than (FNET).
                         thistask.ConstraintDate = date1;
-                        thistask.Manual = true;//???should we do so?
                         break;
 
                     case "Due Before":
@@ -648,14 +646,12 @@ namespace Project2013AddIn
                         thistask.Manual = false;
                         thistask.ConstraintType = MSProject.PjConstraint.pjFNLT;//FinishNoLaterThan	Value=7. Finish no later than (FNLT).
                         thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
                         break;
 
                     case "Start After"://similar question as due after.
                         thistask.Manual = false;
                         thistask.ConstraintType = MSProject.PjConstraint.pjSNET;//StartNoEarlierThan	Value=4. Start no earlier than (SNET).
                         thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
                         break;
 
                     case "Start Before":
@@ -665,7 +661,6 @@ namespace Project2013AddIn
                         thistask.Manual = false;
                         thistask.ConstraintType = MSProject.PjConstraint.pjSNLT;////StartNoLaterThan	Value=5. Start no later than (SNLT).
                         thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
                         break;
                 }
 
@@ -694,86 +689,57 @@ namespace Project2013AddIn
             
         }
        
-        static public void UnaryCheck (string taskname, string unaryRelationship, DateTime date1, DateTime date2)
+        static public void UnaryUpdate(int taskid, string relation, DateTime date1, DateTime date2)
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
-            int id = 0;
-            bool found1 = false;
 
-            foreach (MSProject.Task task in project.Tasks)
+            MSProject.Task thistask =project.Tasks.UniqueID[taskid];
+            string split = "";
+            if(relation.StartsWith("C"))
             {
-                if (task.Name.Equals(taskname))
-                {
-                    id = task.UniqueID;
-                    found1 = true;
-                }
+                split=relation.Substring(relation.IndexOf("/")+1);
+                relation="Can Not Occur";
             }
 
-            if (found1 == false)
+            switch (relation)
             {
-                MessageBox.Show("Error: Task can not be found.");
-                return;
+                case "Can Not Occur":
+                    if (split == "y")
+                        thistask.Split(date1,date2);
+                       
+                    if (split == "n")
+                    {
+                        if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Start) > 0)
+                            thistask.Start = date2;
+                    }
+                    break;
+
+                case "Due After":
+                    thistask.Manual = false;
+                    thistask.ConstraintType = MSProject.PjConstraint.pjFNET; //FinishNoEarlierThan	Value=6. Finish no earlier than (FNET).
+                    thistask.ConstraintDate = date1;
+                    break;
+
+                case "Due Before":
+                    thistask.Manual = false;
+                    thistask.ConstraintType = MSProject.PjConstraint.pjFNLT;//FinishNoLaterThan	Value=7. Finish no later than (FNLT).
+                    thistask.ConstraintDate = date1;
+                    break;
+
+                case "Start After":
+                    thistask.Manual = false;
+                    thistask.ConstraintType = MSProject.PjConstraint.pjSNET;//StartNoEarlierThan	Value=4. Start no earlier than (SNET).
+                    thistask.ConstraintDate = date1;
+                    break;
+
+                case "Start Before":
+                    thistask.Manual = false;
+                    thistask.ConstraintType = MSProject.PjConstraint.pjSNLT;////StartNoLaterThan	Value=5. Start no later than (SNLT).
+                    thistask.ConstraintDate = date1;
+                    break;
             }
-
-            else
-            {
-                MSProject.Task thistask = project.Tasks.UniqueID[id];
-                //need to remove the constraint first
-                string sp = "";
-                
-                if(unaryRelationship.StartsWith("C"))
-                {
-                    sp = unaryRelationship.Substring(unaryRelationship.IndexOf("/"));
-                    unaryRelationship = "Can Not Occur";
-                }
-
-                switch (unaryRelationship)
-                {
-                    case "Can Not Occur":                     
-                        if (sp=="y")
-                            thistask.Split(date1, date2);
-                        if (sp=="n")
-                        {
-                            if (DateTime.Compare(date1, thistask.Finish) < 0 & DateTime.Compare(date2, thistask.Start) > 0)
-                                thistask.Start = date2;
-                        }
-                        break;
-
-                    case "Due After":
-                        thistask.Manual = false;
-                        thistask.ConstraintType = MSProject.PjConstraint.pjFNET; //FinishNoEarlierThan	Value=6. Finish no earlier than (FNET).
-                        thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
-                        break;
-
-                    case "Due Before":
-                        thistask.Manual = false;
-                        thistask.ConstraintType = MSProject.PjConstraint.pjFNLT;//FinishNoLaterThan	Value=7. Finish no later than (FNLT).
-                        thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
-                        break;
-
-                    case "Start After"://similar question as due after.
-                        thistask.Manual = false;
-                        thistask.ConstraintType = MSProject.PjConstraint.pjSNET;//StartNoEarlierThan	Value=4. Start no earlier than (SNET).
-                        thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
-                        break;
-
-                    case "Start Before":
-                        thistask.Manual = false;
-                        thistask.ConstraintType = MSProject.PjConstraint.pjSNLT;////StartNoLaterThan	Value=5. Start no later than (SNLT).
-                        thistask.ConstraintDate = date1;
-                        thistask.Manual = true;
-                        break;
-                }
-               
-                return;
-            }
-            
-        
         }
-
+        
         static public void GeneticAlgorithm()
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
@@ -1109,42 +1075,90 @@ namespace Project2013AddIn
 
         }
 
-        static public void UpdateCondition(string Contk, string Reftk, string finish, string d)
+        static public void UpdateCondition()
         {
             MSProject.Project project = Globals.ThisAddIn.Application.ActiveProject;
+            int i = 1;
+            foreach (MSProject.Task task in project.Tasks)
+            {
+                if (task.ID == 1)
+                    i = task.UniqueID;
+            }
+
+            string Condition = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text28"));
+            String ConditionData;
+
+            //process condition data
+            int l1 = Condition.Length;
+            int l2;
+            int p1 = Condition.IndexOf(";");
+            int p2;
+            string ConTk, RefTk, Finish, delay, d;
             int ContkID = 0;
             int ReftkID = 0;
-            foreach (MSProject.Task tk in project.Tasks)
+
+            while (p1 > 0)
             {
-                if (tk.Name == Contk)
-                    ContkID = tk.UniqueID;
+                ConditionData = Condition.Substring(0, p1);
+                l2 = ConditionData.Length;
+                p2 = ConditionData.IndexOf(",");
+                ConTk = ConditionData.Substring(0, p2);
 
-                if (tk.Name == Reftk)
-                    ReftkID = tk.UniqueID;
-            }
+                ConditionData = ConditionData.Substring(p2 + 1, l2 - p2 - 1);
+                p2 = ConditionData.IndexOf(",");
+                RefTk = ConditionData.Substring(0, p2);
+                l2 = ConditionData.Length;
 
-            //check if tasks are found
-            if (ContkID == 0 || ReftkID == 0)
-            {
-                MessageBox.Show("Conditional task or reference task can not be found.");
-                return;
-            }
+                ConditionData = ConditionData.Substring(p2 + 1, l2 - p2 - 1);
+                p2 = ConditionData.IndexOf(",");
+                Finish = ConditionData.Substring(0, p2);
+                l2 = ConditionData.Length;
 
-            //else, if found, then proceed
-            MSProject.Task ConditionalTk = project.Tasks.UniqueID[ContkID];
-            MSProject.Task ReferenceTk = project.Tasks.UniqueID[ReftkID];
-            DateTime ScheduledFinish = Convert.ToDateTime(finish);
+                ConditionData = ConditionData.Substring(p2 + 1, l2 - p2 - 1);
+                p2 = ConditionData.IndexOf(",");
+                delay = ConditionData.Substring(0, p2);
+                l2 = ConditionData.Length;
 
-            if (DateTime.Compare(ScheduledFinish, ReferenceTk.Finish) < 0) //DELAY
-            {
-                int days = (int)(ReferenceTk.Finish - ScheduledFinish) / 480;
-                if (days > Convert.ToInt32(d))
-                    ConditionalTk.Active = true;
-                else
+                ConditionData = ConditionData.Substring(p2 + 1, l2 - p2 - 1);
+                d = ConditionData;
+
+                //after read each record then check it
+                foreach (MSProject.Task tk in project.Tasks)
+                {
+                    if (tk.Name.Equals(ConTk))
+                        ContkID = tk.UniqueID;
+
+                    if (tk.Name.Equals(RefTk))
+                        ReftkID = tk.UniqueID;
+                }
+                //check if tasks are found
+                if (ContkID == 0 || ReftkID == 0)
+                {
+                    MessageBox.Show("Conditional task or reference task can not be found.");
+                    return;
+                }
+
+                //else, if found, then proceed
+                MSProject.Task ConditionalTk = project.Tasks.UniqueID[ContkID];
+                MSProject.Task ReferenceTk = project.Tasks.UniqueID[ReftkID];
+                DateTime ScheduledFinish = Convert.ToDateTime(Finish);
+                
+                if (DateTime.Compare(ScheduledFinish, ReferenceTk.Finish) < 0) //DELAY
+                {
+                    TimeSpan TS = ReferenceTk.Finish - ScheduledFinish;
+                    int days = TS.Days;
+                    if (days > Convert.ToInt32(d))
+                        ConditionalTk.Active = true;
+                    else
+                        ConditionalTk.Active = false;
+                }
+                else //if no delay
                     ConditionalTk.Active = false;
+
+                Condition = Condition.Substring(p1 + 1, l1 - p1 - 1);
+                p1 = Condition.IndexOf(";");
+                l1 = Condition.Length;
             }
-            else //if no delay
-                ConditionalTk.Active = false;
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -1152,9 +1166,6 @@ namespace Project2013AddIn
 
         }
        
-
-
-
         #region VSTO generated code
 
         /// <summary>

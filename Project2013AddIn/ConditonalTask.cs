@@ -53,10 +53,10 @@ namespace Project2013AddIn
             
             foreach (MSProject.Task tk in project.Tasks)
             {
-                if (tk.Name == ConTask)
+                if (tk.Name.Equals(ConTask))
                     ConditionTaskID = tk.UniqueID;
 
-                if (tk.Name == RefTask)
+                if (tk.Name.Equals(RefTask))
                     ReferenceTaskID = tk.UniqueID;
             }
 
@@ -73,8 +73,9 @@ namespace Project2013AddIn
 
             if (DateTime.Compare(ScheduledFinish, ReferenceTk.Finish) < 0) //DELAY
             {
-                int days = (int)(ReferenceTk.Finish - ScheduledFinish) / 480;
-                if (days > D)
+                TimeSpan ts = ReferenceTk.Finish - ScheduledFinish;
+                int days = ts.Days;
+                if (days > D||days==D)
                     ConditionalTk.Active = true;
                 else
                     ConditionalTk.Active = false;
@@ -92,7 +93,7 @@ namespace Project2013AddIn
             }
 
             string Condition = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text28"));
-            string NewBinaryString = Condition + ConTask + "," + RefTask + "," + ScheduledFinish.ToString() + "," + "Delay" + D.ToString()+";";
+            string NewBinaryString = Condition + ConTask + "," + RefTask + "," + ScheduledFinish.ToString() + "," + "Delay" + "," + D.ToString()+";";
             project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text28"), NewBinaryString);
 
             this.Hide();

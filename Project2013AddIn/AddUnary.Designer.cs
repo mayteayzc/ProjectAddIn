@@ -150,7 +150,7 @@
             this.Controls.Add(this.LabelTaskName);
             this.Controls.Add(this.comboBoxTaskName);
             this.Name = "AddUnary";
-            this.Text = "Add A New Constraint";
+            this.Text = "Add A New Unary Relationship";
             this.ResumeLayout(false);
             this.PerformLayout();
 

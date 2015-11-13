@@ -116,7 +116,7 @@ namespace Project2013AddIn
 
         private void btnUpdateCondition_Click(object sender, RibbonControlEventArgs e)
         {
-
+            ThisAddIn.UpdateCondition();
         }
 
         private void btnManageCondition_Click(object sender, RibbonControlEventArgs e)
