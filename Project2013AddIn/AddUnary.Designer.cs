@@ -45,7 +45,7 @@
             this.comboBoxTaskName.FormattingEnabled = true;
             this.comboBoxTaskName.Location = new System.Drawing.Point(153, 31);
             this.comboBoxTaskName.Name = "comboBoxTaskName";
-            this.comboBoxTaskName.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxTaskName.Size = new System.Drawing.Size(200, 21);
             this.comboBoxTaskName.TabIndex = 0;
             // 
             // LabelTaskName
@@ -121,7 +121,7 @@
             "Start Before"});
             this.comboBoxConstraint.Location = new System.Drawing.Point(153, 71);
             this.comboBoxConstraint.Name = "comboBoxConstraint";
-            this.comboBoxConstraint.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxConstraint.Size = new System.Drawing.Size(200, 21);
             this.comboBoxConstraint.TabIndex = 8;
             this.comboBoxConstraint.SelectedIndexChanged += new System.EventHandler(this.comboBoxConstraint_SelectedIndexChanged);
             // 

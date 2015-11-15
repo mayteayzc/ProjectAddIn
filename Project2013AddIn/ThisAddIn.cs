@@ -35,11 +35,14 @@ namespace Project2013AddIn
             foreach (MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
+                {
                     i = task.UniqueID;
+                    break;
+                }
             }
 
-            binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"));
-            unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"));
+            binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
+            unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
           
             if (tsk.Name.ToString() == project.Tasks.UniqueID[i].Name.ToString())
             {
@@ -49,8 +52,8 @@ namespace Project2013AddIn
                         i = task.UniqueID;
                 }
                 MSProject.Task tsk2 = project.Tasks.UniqueID[i];
-                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Binary Relationship"), binary);
-                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Unary Relationship"), unary);
+                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"), binary);
+                tsk2.SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"), unary);
             }
             //delete everything related to taski
             DialogResult confirmed= MessageBox.Show("Delete this task will remove all the relationships related to this task.", "Confirm?", MessageBoxButtons.YesNo);
@@ -324,7 +327,6 @@ namespace Project2013AddIn
                     processed = true;
                     break;
 
-
                 case "Overlap":
                     //here is at least, for overlap more than specified days, no change is made.
                     //by default everyday includes 8 working hrs, 480 mins.
@@ -356,12 +358,15 @@ namespace Project2013AddIn
             foreach (MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
+                {
                     i = task.UniqueID;
+                    break;
+                }
             }
             if(processed)
             {
                 string BinaryString = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
-                string NewBinaryString = BinaryString + first.Name.ToString() + "," + second.Name.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
+                string NewBinaryString = BinaryString + id1.ToString() + "," + id2.ToString() + "," + binaryRelationship + "," + days.ToString() + ";";
 
                 project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"), NewBinaryString);
             }        
@@ -668,7 +673,10 @@ namespace Project2013AddIn
                 foreach (MSProject.Task task in project.Tasks)
                 {
                     if (task.ID == 1)
+                    {
                         i = task.UniqueID;
+                        break;
+                    }
                 }
   
                 string UnaryString = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
@@ -676,12 +684,12 @@ namespace Project2013AddIn
 
                 if (unaryRelationship == "Can Not Occur")
                 {
-                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship+"/"+split+","+ date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
+                    NewUnaryString = UnaryString + id.ToString() + "," + unaryRelationship+"/"+split+","+ date1.ToString("yyyy-MM-dd") + "," + date2.ToString("yyyy-MM-dd") + ";";
                     project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"), NewUnaryString);
                 }
                 else
                 {
-                    NewUnaryString = UnaryString + thistask.Name.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
+                    NewUnaryString = UnaryString + id.ToString() + "," + unaryRelationship + "," + date1.ToString("yyyy-MM-dd") + "," + ";";
                     project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"), NewUnaryString);
                 }
                 return true;
@@ -748,7 +756,10 @@ namespace Project2013AddIn
             foreach (MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
+                {
                     i = task.UniqueID;
+                    break;
+                }
             }
 
             //check if there is more than one binary relationships
@@ -779,20 +790,18 @@ namespace Project2013AddIn
                     int l2;
                     int p1 = binary.IndexOf(";");
                     int p2;
-                    string BinaryData,tk1, tk2, rela, d;
-                    int id1=0;
-                    int id2=0;
+                    string BinaryData,id1, id2, rela, d;
 
                     while (p1 > 0)
                     {
                         BinaryData= binary.Substring(0, p1);
                         l2 = BinaryData.Length;
                         p2 = BinaryData.IndexOf(",");
-                        tk1 = BinaryData.Substring(0, p2);
+                        id1 = BinaryData.Substring(0, p2);
 
                         BinaryData = BinaryData.Substring(p2+1 , l2 - p2-1);
                         p2 = BinaryData.IndexOf(",");
-                        tk2 = BinaryData.Substring(0, p2);
+                        id2 = BinaryData.Substring(0, p2);
                         l2 = BinaryData.Length;
 
                         BinaryData = BinaryData.Substring(p2+1 , l2 - p2-1);
@@ -803,18 +812,8 @@ namespace Project2013AddIn
                         BinaryData = BinaryData.Substring(p2 +1, l2 - p2-1);
                         d = BinaryData;
 
-                        //found corresponding tasks
-                        foreach (MSProject.Task task in project.Tasks)
-                        {
-                            if (task.Name.Equals(tk1))
-                                id1 = task.UniqueID;
-                               
-                            if (task.Name.Equals(tk2))
-                                id2 = task.UniqueID;
-                        }
-
-                        task1[num]=id1;
-                        task2[num]=id2;
+                        task1[num]=Convert.ToInt32(id1);
+                        task2[num]=Convert.ToInt32(id2);
                         relation[num]=rela;
                         days[num] = Convert.ToInt32(d);
                         num++;
@@ -1000,16 +999,9 @@ namespace Project2013AddIn
                     tk2 = BinaryData.Substring(0, p2);
                     l2 = BinaryData.Length;
 
-                    //found corresponding tasks
-                    foreach (MSProject.Task task in project.Tasks)
-                    {
-                        if (task.Name.Equals(tk1))
-                            id1 = task.UniqueID;
+                    id1 = Convert.ToInt32(tk1);
+                    id2 = Convert.ToInt32(tk2);
 
-                        if (task.Name.Equals(tk2))
-                            id2 = task.UniqueID;
-                    }
-                    
                     bool id1_before_id2 = true;
                     //to remove the existing links between 1 and 2, check which one is the predecessor first.
                     foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
@@ -1022,7 +1014,7 @@ namespace Project2013AddIn
 
                     }
 
-                    if (id1_before_id2) //got problem at the second round of generation, no links alr, still went into this
+                    if (id1_before_id2) 
                         project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
 
                     project.Tasks.UniqueID[id1].Manual = false;

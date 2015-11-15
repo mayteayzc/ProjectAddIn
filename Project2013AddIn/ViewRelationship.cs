@@ -23,7 +23,10 @@ namespace Project2013AddIn
             foreach(MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
+                {
                     i = task.UniqueID;
+                    break;
+                }
             }
 
             string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
@@ -47,7 +50,8 @@ namespace Project2013AddIn
             int l2;
             int p1 = Binary.IndexOf(";");
             int p2;
-            string tk1, tk2, rela, d;
+            int id1, id2;
+            string tk1,tk2, rela, d;
 
             while (p1 > 0)
             {
@@ -69,6 +73,16 @@ namespace Project2013AddIn
                 BinaryData = BinaryData.Substring(p2 +1, l2 - p2-1);
                 d = BinaryData;
 
+                id1=Convert.ToInt32(tk1);
+                id2=Convert.ToInt32(tk2);
+                
+                foreach(MSProject.Task tsk in project.Tasks)
+                {
+                    if (tsk.UniqueID == id1)
+                        tk1 = tsk.Name.ToString();
+                    if (tsk.UniqueID == id2)
+                        tk2 = tsk.Name.ToString();
+                }
                 dt1.Rows.Add(tk1, tk2, rela, d);
 
                 Binary = Binary.Substring(p1+1 , l1 - p1-1);
@@ -83,6 +97,7 @@ namespace Project2013AddIn
             int p3 = Unary.IndexOf(";");
             int p4;
             string tk, re, d1, d2;
+            int id;
 
             while (p3 > 0)
             {
@@ -103,6 +118,17 @@ namespace Project2013AddIn
 
                 UnaryData = UnaryData.Substring(p4 +1, l4 - p4 -1);
                 d2 = UnaryData;
+
+                id = Convert.ToInt32(tk);
+                foreach(MSProject.Task task in project.Tasks)
+                {
+                    if (task.UniqueID == id)
+                    {
+                        tk = task.Name.ToString();
+                        break;
+                    }
+                        
+                }
 
                 dt2.Rows.Add(tk, re, d1, d2);
 
@@ -145,11 +171,14 @@ namespace Project2013AddIn
                     foreach (MSProject.Task task in project.Tasks)
                     {
                         if (task.ID == 1)
+                        {
                             i = task.UniqueID;
+                            break;
+                        } 
                     }
 
                     string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
-                    Binary = Binary.Replace(tk1 + "," + tk2 + "," + rela + "," + d + ";", "");
+                    Binary = Binary.Replace(id1.ToString() + "," + id2.ToString() + "," + rela + "," + d + ";", "");
                     project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"), Binary);
 
                     //remove links
@@ -231,7 +260,10 @@ namespace Project2013AddIn
                     foreach (MSProject.Task task in project.Tasks)
                     {
                         if (task.Name.Equals(tk))
+                        {
                             id = task.UniqueID;
+                            break;
+                        }
                     }
 
                     //remove records from table
@@ -244,7 +276,7 @@ namespace Project2013AddIn
                             i = task.UniqueID;
                     }
                     string Unary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"));
-                    Unary = Unary.Replace(tk + "," + rela + "," + date1 + "," + date2 +";", "");
+                    Unary = Unary.Replace(id + "," + rela + "," + date1 + "," + date2 +";", "");
                     project.Tasks.UniqueID[i].SetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text30"), Unary);
 
                     //remove from schedule
@@ -286,6 +318,19 @@ namespace Project2013AddIn
                     }
 
                     days = Convert.ToInt32(d);
+
+                    foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+                    {
+                        if (predecessor.UniqueID == id2)
+                            project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                    }
+
+                    foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id2].PredecessorTasks)
+                    {
+                        if (predecessor.UniqueID == id1)
+                            project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    }
+
                     ThisAddIn.BinaryTGA(id1, id2, rela, days);              
                 }
 
