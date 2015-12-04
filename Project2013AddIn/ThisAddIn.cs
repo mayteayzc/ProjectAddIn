@@ -182,7 +182,28 @@ namespace Project2013AddIn
             }
             string Binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
             string BinaryData;
+            //check if new relationship contradicts with existing pdm relationships
+            foreach (MSProject.Task predecessor in project.Tasks.UniqueID[id1].PredecessorTasks)
+            {       
+                if (predecessor.UniqueID == id2)
+                {
+                    if (MessageBox.Show("These two tasks are already linked. Do you want to relink them with the PDM++ relationship?", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        project.Tasks.UniqueID[id2].UnlinkSuccessors(project.Tasks.UniqueID[id1]);
+                    else
+                        return false;
+                }
+            }
 
+            foreach(MSProject.Task predecessor in project.Tasks.UniqueID[id2].PredecessorTasks)
+            {
+                if (predecessor.UniqueID == id1)
+                {
+                    if (MessageBox.Show("These two tasks are already linked. Do you want to relink them with the PDM++ relationship?", "Confirmed", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        project.Tasks.UniqueID[id1].UnlinkSuccessors(project.Tasks.UniqueID[id2]);
+                    else
+                        return false;
+                }
+            }
             //process binary relationships, check if new rela contradicts existing relationships
             int l1 = Binary.Length;
             int l2;
@@ -825,7 +846,7 @@ namespace Project2013AddIn
 
                     //now knows the number of relationships and details are stored.
                     //assume population equals twice the size of records
-                    int population=recordcount*3;
+                    int population=recordcount*6;
                     int[,] gen1 = new int[population,recordcount];
                     Random rn=new Random();
 
@@ -972,7 +993,11 @@ namespace Project2013AddIn
             foreach (MSProject.Task task in project.Tasks)
             {
                 if (task.ID == 1)
+                {
                     i = task.UniqueID;
+                    break;
+                }
+                    
             }
             string binary = project.Tasks.UniqueID[i].GetField(Globals.ThisAddIn.Application.FieldNameToFieldConstant("Text29"));
 

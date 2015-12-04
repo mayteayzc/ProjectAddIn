@@ -113,7 +113,6 @@
             // 
             this.comboBoxConstraint.FormattingEnabled = true;
             this.comboBoxConstraint.Items.AddRange(new object[] {
-            "Between",
             "Can Not Occur",
             "Due After",
             "Due Before",
